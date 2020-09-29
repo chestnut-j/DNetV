@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Board from './board.js'
+import Board from './board.js';
 
 
 let script = document.createElement('script');

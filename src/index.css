@@ -3,21 +3,23 @@
   background: #dddbdb;
 }
 .icon {
-  width: 1.3em; height: 1.3em;
+  width: 1.4em; height: 1.4em;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
   float: right;
-  padding: 0.8px 0.8px 0.8px 0.8px;
+  margin-left: 3px;
+  margin-right: 4px;
 }
 
 .box {
   background: #fff;
   border: 1px solid rgb(68, 67, 67);
-  border-radius: 4px;
+  border-radius: 8px;
   height: 300px;
   width: 160px; 
   display: flex;
+  flex-direction: column;
   padding: 0; 
   margin-bottom: 20px;
   margin-left: 20px;
@@ -36,14 +38,18 @@
 }
 
 .sub-title {
-  font-size: 10px;
+  font-size: 12.5px;
   text-align: left;
   border-bottom: 1px solid #443939;
   margin-top: 5px;
   height: 20px;
   width: 100%;
-  padding-left: 5px;
-  padding-right: 5px;
+}
+
+.type {
+  font-size: 12px;
+  height: 14px;
+  width: 100%;
 }
 
 .col {
@@ -52,4 +58,20 @@
 
 .row {
   display: inline-flex;
+}
+
+.divider {
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  line-height: 1px;
+  border-left: 40px solid rgb(46, 45, 45);
+  border-right: 40px solid rgb(46, 45, 45);
+  text-align: center;
+}
+
+.item {
+  font-size: 12px;
 }
