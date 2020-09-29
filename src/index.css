@@ -1,0 +1,55 @@
+
+.board {
+  background: #dddbdb;
+}
+.icon {
+  width: 1.3em; height: 1.3em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  float: right;
+  padding: 0.8px 0.8px 0.8px 0.8px;
+}
+
+.box {
+  background: #fff;
+  border: 1px solid rgb(68, 67, 67);
+  border-radius: 4px;
+  height: 300px;
+  width: 160px; 
+  display: flex;
+  padding: 0; 
+  margin-bottom: 20px;
+  margin-left: 20px;
+  text-align: center; 
+}
+
+
+.title {
+  background: #443939;
+  font-size: 30px;
+  height: 50px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  color: #fff;
+}
+
+.sub-title {
+  font-size: 10px;
+  text-align: left;
+  border-bottom: 1px solid #443939;
+  margin-top: 5px;
+  height: 20px;
+  width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.col {
+  float:left;
+}
+
+.row {
+  display: inline-flex;
+}
