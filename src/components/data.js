@@ -7,7 +7,7 @@ export default class Data extends React.Component {
             <div className='box'>
                 <div className='sub-title'>   &nbsp; Data
                     <svg className="icon" aria-hidden="true" >
-                        <use xlinkHref="#icon-add"></use>
+                        <use  xlinkHref="#icon-add"></use>
                     </svg>
                     <svg className="icon" aria-hidden="true" >
                         <use xlinkHref="#icon-center"></use>
