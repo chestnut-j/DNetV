@@ -5,7 +5,7 @@ import Board from "./board.js"
 
 let script = document.createElement("script")
 script.type = "text/javascript"
-script.src = "http://at.alicdn.com/t/font_2104982_8vm48h259qs.js"
+script.src = "http://at.alicdn.com/t/font_2104982_95r8oz9uzww.js"
 document.getElementById("root").appendChild(script)
 
 ReactDOM.render(<Board />, document.getElementById("root"))

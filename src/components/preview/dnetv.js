@@ -1,16 +1,16 @@
 import * as d3 from "d3"
 import { NetV } from "./NetV"
 const defaultConfig = {
-    sumWidth: 1000,
-    sumHeight: 1000,
-    padding: 30,
-    width: 200,
-    height: 200,
+    width: 1000,
+    height: 750,
+    padding: 50,
+    eachWidth: 400,
+    eachHeight: 400,
 }
 const dealLayout = (data, config) => {
     let nodes = []
     let links = []
-    const { width, height } = config
+    const { eachWidth, eachHeight } = config
     let nodesSet = new Set()
     let linksSet = new Set()
     data.forEach((graph) => {
@@ -44,7 +44,7 @@ const dealLayout = (data, config) => {
             d3.forceLink(links).id((d) => d.id)
         )
         .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("center", d3.forceCenter(eachWidth / 2, eachWidth / 2))
         .tick(10)
     return { graphPos: { nodes, links }, simulation }
 }
@@ -59,7 +59,10 @@ const assignPos = (data, graphPos, config) => {
     data.forEach((graph, index) => {
         graph.nodes = graph.nodes.map((node) => {
             const id = `${node.id}+${index}`
-            const x = idPos[node.id].x + (index + 1) * config.padding
+            const x =
+                idPos[node.id].x +
+                index * config.eachWidth +
+                (index + 1) * config.padding
             const y = idPos[node.id].y + (index + 1) * config.padding
             return { id, x, y }
         })
@@ -76,6 +79,8 @@ const assignPos = (data, graphPos, config) => {
 const draw = (graph, container, config) => {
     const g = new NetV({
         container: document.getElementById("graph"),
+        width: config.width,
+        height: config.height,
     })
     // graph.links = graph.links.map((link) => {
     //     return { source: link.source.id, target: link.target.id }
