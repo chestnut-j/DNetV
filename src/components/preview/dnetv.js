@@ -63,7 +63,7 @@ const assignPos = (data, graphPos, config) => {
                 idPos[node.id].x +
                 index * config.eachWidth +
                 (index + 1) * config.padding
-            const y = idPos[node.id].y + (index + 1) * config.padding
+            const y = idPos[node.id].y
             return { id, x, y }
         })
         graph.links = graph.links.map((link) => {
