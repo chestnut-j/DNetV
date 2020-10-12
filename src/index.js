@@ -1,15 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Board from './board.js';
+import React from "react"
+import ReactDOM from "react-dom"
+import "./index.css"
+import Board from "./board.js"
 
+let script = document.createElement("script")
+script.type = "text/javascript"
+script.src = "http://at.alicdn.com/t/font_2104982_8vm48h259qs.js"
+document.getElementById("root").appendChild(script)
 
-let script = document.createElement('script');
-script.type = 'text/javascript';
-script.src = 'http://at.alicdn.com/t/font_2104982_8vm48h259qs.js';
-document.getElementById('root').appendChild(script); 
-
-ReactDOM.render(
-  <Board />,
-  document.getElementById('root'),
-);
+ReactDOM.render(<Board />, document.getElementById("root"))

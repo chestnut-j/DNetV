@@ -1,88 +1,87 @@
-
 .board {
-  background: #dddbdb;
+    background: #dddbdb;
 }
 .icon {
-  width: 1.4em; height: 1.4em;
-  vertical-align: -0.15em;
-  fill: currentColor;
-  overflow: hidden;
-  float: right;
-  margin-left: 3px;
-  margin-right: 4px;
+    width: 1.4em;
+    height: 1.4em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+    float: right;
+    margin-left: 3px;
+    margin-right: 4px;
 }
 
 .box {
-  background: #fff;
-  border: 1px solid rgb(68, 67, 67);
-  border-radius: 8px;
-  height: 300px;
-  width: 160px; 
-  display: flex;
-  flex-direction: column;
-  padding: 0; 
-  margin-bottom: 20px;
-  margin-left: 20px;
-  text-align: center; 
+    background: #fff;
+    border: 1px solid rgb(68, 67, 67);
+    border-radius: 8px;
+    height: 300px;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    text-align: center;
 }
 
-
 .title {
-  background: #443939;
-  font-size: 30px;
-  height: 50px;
-  margin-bottom: 10px;
-  padding-left: 10px;
-  padding-top: 5px;
-  color: #fff;
+    background: #443939;
+    font-size: 30px;
+    height: 50px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    color: #fff;
 }
 
 .sub-title {
-  font-size: 12.5px;
-  text-align: left;
-  border-bottom: 1px solid #443939;
-  margin-top: 5px;
-  height: 20px;
-  width: 100%;
+    font-size: 12.5px;
+    text-align: left;
+    border-bottom: 1px solid #443939;
+    margin-top: 5px;
+    height: 20px;
+    width: 100%;
 }
 
 .type {
-  font-size: 12px;
-  height: 14px;
-  width: 100%;
+    font-size: 12px;
+    height: 14px;
+    width: 100%;
 }
 
 .col {
-  float:left;
+    float: left;
 }
 
 .row {
-  display: inline-flex;
+    display: inline-flex;
 }
 
 .divider {
-  font-size: 12px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 5px;
-  margin-right: 5px;
-  line-height: 1px;
-  border-left: 40px solid rgb(46, 45, 45);
-  border-right: 40px solid rgb(46, 45, 45);
-  text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    line-height: 1px;
+    border-left: 40px solid rgb(46, 45, 45);
+    border-right: 40px solid rgb(46, 45, 45);
+    text-align: center;
 }
 
 .divider2 {
-  font-size: 14px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  margin-left: 15px;
-  margin-right: 15px;
-  line-height: 1px;
-  border-left: 55px solid rgb(46, 45, 45);
-  border-right: 55px solid rgb(46, 45, 45);
-  text-align: center;
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    line-height: 1px;
+    border-left: 55px solid rgb(46, 45, 45);
+    border-right: 55px solid rgb(46, 45, 45);
+    text-align: center;
 }
 .item {
-  font-size: 12px;
+    font-size: 12px;
 }
