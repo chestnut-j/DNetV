@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Graph from './preview/graph'
 export default class Preview extends React.Component {
     render() {
         return (
@@ -9,7 +9,7 @@ export default class Preview extends React.Component {
                         <use xlinkHref="#icon-play"></use>
                     </svg>
                 </div>
-
+                <Graph/>
             </div>
         );
     }
