@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react"
 import DNetV from "./dnetv"
-const data = [
+const graphs = [
     {
-        nodes: [{ id: "a" }, { id: "b" }, { id: "c" }],
+        nodes: [{ id: "a" }, { id: "b" }, { id: "c" }, { id: "d" }],
         links: [{ source: "a", target: "b" }],
     },
     {
-        nodes: [{ id: "a" }, { id: "c" }],
-        links: [{ source: "a", target: "c" }],
+        nodes: [{ id: "b" }, { id: "c" }],
+        links: [{ source: "b", target: "c" }],
+    },
+    {
+        nodes: [{ id: "b" }, { id: "c" }, { id: "d" }],
+        links: [
+            { source: "b", target: "c" },
+            { source: "c", target: "d" },
+        ],
     },
 ]
 function Graph() {
     const dealData = () => {
-        DNetV({ data }, document.getElementById("graph"))
+        DNetV({ graphs }, document.getElementById("graph"))
     }
     useEffect(() => {
         dealData()
