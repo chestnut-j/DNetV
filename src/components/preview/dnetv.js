@@ -55,9 +55,9 @@ class DNetV {
         const newGraphSets = Times.map((time) => {
             return this.graphSets[time]
         })
-        if (keyTime == "last") {
+        if (keyTime === "last") {
             graphCompare = newGraphSets.map((graph, index) => {
-                if (index == 0) return null
+                if (index === 0) return null
                 const compareGraph = newGraphSets[index - 1]
                 const appearNodes = this.difference(
                     graph.nodes,
@@ -80,9 +80,9 @@ class DNetV {
                 return { appearGraph, disAppearGraph }
             })
         } else {
-            if (keyTime == "next") {
+            if ((keyTime = "next")) {
                 graphCompare = newGraphSets.map((graph, index) => {
-                    if (index == newGraphSets.length - 1) return null
+                    if (index === newGraphSets.length - 1) return null
                     const compareGraph = newGraphSets[index + 1]
                     const appearNodes = this.difference(
                         compareGraph.nodes,
@@ -180,9 +180,7 @@ class DNetV {
         })
         console.log("nodes: ", nodes.length)
         console.log("links: ", links.length)
-        let i = 0
-        const simulation = d3
-            .forceSimulation(nodes)
+        d3.forceSimulation(nodes)
             .force(
                 "link",
                 d3.forceLink(links).id((d) => d.id)
