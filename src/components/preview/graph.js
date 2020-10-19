@@ -1,29 +1,27 @@
-import React, { useEffect } from "react"
+import React, { useEffect} from "react"
 import DNetV from "./dnetv"
-const graphs = [
+
+var graphs0 = [
     {
         nodes: [{ id: "a" }, { id: "b" }, { id: "c" }, { id: "d" }],
-        links: [{ source: "a", target: "b" }],
-    },
-    {
-        nodes: [{ id: "b" }, { id: "c" }],
-        links: [{ source: "b", target: "c" }],
-    },
-    {
-        nodes: [{ id: "b" }, { id: "c" }, { id: "d" }],
-        links: [
-            { source: "b", target: "c" },
-            { source: "c", target: "d" },
-        ],
-    },
+        links: [{ source: "a", target: "b" }]
+    }
 ]
-function Graph() {
+var graphs;
+function Graph(props) {
+    let data = props.jsonfile;
+    console.log("json",data);
+    graphs=JSON.stringify(data) === "{}" ? graphs0 : data;
     const dealData = () => {
+        console.log("indeal graphs",graphs);
         DNetV({ graphs }, document.getElementById("graph"))
     }
     useEffect(() => {
+        console.log("graphs",graphs);
         dealData()
-    })
-    return <div id="graph" className="graph"></div>
+        
+    },[props.jsonfile])
+    return <div id="graph" className="graph" ></div>
 }
+
 export default Graph

@@ -341,10 +341,23 @@ wavy::before {
 
 .json-text {
   text-align: left;
+  height: 900px;
   font-family: 'sans-serif';
   font-size: 14px;
   padding-left: 10px;
   margin-top: 10px;
+  overflow: scroll
+}
+
+
+.upload-item {
+    width: 1.5em;
+    height:1.5em;
+    fill: currentColor;
+    float: right;
+    margin-top: -16px;
+    margin-left: 3px;
+    margin-right: 4px;
 }
 
 /*render view*/
