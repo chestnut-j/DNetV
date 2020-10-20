@@ -2,6 +2,10 @@ import React from "react"
 import Graph from "./preview/graph"
 
 export default class Preview extends React.Component {
+    
+    static defaultProps = {
+        jsonfile: {}
+    }
     render() {
         return (
             <div className='preview-box'>
@@ -10,7 +14,7 @@ export default class Preview extends React.Component {
                         <use xlinkHref="#icon-play"></use>
                     </svg>
                 </div>
-                <Graph />
+                <Graph jsonfile={this.props.jsonfile}/>
 
             </div>
         );

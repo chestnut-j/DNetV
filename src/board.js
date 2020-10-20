@@ -8,6 +8,20 @@ import Render from "./components/render.js"
 import Template from "./components/template.js"
 
 export default class Board extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+          jsonfile: { }
+        }
+    }
+    handleSubmit = (file) => {
+        if (!file) return;
+        this.setState(
+          {
+            jsonfile: file.jsonData
+          }
+        )
+      }
     render() {
         return (
             <div className="board">
@@ -21,7 +35,7 @@ export default class Board extends React.Component {
                         <Encoding />
                     </div>
                     <div className="col">
-                        <Grammar />
+                        <Grammar onSubmit={this.handleSubmit} />
                     </div>
 
                     <div className="col">
@@ -29,7 +43,7 @@ export default class Board extends React.Component {
                             <Render style={{ float: "left" }} />
                             <Template style={{ float: "left" }} />
                         </div>
-                        <Preview />
+                        <Preview jsonfile={this.state.jsonfile}/>
                     </div>
                 </div>
             </div>
