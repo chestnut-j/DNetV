@@ -1,20 +1,31 @@
-import React, { useEffect } from "react"
+import React from "react"
 import DNetV from "./dnetv"
 
 var graphs
-function Graph(props) {
-    graphs = props.jsonfile
-    const dealData = () => {
+export default class Graph extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    shouldComponentUpdate(nextProps) {
+        this.dealData(nextProps)
+        return false
+    }
+    componentDidMount() {
+        this.dealData(this.props)
+    }
+    dealData = (props) => {
+        document.title = `${props.filename}`
         const graphs = props.jsonfile
         console.log("deal graphs", graphs)
-        DNetV({ graphs }, document.getElementById("graph"))
+        if (document.getElementById("subgraph") !== null) {
+            document.getElementById("subgraph").remove()
+        }
+        const subgraph = document.createElement("div")
+        subgraph.id = "subgraph"
+        document.getElementById("graph").appendChild(subgraph)
+        DNetV(graphs, document.getElementById("subgraph"))
     }
-    useEffect(() => {
-        console.log("graphs", graphs)
-        dealData()
-        document.title=`${props.filename}`
-    })
-    return <div id="graph" className="graph"></div>
+    render() {
+        return <div id="graph" className="graph"></div>
+    }
 }
-
-export default Graph

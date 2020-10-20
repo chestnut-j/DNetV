@@ -1,14 +1,20 @@
-[
-    {
-        "nodes": [{ "id": "a" }, { "id": "b" }, { "id": "c" }, { "id": "d" }],
-        "links": [{ "source": "a", "target": "b" }]
-    },
-    {
-        "nodes": [{ "id": "a" }, { "id": "b" }, { "id": "c" }, { "id": "d" }],
-        "links": [
-            { "source": "b", "target": "c" },
-            { "source": "c", "target": "d" },
-            { "source": "a", "target": "b" }
-        ]
-    }
-]
+{
+    "graphs": [
+        {
+            "nodes": [{ "id": "a" }, { "id": "b" }],
+            "links": [{ "source": "a", "target": "b" }]
+        },
+        {
+            "nodes": [{ "id": "b" }, { "id": "c" }, { "id": "d" }],
+            "links": [{ "source": "b", "target": "c" }]
+        },
+        {
+            "nodes": [{ "id": "b" }, { "id": "c" }, { "id": "d" }],
+            "links": [
+                { "source": "b", "target": "c" },
+                { "source": "c", "target": "d" }
+            ]
+        }
+    ],
+    "compareEncode": { "time": [0, 1, 2], "keyTime": "2", "encode": {} }
+}

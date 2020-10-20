@@ -1,17 +1,25 @@
-[
-    {
-        "nodes": [{ "id": "a" }, { "id": "b" }, { "id": "c" }, { "id": "d" }],
-        "links": [{ "source": "a", "target": "b" }]
-    },
-    {
-        "nodes": [{ "id": "b" }, { "id": "c" }],
-        "links": [{ "source": "b", "target": "c" }]
-    },
-    {
-        "nodes": [{ "id": "b" }, { "id": "c" }, { "id": "d" }],
-        "links": [
-            { "source": "b", "target": "c" },
-            { "source": "c", "target": "d" }
-        ]
-    }
-]
+{
+    "graphs": [
+        {
+            "nodes": [
+                { "id": "a" },
+                { "id": "b" },
+                { "id": "c" },
+                { "id": "d" }
+            ],
+            "links": [{ "source": "a", "target": "b" }]
+        },
+        {
+            "nodes": [{ "id": "b" }, { "id": "c" }],
+            "links": [{ "source": "b", "target": "c" }]
+        },
+        {
+            "nodes": [{ "id": "b" }, { "id": "c" }, { "id": "d" }],
+            "links": [
+                { "source": "b", "target": "c" },
+                { "source": "c", "target": "d" }
+            ]
+        }
+    ],
+    "compareEncode": { "time": [0, 1, 2], "keyTime": "last", "encode": {} }
+}

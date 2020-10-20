@@ -25,7 +25,7 @@ class DNetV {
     }
     compareEncode() {
         const { time, keyTime, encode } = this.config.compareEncode
-        this.graphCompare = this.compareData(this.graphs, time, encode)
+        this.graphCompare = this.compareData(this.graphs, time, keyTime, encode)
     }
     initGraphSets() {
         this.nodeSets = new Set()
@@ -94,16 +94,16 @@ class DNetV {
                 })
             }
         }
-        console.log(keyTime)
-        graphCompare.forEach((graph) => {
-            if (graph)
-                console.log(
-                    graph.appearGraph.appearNodes,
-                    graph.appearGraph.appearLinks,
-                    graph.disAppearGraph.disAppearNodes,
-                    graph.disAppearGraph.disAppearLinks
-                )
-        })
+        // console.log(keyTime)
+        // graphCompare.forEach((graph) => {
+        //     if (graph)
+        //         console.log(
+        //             graph.appearGraph.appearNodes,
+        //             graph.appearGraph.appearLinks,
+        //             graph.disAppearGraph.disAppearNodes,
+        //             graph.disAppearGraph.disAppearLinks
+        //         )
+        // })
         return graphCompare
     }
     layout() {
@@ -142,8 +142,8 @@ class DNetV {
             const target = s[1]
             links.push({ source, target })
         })
-        console.log("nodes: ", nodes.length)
-        console.log("links: ", links.length)
+        // console.log("nodes: ", nodes.length)
+        // console.log("links: ", links.length)
         d3.forceSimulation(nodes)
             .force(
                 "link",
@@ -214,7 +214,7 @@ class DNetV {
 }
 
 export default (config, container) => {
-    if (!config.graphs.length) {
+    if (!config.hasOwnProperty("graphs")) {
         return
     }
     const dnetv = new DNetV(config, container)
