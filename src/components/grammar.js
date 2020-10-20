@@ -2,6 +2,7 @@ import React from "react"
 import ReactJson from "react-json-view"
 import { Upload } from "antd"
 import FileSaver from "file-saver"
+import Graph from "./preview/graph"
 
 export default class Grammar extends React.Component {
     constructor(props) {
