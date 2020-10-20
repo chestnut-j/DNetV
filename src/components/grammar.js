@@ -7,24 +7,8 @@ export default class Grammar extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            filename: "example.json",
-            jsonData: [
-                {
-                    nodes: [{ id: "a" }, { id: "b" }, { id: "c" }, { id: "d" }],
-                    links: [{ source: "a", target: "b" }],
-                },
-                {
-                    nodes: [{ id: "b" }, { id: "c" }],
-                    links: [{ source: "b", target: "c" }],
-                },
-                {
-                    nodes: [{ id: "b" }, { id: "c" }, { id: "d" }],
-                    links: [
-                        { source: "b", target: "c" },
-                        { source: "c", target: "d" },
-                    ],
-                },
-            ],
+            filename: '',
+            jsonData: {},
             jsonOptions: {
                 displayDataTypes: false,
                 name: null,

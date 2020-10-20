@@ -3,17 +3,17 @@ import DNetV from "./dnetv"
 
 var graphs
 function Graph(props) {
+    graphs = props.jsonfile
     const dealData = () => {
         const graphs = props.jsonfile
-        console.log("json", graphs)
-        // graphs = JSON.stringify(data) === "{}" ? graphs0 : data
         console.log("deal graphs", graphs)
         DNetV({ graphs }, document.getElementById("graph"))
     }
     useEffect(() => {
         console.log("graphs", graphs)
         dealData()
-    }, [props.jsonfile])
+        document.title=`${props.filename}`
+    })
     return <div id="graph" className="graph"></div>
 }
 

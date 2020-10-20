@@ -4,7 +4,8 @@ import Graph from "./preview/graph"
 export default class Preview extends React.Component {
     
     static defaultProps = {
-        jsonfile: {}
+        jsonfile: {},
+        filename:''
     }
     render() {
         return (
@@ -14,7 +15,7 @@ export default class Preview extends React.Component {
                         <use xlinkHref="#icon-play"></use>
                     </svg>
                 </div>
-                <Graph jsonfile={this.props.jsonfile}/>
+                <Graph jsonfile={this.props.jsonfile} filename={this.props.filename}/>
 
             </div>
         );

@@ -454,3 +454,8 @@ wavy::before {
 .item0 {
   font-size: 12px;
 }
+.graph {
+  overflow: scroll;
+  width:100%;
+  height:100%;
+}

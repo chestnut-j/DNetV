@@ -11,14 +11,16 @@ export default class Board extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          jsonfile: { }
+          jsonfile: { },
+          filename:''
         }
     }
     handleSubmit = (file) => {
         if (!file) return;
         this.setState(
           {
-            jsonfile: file.jsonData
+            jsonfile: file.jsonData,
+            filename: file.filename
           }
         )
       }
@@ -43,7 +45,7 @@ export default class Board extends React.Component {
                             <Render style={{ float: "left" }} />
                             <Template style={{ float: "left" }} />
                         </div>
-                        <Preview jsonfile={this.state.jsonfile}/>
+                        <Preview jsonfile={this.state.jsonfile} filename={this.state.filename}/>
                     </div>
                 </div>
             </div>
