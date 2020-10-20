@@ -254,6 +254,9 @@ class DNetV {
 }
 
 export default (config, container) => {
+    if (!config.graphs.length) {
+        return
+    }
     const dnetv = new DNetV(config, container)
     // dnetv.layout()
     // dnetv.draw()
