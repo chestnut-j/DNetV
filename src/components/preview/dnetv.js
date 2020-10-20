@@ -14,14 +14,18 @@ class DNetV {
         this.config = config
         this.oldGraphs = config.graphs
         this.container = container
+        this.times = Array.from(this.config.graphs.keys())
         this.initGraph()
-        this.times = Array.from(this.graphs.keys())
-        this.start()
-        this.graphCompare = this.compareData(this.graphs, this.times, "last") //graph, times
-        this.graphCompare = this.compareData(this.graphs, this.times, "next") //graph, times
-        this.graphCompare = this.compareData(this.graphs, this.times, 0) //graph, times
+        this.initGraphSets()
+        this.layout()
+        this.draw()
+        this.compareEncode()
 
         // this.dealTimeEncode(config.timeEncode, data, config)
+    }
+    compareEncode() {
+        const { time, keyTime, encode } = this.config.compareEncode
+        this.graphCompare = this.compareData(this.graphs, time, encode)
     }
     initGraphSets() {
         this.nodeSets = new Set()
@@ -48,9 +52,24 @@ class DNetV {
             })
             return { nodes, links }
         })
-        this.initGraphSets()
     }
     compareData(graph, Times, keyTime) {
+        const dealCompare = (compareGraph, graph) => {
+            const appearNodes = this.difference(graph.nodes, compareGraph.nodes)
+            const disAppearNodes = this.difference(
+                compareGraph.nodes,
+                graph.nodes
+            )
+            const appearLinks = this.difference(graph.links, compareGraph.links)
+            const disAppearLinks = this.difference(
+                compareGraph.links,
+                graph.links
+            )
+            const appearGraph = { appearNodes, appearLinks }
+            const disAppearGraph = { disAppearNodes, disAppearLinks }
+            return { appearGraph, disAppearGraph }
+        }
+        // const graphSet = new Set(graph)
         let graphCompare = []
         const newGraphSets = Times.map((time) => {
             return this.graphSets[time]
@@ -59,74 +78,19 @@ class DNetV {
             graphCompare = newGraphSets.map((graph, index) => {
                 if (index === 0) return null
                 const compareGraph = newGraphSets[index - 1]
-                const appearNodes = this.difference(
-                    graph.nodes,
-                    compareGraph.nodes
-                )
-                const disAppearNodes = this.difference(
-                    compareGraph.nodes,
-                    graph.nodes
-                )
-                const appearLinks = this.difference(
-                    graph.links,
-                    compareGraph.links
-                )
-                const disAppearLinks = this.difference(
-                    compareGraph.links,
-                    graph.links
-                )
-                const appearGraph = { appearNodes, appearLinks }
-                const disAppearGraph = { disAppearNodes, disAppearLinks }
-                return { appearGraph, disAppearGraph }
+                return dealCompare(graph, compareGraph)
             })
         } else {
             if ((keyTime = "next")) {
                 graphCompare = newGraphSets.map((graph, index) => {
                     if (index === newGraphSets.length - 1) return null
                     const compareGraph = newGraphSets[index + 1]
-                    const appearNodes = this.difference(
-                        compareGraph.nodes,
-                        graph.nodes
-                    )
-                    const disAppearNodes = this.difference(
-                        graph.nodes,
-                        compareGraph.nodes
-                    )
-                    const appearLinks = this.difference(
-                        compareGraph.links,
-                        graph.links
-                    )
-                    const disAppearLinks = this.difference(
-                        graph.links,
-                        compareGraph.links
-                    )
-                    const appearGraph = { appearNodes, appearLinks }
-                    const disAppearGraph = { disAppearNodes, disAppearLinks }
-                    return { appearGraph, disAppearGraph }
+                    return dealCompare(graph, compareGraph)
                 })
             } else {
                 const graph = this.graphSets[keyTime]
-                graphCompare = newGraphSets.map((g, index) => {
-                    const compareGraph = g
-                    const appearNodes = this.difference(
-                        graph.nodes,
-                        compareGraph.nodes
-                    )
-                    const disAppearNodes = this.difference(
-                        compareGraph.nodes,
-                        graph.nodes
-                    )
-                    const appearLinks = this.difference(
-                        graph.links,
-                        compareGraph.links
-                    )
-                    const disAppearLinks = this.difference(
-                        compareGraph.links,
-                        graph.links
-                    )
-                    const appearGraph = { appearNodes, appearLinks }
-                    const disAppearGraph = { disAppearNodes, disAppearLinks }
-                    return { appearGraph, disAppearGraph }
+                graphCompare = newGraphSets.map((compareGraph, index) => {
+                    return dealCompare(compareGraph, graph)
                 })
             }
         }
@@ -232,10 +196,6 @@ class DNetV {
         return new Promise((resolve) => {
             simulation.on("end", resolve)
         })
-    }
-    start() {
-        this.layout()
-        this.draw()
     }
     difference(setA, setB) {
         let _difference = new Set(setA)
