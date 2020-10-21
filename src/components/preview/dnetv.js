@@ -29,14 +29,15 @@ class DNetV {
     compareEncode() {
         this.config.compareEncode.forEach((d) => {
             const { times, nodes, keyTime, encode } = d
-            if (times === "all") {
-                times = this.times
+            let timeArr = this.times
+            if (times !== "all") {
+                timeArr = times
             }
             let nodeSets = this.nodeSets
             if (nodes !== "all") {
                 nodeSets = new Set(nodes)
             }
-            this.compareData(nodeSets, times, keyTime, encode)
+            this.compareData(nodeSets, timeArr, keyTime, encode)
         })
     }
     initGraphSets() {
@@ -144,7 +145,10 @@ class DNetV {
         }
         this.graphPos.nodes.forEach((node) => {
             const { time, originId } = node
-            if (graphCompare[time] === null) {
+            if (
+                graphCompare[time] === null ||
+                graphCompare[time] === undefined
+            ) {
                 return
             }
             if (
@@ -173,7 +177,10 @@ class DNetV {
         })
         this.graphPos.links.forEach((link) => {
             const { time, originId } = link
-            if (graphCompare[time] === null) {
+            if (
+                graphCompare[time] === null ||
+                graphCompare[time] === undefined
+            ) {
                 return
             }
             if (
@@ -300,6 +307,8 @@ class DNetV {
                 strokeWidth: 1,
                 strokeColor: { r: 44 / 255, g: 44 / 255, b: 44 / 255, a: 0.5 },
             },
+            nodeLimit: 1e6,
+            linkLimit: 1e6,
         }
         const g = new NetV({
             container: this.container,

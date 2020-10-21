@@ -8,7 +8,7 @@ export default class Grammar extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            filename: '',
+            filename: "",
             jsonData: {},
             jsonOptions: {
                 displayDataTypes: false,
@@ -52,7 +52,7 @@ export default class Grammar extends React.Component {
                 const reader = new FileReader()
                 reader.readAsText(file)
                 reader.onload = () => {
-                    console.log(reader.result)
+                    // console.log(reader.result)
                     let myData = reader.result
                     let myJson = JSON.parse(myData)
                     this.setState((state) => ({
