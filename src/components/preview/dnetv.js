@@ -15,17 +15,29 @@ class DNetV {
         this.oldGraphs = config.graphs
         this.container = container
         this.times = Array.from(this.config.graphs.keys())
+        this.graphCompare = this.times.map((time) => {
+            return null
+        })
         this.initGraph()
         this.initGraphSets()
         this.layout()
-        this.draw()
         this.compareEncode()
+        this.draw()
 
         // this.dealTimeEncode(config.timeEncode, data, config)
     }
     compareEncode() {
-        const { time, keyTime, encode } = this.config.compareEncode
-        this.graphCompare = this.compareData(this.graphs, time, keyTime, encode)
+        this.config.compareEncode.forEach((d) => {
+            const { times, nodes, keyTime, encode } = d
+            if (times === "all") {
+                times = this.times
+            }
+            let nodeSets = this.nodeSets
+            if (nodes !== "all") {
+                nodeSets = new Set(nodes)
+            }
+            this.compareData(nodeSets, times, keyTime, encode)
+        })
     }
     initGraphSets() {
         this.nodeSets = new Set()
@@ -33,10 +45,12 @@ class DNetV {
         this.graphSets = this.graphs.map((graph) => {
             const nodes = new Set(graph.nodes.map((node) => node.id))
             const links = new Set(graph.links.map((link) => link.id))
-            this.nodeSet = this.union(this.nodeSet, nodes)
-            this.linkSet = this.union(this.linkSet, links)
+            this.nodeSets = this.union(this.nodeSets, nodes)
+            this.linkSets = this.union(this.linkSets, links)
             return { nodes, links }
         })
+        this.nodes = [...this.nodeSets]
+        this.links = [...this.linkSets]
     }
     initGraph() {
         this.graphs = this.oldGraphs.map((graph, time) => {
@@ -53,58 +67,139 @@ class DNetV {
             return { nodes, links }
         })
     }
-    compareData(graph, Times, keyTime) {
-        const dealCompare = (compareGraph, graph) => {
-            const appearNodes = this.difference(graph.nodes, compareGraph.nodes)
-            const disAppearNodes = this.difference(
-                compareGraph.nodes,
-                graph.nodes
+    compareData(nodeSets, times, keyTime, encode) {
+        const dealCompare = (graph, compareGraph) => {
+            const appearNodes = this.intersection(
+                this.difference(graph.nodes, compareGraph.nodes),
+                nodeSets
+            )
+            const disappearNodes = this.intersection(
+                this.difference(compareGraph.nodes, graph.nodes),
+                nodeSets
             )
             const appearLinks = this.difference(graph.links, compareGraph.links)
-            const disAppearLinks = this.difference(
+            const disappearLinks = this.difference(
                 compareGraph.links,
                 graph.links
             )
-            const appearGraph = { appearNodes, appearLinks }
-            const disAppearGraph = { disAppearNodes, disAppearLinks }
-            return { appearGraph, disAppearGraph }
+            appearLinks.forEach((link) => {
+                const arr = link.split("-")
+                const source = arr[0]
+                const target = arr[1]
+                if (!nodeSets.has(source) || !nodeSets.has(target)) {
+                    appearLinks.delete(link)
+                }
+            })
+            disappearLinks.forEach((link) => {
+                const arr = link.split("-")
+                const source = arr[0]
+                const target = arr[1]
+                if (!nodeSets.has(source) || !nodeSets.has(target)) {
+                    disappearLinks.delete(link)
+                }
+            })
+            const appear = { nodes: appearNodes, links: appearLinks }
+            const disappear = {
+                nodes: disappearNodes,
+                links: disappearLinks,
+            }
+            return { appear, disappear }
         }
-        // const graphSet = new Set(graph)
         let graphCompare = []
-        const newGraphSets = Times.map((time) => {
+        const newGraphSets = times.map((time) => {
+            graphCompare.push({})
             return this.graphSets[time]
         })
         if (keyTime === "last") {
-            graphCompare = newGraphSets.map((graph, index) => {
+            newGraphSets.forEach((graph, index) => {
                 if (index === 0) return null
                 const compareGraph = newGraphSets[index - 1]
-                return dealCompare(graph, compareGraph)
+                const { appear, disappear } = dealCompare(graph, compareGraph)
+                graphCompare[index].appear = appear
+                graphCompare[index - 1].disappear = disappear
             })
         } else {
             if ((keyTime = "next")) {
-                graphCompare = newGraphSets.map((graph, index) => {
+                newGraphSets.forEach((graph, index) => {
                     if (index === newGraphSets.length - 1) return null
                     const compareGraph = newGraphSets[index + 1]
-                    return dealCompare(graph, compareGraph)
+                    const { appear, disappear } = dealCompare(
+                        graph,
+                        compareGraph
+                    )
+                    graphCompare[index].appear = appear
+                    graphCompare[index + 1].disappear = disappear
                 })
             } else {
                 const graph = this.graphSets[keyTime]
-                graphCompare = newGraphSets.map((compareGraph, index) => {
-                    return dealCompare(compareGraph, graph)
+                newGraphSets.forEach((compareGraph, index) => {
+                    const { appear, disappear } = dealCompare(
+                        graph,
+                        compareGraph
+                    )
+                    graphCompare[index].appear = appear
+                    graphCompare[index].disappear = disappear
                 })
             }
         }
-        // console.log(keyTime)
-        // graphCompare.forEach((graph) => {
-        //     if (graph)
-        //         console.log(
-        //             graph.appearGraph.appearNodes,
-        //             graph.appearGraph.appearLinks,
-        //             graph.disAppearGraph.disAppearNodes,
-        //             graph.disAppearGraph.disAppearLinks
-        //         )
-        // })
-        return graphCompare
+        this.graphPos.nodes.forEach((node) => {
+            const { time, originId } = node
+            if (graphCompare[time] === null) {
+                return
+            }
+            if (
+                graphCompare[time].hasOwnProperty("appear") &&
+                graphCompare[time].appear.nodes.has(originId)
+            ) {
+                node.fill = {
+                    r: encode.appear.color[0] / 255,
+                    g: encode.appear.color[1] / 255,
+                    b: encode.appear.color[2] / 255,
+                    a: 1,
+                }
+            } else {
+                if (
+                    graphCompare[time].hasOwnProperty("disappear") &&
+                    graphCompare[time].disappear.nodes.has(originId)
+                ) {
+                    node.fill = {
+                        r: encode.disappear.color[0] / 255,
+                        g: encode.disappear.color[1] / 255,
+                        b: encode.disappear.color[2] / 255,
+                        a: 1,
+                    }
+                }
+            }
+        })
+        this.graphPos.links.forEach((link) => {
+            const { time, originId } = link
+            if (graphCompare[time] === null) {
+                return
+            }
+            if (
+                graphCompare[time].hasOwnProperty("appear") &&
+                graphCompare[time].appear.links.has(originId)
+            ) {
+                link.strokeColor = {
+                    r: encode.appear.color[0] / 255,
+                    g: encode.appear.color[1] / 255,
+                    b: encode.appear.color[2] / 255,
+                    a: 1,
+                }
+            } else {
+                if (
+                    graphCompare[time].hasOwnProperty("disappear") &&
+                    graphCompare[time].disappear.links.has(originId)
+                ) {
+                    link.strokeColor = {
+                        r: encode.disappear.color[0] / 255,
+                        g: encode.disappear.color[1] / 255,
+                        b: encode.disappear.color[2] / 255,
+                        a: 1,
+                    }
+                }
+            }
+        })
     }
     layout() {
         let graphPos = this.dealLayout()
@@ -116,11 +211,11 @@ class DNetV {
         let nodes = []
         let links = []
         const { eachWidth, eachHeight } = this.config
-        let nodesSet = new Set()
-        let linksSet = new Set()
+        let nodeSets = new Set()
+        let linkSets = new Set()
         this.graphs.forEach((graph, i) => {
             graph.nodes.forEach((node) => {
-                nodesSet.add(node.id)
+                nodeSets.add(node.id)
             })
             graph.links.forEach((link, j) => {
                 let { source, target } = link
@@ -129,21 +224,19 @@ class DNetV {
                     target = links.source
                 }
                 const id = `${source}-${target}`
-                linksSet.add(id)
+                linkSets.add(id)
                 this.graphs[i].links[j].id = id
             })
         })
-        nodesSet.forEach((id) => {
+        nodeSets.forEach((id) => {
             nodes.push({ id })
         })
-        linksSet.forEach((link) => {
+        linkSets.forEach((link) => {
             const s = link.split("-")
             const source = s[0]
             const target = s[1]
             links.push({ source, target })
         })
-        // console.log("nodes: ", nodes.length)
-        // console.log("links: ", links.length)
         d3.forceSimulation(nodes)
             .force(
                 "link",
@@ -170,12 +263,25 @@ class DNetV {
                     index * this.config.eachWidth +
                     (index + 1) * this.config.padding
                 const y = idPos[node.id].y
-                return { id, x, y }
+                const time = index
+                const originId = node.id
+                return { id, x, y, time, originId }
             })
             const links = graph.links.map((link) => {
                 const source = `${link.source}+${index}`
                 const target = `${link.target}+${index}`
-                return { source, target }
+                const time = index
+                const originSource = link.source
+                const originTarget = link.target
+                const originId = `${link.source}-${link.target}`
+                return {
+                    source,
+                    target,
+                    time,
+                    originId,
+                    originSource,
+                    originTarget,
+                }
             })
             sumGraph.nodes = sumGraph.nodes.concat(nodes)
             sumGraph.links = sumGraph.links.concat(links)
@@ -183,10 +289,23 @@ class DNetV {
         return sumGraph
     }
     draw() {
+        const configs = {
+            node: {
+                r: 5,
+                fill: { r: 199 / 255, g: 198 / 255, b: 198 / 255, a: 1 },
+                strokeWidth: 1,
+                strokeColor: { r: 44 / 255, g: 44 / 255, b: 44 / 255, a: 0.5 },
+            },
+            link: {
+                strokeWidth: 1,
+                strokeColor: { r: 44 / 255, g: 44 / 255, b: 44 / 255, a: 0.5 },
+            },
+        }
         const g = new NetV({
             container: this.container,
             width: this.config.width,
             height: this.config.height,
+            ...configs,
         })
         g.data(this.graphPos)
         g.draw()
@@ -196,6 +315,15 @@ class DNetV {
         return new Promise((resolve) => {
             simulation.on("end", resolve)
         })
+    }
+    intersection(setA, setB) {
+        let _intersection = new Set(setA)
+        for (let elem of setA) {
+            if (!setB.has(elem)) {
+                _intersection.delete(elem)
+            }
+        }
+        return _intersection
     }
     difference(setA, setB) {
         let _difference = new Set(setA)
