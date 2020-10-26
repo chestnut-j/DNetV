@@ -459,3 +459,9 @@ wavy::before {
   width:100%;
   height:100%;
 }
+
+.selected{
+  background-color: #eef0f7;
+  border: 1px solid #aeb8d4;
+  border-radius: 3px;
+}
