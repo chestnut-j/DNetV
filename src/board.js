@@ -12,10 +12,11 @@ export default class Board extends React.Component {
         super(props)
         this.state = {
           jsonfile: { },
-          filename:''
+          filename:'',
+          relationType: 1
         }
     }
-    handleSubmit = (file) => {
+    handleSubmitFromGrammar = (file) => {
         if (!file) return;
         this.setState(
           {
@@ -24,6 +25,12 @@ export default class Board extends React.Component {
           }
         )
       }
+    handleSubmitFromRelation = (type) => {
+        if(!type) return;
+        this.setState({
+            relationType:type
+        })
+      }
     render() {
         return (
             <div className="board">
@@ -31,13 +38,13 @@ export default class Board extends React.Component {
                 <div className="row">
                     <div className="col">
                         <Data />
-                        <Relation />
+                        <Relation onSubmit={this.handleSubmitFromRelation}/>
                     </div>
                     <div className="col">
-                        <Encoding />
+                        <Encoding relationType={this.state.relationType}/>
                     </div>
                     <div className="col">
-                        <Grammar onSubmit={this.handleSubmit} />
+                        <Grammar onSubmit={this.handleSubmitFromGrammar} />
                     </div>
 
                     <div className="col">
