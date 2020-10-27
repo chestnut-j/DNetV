@@ -332,7 +332,7 @@
   margin: 30px 10px 10px 85px;
 }
 
-wavy {
+.wavy {
   position: absolute;
   display: block;
   height: .5em;
@@ -343,7 +343,8 @@ wavy {
   overflow: hidden;
   transform: rotate(30deg);
 }
-wavy::before {
+
+.wavy::before {
   content: "\2000\2000";
   /* IE浏览器实线代替 */
   text-decoration: overline;
