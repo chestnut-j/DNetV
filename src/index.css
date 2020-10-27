@@ -46,7 +46,92 @@
   text-align: center; 
 }
 
+.relation-item {
+  margin-top: 10px;
+  height:115px;
+}
 
+.relation-divider {
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  line-height: 1px;
+  border-left: 40px solid rgb(46, 45, 45);
+  border-right: 40px solid rgb(46, 45, 45);
+  text-align: center;
+}
+
+.time-ctrl {
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 90px;
+  height: 50px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.stable-ctrl {
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 90px;
+  height: 50px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.appear-ctrl {
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 90px;
+  height: 50px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.disappear-ctrl {
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 90px;
+  height: 50px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.left-solid-circle {
+  border: 1px solid black;
+  border-radius: 50%;
+  width:20px;
+  height:20px;
+  margin: 5px 20px 5px 12px;
+}
+
+.left-dashed-circle {
+  border: 1px dashed black;
+  border-radius: 50%;
+  width:20px;
+  height:20px;
+  margin: 5px 20px 5px 12px;
+}
+.right-solid-circle {
+  border: 1px solid black;
+  border-radius: 50%;
+  width:20px;
+  height:20px;
+  margin: 25px 10px 12px 5px
+}
+.right-dashed-circle {
+  border: 1px dashed black;
+  border-radius: 50%;
+  width:20px;
+  height:20px;
+  margin: 25px 10px 12px 5px;
+}
 /*encoding view*/
 .encoding-box {
   background: #fff;
@@ -397,12 +482,12 @@ wavy::before {
   border-radius: 8px;
   height: 750px;
   width: 1000px; 
-  display: flex;
   flex-direction: column;
-  padding: 0; 
+  padding: 0;  
   margin-bottom: 20px;
   margin-left: 20px;
-  text-align: center; 
+  text-align: center;
+  overflow: hidden; 
 }
 
 .title {
