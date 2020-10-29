@@ -14,6 +14,7 @@ export default class Board extends React.Component {
             jsonfile: { },
             filename:'',
             relationType: 'appear',
+            preColor:'',
             encodingOptions: {
                 appearOptions:{
                     visible:'',
@@ -51,10 +52,11 @@ export default class Board extends React.Component {
           }
         )
       }
-    handleSubmitFromRelation = (type) => {
+    handleSubmitFromRelation = ({type, color}) => {
         if(!type) return;
         this.setState({
-            relationType:type
+            relationType:type,
+            preColor:color
         })
       }
     handleSubmitFromEncoding = (options) => {
@@ -76,7 +78,7 @@ export default class Board extends React.Component {
                         <Relation options={this.state.encodingOptions} onSubmit={this.handleSubmitFromRelation}/>
                     </div>
                     <div className="col">
-                        <Encoding relationType={this.state.relationType} onSubmit={this.handleSubmitFromEncoding}/>
+                        <Encoding preColor={this.state.preColor} relationType={this.state.relationType} onSubmit={this.handleSubmitFromEncoding}/>
                     </div>
                     <div className="col">
                         <Grammar onSubmit={this.handleSubmitFromGrammar} />

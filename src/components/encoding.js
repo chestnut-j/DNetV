@@ -18,7 +18,7 @@ export default class Encoding extends React.Component {
                 glyph:'',
                 appearOptions:{},
                 stableOptions:{},
-                disappearOptions:{}
+                disappearOptions:{},
         }
     }
     handleSubmitColor=(colorCode)=> {
@@ -70,6 +70,7 @@ export default class Encoding extends React.Component {
             
         }
         console.log("color option",this.state.color)
+        console.log("pre color",this.props.preColor)
     }
     render() {
         if(this.props.relationType === 'appear')  {
@@ -126,7 +127,8 @@ export default class Encoding extends React.Component {
                   </div>
                   <Visible />
                   <Position />
-                  <Color onSubmit={this.handleSubmitColor}/>       
+                  <Color onSubmit={this.handleSubmitColor}/> 
+                  <Link />        
               </div>
           )
         }

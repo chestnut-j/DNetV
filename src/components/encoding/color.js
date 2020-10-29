@@ -8,7 +8,7 @@ export default class Color extends React.Component {
         super(props)
         this.state={
             color: '#FFFFFF',
-            colorPickerDisplay:false
+            colorPickerDisplay:false,
         }
     }
     handleClick= () => {
