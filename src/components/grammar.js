@@ -15,9 +15,9 @@ export default class Grammar extends React.Component {
                 name: null,
                 indentWidth: 2,
                 collapseStringsAfterLength: 20,
-                onEdit: (edit) => {
-                    console.log("编辑", edit)
-                },
+ //               iconStyle: "circle",
+                enableClipboard: false,
+                displayObjectSize: false
             },
         }
     }
