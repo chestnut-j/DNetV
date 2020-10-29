@@ -78,7 +78,6 @@ export default class Grammar extends React.Component {
                         {...props}
                         fileList={fileList}
                     >
-                        　
                         <svg className="icon" aria-hidden="true">
                             <use xlinkHref="#icon-add"></use>
                         </svg>
@@ -86,9 +85,8 @@ export default class Grammar extends React.Component {
                     <svg
                         className="icon"
                         aria-hidden="true"
-                        onClick={this.Export}
                     >
-                        <use xlinkHref="#icon-download"></use>
+                        <use onClick={this.Export} xlinkHref="#icon-download"></use>
                     </svg>
                 </div>
                 <div className="filename">{this.state.filename}</div>

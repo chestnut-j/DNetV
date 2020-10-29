@@ -1,7 +1,7 @@
 .board {
   background: #dddbdb;
-  height:100%;
-  width: 100%;
+  height:1080px;
+  width: 1920px;
 }
 .icon {
     width: 1.4em;
@@ -48,7 +48,7 @@
 
 .relation-item {
   margin-top: 10px;
-  height:115px;
+  height:140px;
 }
 
 .relation-divider {
@@ -76,8 +76,8 @@
 .stable-ctrl {
   border: 1px solid black;
   border-radius: 8px;
-  width: 90px;
-  height: 50px;
+  width: 120px;
+  height: 80px;
   display: flex;
   margin-left: 10px;
   margin-top: 20px; 
@@ -86,8 +86,8 @@
 .appear-ctrl {
   border: 1px solid black;
   border-radius: 8px;
-  width: 90px;
-  height: 50px;
+  width: 120px;
+  height: 80px;
   display: flex;
   margin-left: 10px;
   margin-top: 20px; 
@@ -96,8 +96,8 @@
 .disappear-ctrl {
   border: 1px solid black;
   border-radius: 8px;
-  width: 90px;
-  height: 50px;
+  width: 120px;
+  height: 80px;
   display: flex;
   margin-left: 10px;
   margin-top: 20px; 
@@ -106,31 +106,31 @@
 .left-solid-circle {
   border: 1px solid black;
   border-radius: 50%;
-  width:20px;
-  height:20px;
-  margin: 5px 20px 5px 12px;
+  width:30px;
+  height:30px;
+  margin: 15px 15px 0px 15px;
 }
 
 .left-dashed-circle {
   border: 1px dashed black;
   border-radius: 50%;
-  width:20px;
-  height:20px;
-  margin: 5px 20px 5px 12px;
+  width:30px;
+  height:30px;
+  margin: 15px 15px 0px 15px;
 }
 .right-solid-circle {
   border: 1px solid black;
   border-radius: 50%;
-  width:20px;
-  height:20px;
-  margin: 25px 10px 12px 5px
+  width:30px;
+  height:30px;
+  margin: 35px 0px 15px 15px
 }
 .right-dashed-circle {
   border: 1px dashed black;
   border-radius: 50%;
-  width:20px;
-  height:20px;
-  margin: 25px 10px 12px 5px;
+  width:30px;
+  height:30px;
+  margin: 35px 0px 15px 15px;
 }
 /*encoding view*/
 .encoding-box {
@@ -224,7 +224,21 @@
   width: 140px;
   height: 80px;
   display: flex;
+  float: left;
   margin-left: 20px;
+  margin-top: 5px;
+
+}
+.color-picker-box {
+  float: left;
+  width: 70px;
+  margin-top: 5px;
+  margin-left: 30px;
+}
+
+.color-picker {
+  width:70px;
+  height:30px;
   margin-top: 20px;
 }
 
@@ -238,13 +252,12 @@
 
 .color-circle2 {
   border: 1px solid black;
-  background-color: cornflowerblue;
+  background: cornflowerblue;
   border-radius: 50%;
   width:40px;
   height:40px;
   margin: 30px 10px 10px 10px;
 }
-
 
 .animation-ctrl {
   border: 1px solid black;
@@ -436,14 +449,14 @@
 }
 
 
+
 .upload-item {
-    width: 1.5em;
-    height:1.5em;
-    fill: currentColor;
-    float: right;
-    margin-top: -16px;
-    margin-left: 3px;
-    margin-right: 4px;
+  width: 8px;
+  height: 8px;
+  fill: currentColor;
+  float: right;
+  margin-left: 3px;
+  margin-right: 20px;
 }
 
 /*render view*/
@@ -493,10 +506,10 @@
 
 .title {
     background: #443939;
-    font-size: 30px;
-    height: 50px;
-    margin-bottom: 10px;
-    padding-left: 10px;
+    font-size: 35px;
+    height: 60px;
+    margin-bottom: 20px;
+    padding-left: 12px;
     padding-top: 5px;
     color: #fff;
 }
