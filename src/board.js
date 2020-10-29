@@ -13,8 +13,33 @@ export default class Board extends React.Component {
         this.state = {
             jsonfile: { },
             filename:'',
-            relationType: 2,
-            encodingOptions: {}
+            relationType: 'appear',
+            encodingOptions: {
+                appearOptions:{
+                    visible:'',
+                    position:'',
+                    color: '#FFFFFF',
+                    animation:'',
+                    link:'',
+                    glyph:'',
+                },
+                stableOptions:{
+                    visible:'',
+                    position:'',
+                    color: '#FFFFFF',
+                    animation:'',
+                    link:'',
+                    glyph:'',
+                },
+                disappearOptions:{
+                    visible:'',
+                    position:'',
+                    color: '#FFFFFF',
+                    animation:'',
+                    link:'',
+                    glyph:'',
+                }
+            }
         }
     }
     handleSubmitFromGrammar = (file) => {
@@ -37,7 +62,7 @@ export default class Board extends React.Component {
         this.setState(
             state =>({encodingOptions: options}),
             ()=>{
-                console.log("color",options.color)
+                console.log("color board",options)
             }
         )
     }

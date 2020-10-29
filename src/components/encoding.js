@@ -10,17 +10,20 @@ export default class Encoding extends React.Component {
     constructor(props) {
         super(props)
         this.state={
-            visible:'',
-            position:'',
-            color: '',
-            animation:'',
-            link:'',
-            glyph:''
+                visible:'',
+                position:'',
+                color: '#FFFFFF',
+                animation:'',
+                link:'',
+                glyph:'',
+                appearOptions:{},
+                stableOptions:{},
+                disappearOptions:{}
         }
     }
     handleSubmitColor=(colorCode)=> {
         this.setState(
-            state =>({color:colorCode.hex}),
+            state =>({color: colorCode.hex}),
             ()=>{
                 console.log("color",this.state.color)
                 this.handleSubmitOptions()
@@ -30,13 +33,46 @@ export default class Encoding extends React.Component {
     }
     handleSubmitOptions() {
         if (this.props.onSubmit) {
-            const {visible, position, color, animation, link, glyph} = this.state
-            this.props.onSubmit({visible, position, color, animation, link, glyph})
+            if(this.props.relationType === 'appear'){
+                const {visible, position, color, animation, link, glyph} = this.state
+                this.setState(
+                    state =>({appearOptions:{visible, position, color, animation, link, glyph}}),
+                    ()=>{
+                        const {appearOptions, stableOptions, disappearOptions} = this.state
+                        this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
+                        console.log(appearOptions)
+                    }
+                )
+            }
+            if(this.props.relationType === 'stable'){
+                const {visible, position, color, animation, link, glyph} = this.state
+                this.setState(
+                    state =>({stableOptions:{visible, position, color, animation, link, glyph}}),
+                    ()=>{
+                        const {appearOptions, stableOptions, disappearOptions} = this.state
+                        this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
+                        console.log(stableOptions)
+                    }
+                )
+            }
+            if(this.props.relationType === 'disappear'){
+                const {visible, position, color, animation, link, glyph} = this.state
+                this.setState(
+                    state =>({disappearOptions:{visible, position, color, animation, link, glyph}}),
+                    ()=>{
+                        const {appearOptions, stableOptions, disappearOptions} = this.state
+                        this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
+                        console.log(disappearOptions)
+                    }
+                )
+            }
+            
+            
         }
         console.log("color option",this.state.color)
     }
     render() {
-        if(this.props.relationType === 1)  {
+        if(this.props.relationType === 'appear')  {
             return (
               <div className='encoding-box'>
                   <div className='sub-title'>&nbsp;Encoding
@@ -49,7 +85,7 @@ export default class Encoding extends React.Component {
                   </div>
                   <Visible />
                   <Position />
-                  <Color onSubmit={this.handleSubmitColor}/>
+                  <Color preColor={this.props.preColor} onSubmit={this.handleSubmitColor}/>
                   <Animation />
                   <Link />   
                   <Glyph/>    
@@ -57,7 +93,7 @@ export default class Encoding extends React.Component {
           )
         }
 
-        if(this.props.relationType === 2)  {
+        if(this.props.relationType ==='stable')  {
             return (
               <div className='encoding-box'>
                   <div className='sub-title'>&nbsp;Encoding
@@ -77,7 +113,7 @@ export default class Encoding extends React.Component {
           )
         }
 
-        if(this.props.relationType === 3)  {
+        if(this.props.relationType === 'disappear')  {
             return (
               <div className='encoding-box'>
                   <div className='sub-title'>&nbsp;Encoding

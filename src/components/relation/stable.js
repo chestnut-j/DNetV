@@ -11,7 +11,7 @@ export default class Stable extends React.Component {
                     <div className='relation-divider'>Stable</div>
                     <div className='stable-ctrl' > 
                         <div className='left-solid-circle'></div>
-                        <div className='right-solid-circle' ></div>
+                        <div className='right-solid-circle' style={{background: this.props.stableOptions.color}}></div>
                     </div>
             </div>
         )

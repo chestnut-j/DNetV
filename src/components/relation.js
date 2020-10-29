@@ -12,15 +12,16 @@ export default class Relation extends React.Component {
         if (this.props.onSubmit) {
             this.props.onSubmit(type)
             console.log("type in relation",type)
+            console.log("option in relation" , this.props.options.appearOptions)
         }
     }
     render() {
         return (
             <div className='relation-box'>
                 <div className='sub-title'>&nbsp;Relation</div>
-                <Appear options={this.props.options} onClick={()=>{this.handleSubmitType(2)}}/>
-                <Stable onClick={()=>{this.handleSubmitType(1)}}/>
-                <Disappear onClick={()=>{this.handleSubmitType(3)}}/>
+                <Appear appearOptions={this.props.options.appearOptions}  onClick={()=>{this.handleSubmitType('appear')}}/>
+                <Stable stableOptions={this.props.options.stableOptions} onClick={()=>{this.handleSubmitType('stable')}}/>
+                <Disappear disappearOptions={this.props.options.disappearOptions} onClick={()=>{this.handleSubmitType('disappear')}}/>
                     
             </div>
         );
