@@ -70,7 +70,7 @@ export default class Encoding extends React.Component {
                   </div>
                   <Visible />
                   <Position />
-                  <Color />
+                  <Color onSubmit={this.handleSubmitColor}/>
                   <Animation />
                   <Link />       
               </div>
@@ -90,7 +90,7 @@ export default class Encoding extends React.Component {
                   </div>
                   <Visible />
                   <Position />
-                  <Color />       
+                  <Color onSubmit={this.handleSubmitColor}/>       
               </div>
           )
         }

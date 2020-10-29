@@ -13,7 +13,7 @@ export default class Board extends React.Component {
         this.state = {
             jsonfile: { },
             filename:'',
-            relationType: 1,
+            relationType: 2,
             encodingOptions: {}
         }
     }
