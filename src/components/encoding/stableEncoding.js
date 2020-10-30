@@ -2,7 +2,7 @@ import React from "react"
 import { Button } from 'antd'
 import {ChromePicker} from 'react-color'
 
-export default class AppearEncoding extends React.Component {
+export default class StableEncoding extends React.Component {
     constructor(props) {
         super(props)
         this.state={
@@ -87,18 +87,6 @@ export default class AppearEncoding extends React.Component {
                         </div>
                     </div>
 
-                    {/* animaiton */}
-                    <div className='encoding-item'>
-                        <div className="encoding-divider">Animation</div>
-                        <div className='animation-ctrl'>
-                            <div className='animation-circle1'></div>
-                            <div className='ellipse1'></div>
-                            <div className='ellipse2'></div>
-                            <div className='ellipse3'></div>
-                            <div className='animation-circle2'></div>
-                        </div>
-                    </div>
-
                     {/* link */}
                     <div className='encoding-item'>
                         <div className="encoding-divider">Link</div>
@@ -106,18 +94,6 @@ export default class AppearEncoding extends React.Component {
                             <div className='link-circle1'></div>
                             <div className='wavy'></div>
                             <div className='link-circle2'></div>
-                        </div>
-                    </div>
-
-                    {/* glyph */}
-                    <div className='encoding-item'>
-                        <div className="encoding-divider">Glyph</div>
-                        <div className='glyph-ctrl'>
-                            <div className='glyph-circle1'></div>
-                            <div className='glyph-circle2'></div>
-                            <svg className="glyph-icon" aria-hidden="true" >
-                                <use xlinkHref="#icon-tick"></use>
-                            </svg>
                         </div>
                     </div>
               </div>

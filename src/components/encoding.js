@@ -1,135 +1,79 @@
 import React from "react"
-import Visible from "./encoding/visible"
-import Position from "./encoding/position"
-import Color from "./encoding/color"
-import Animation from "./encoding/animation"
-import Link from "./encoding/link"
-import Glyph from "./encoding/glyph"
+import AppearEncoding from './encoding/appearEncoding'
+import StableEncoding from './encoding/stableEncoding'
+import DisappearEncoding from './encoding/disappearEncoding'
+
+var appearOptions={
+    visible:'',
+    position:'',
+    color: '#FFFFFF',
+    animation:'',
+    link:'',
+    glyph:'',
+}
+var stableOptions={
+    visible:'',
+    position:'',
+    color: '#FFFFFF',
+    animation:'',
+    link:'',
+    glyph:'',
+}
+var disappearOptions={
+    visible:'',
+    position:'',
+    color: '#FFFFFF',
+    animation:'',
+    link:'',
+    glyph:'',
+}
+
 
 export default class Encoding extends React.Component {
     constructor(props) {
         super(props)
-        this.state={
-                visible:'',
-                position:'',
-                color: '#FFFFFF',
-                animation:'',
-                link:'',
-                glyph:'',
-                appearOptions:{},
-                stableOptions:{},
-                disappearOptions:{},
-        }
-    }
-    handleSubmitColor=(colorCode)=> {
-        this.setState(
-            state =>({color: colorCode.hex}),
-            ()=>{
-                console.log("color",this.state.color)
-                this.handleSubmitOptions()
-            }
-        )
         
     }
-    handleSubmitOptions() {
-        if (this.props.onSubmit) {
-            if(this.props.relationType === 'appear'){
-                const {visible, position, color, animation, link, glyph} = this.state
-                this.setState(
-                    state =>({appearOptions:{visible, position, color, animation, link, glyph}}),
-                    ()=>{
-                        const {appearOptions, stableOptions, disappearOptions} = this.state
-                        this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
-                        console.log(appearOptions)
-                    }
-                )
-            }
-            if(this.props.relationType === 'stable'){
-                const {visible, position, color, animation, link, glyph} = this.state
-                this.setState(
-                    state =>({stableOptions:{visible, position, color, animation, link, glyph}}),
-                    ()=>{
-                        const {appearOptions, stableOptions, disappearOptions} = this.state
-                        this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
-                        console.log(stableOptions)
-                    }
-                )
-            }
-            if(this.props.relationType === 'disappear'){
-                const {visible, position, color, animation, link, glyph} = this.state
-                this.setState(
-                    state =>({disappearOptions:{visible, position, color, animation, link, glyph}}),
-                    ()=>{
-                        const {appearOptions, stableOptions, disappearOptions} = this.state
-                        this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
-                        console.log(disappearOptions)
-                    }
-                )
-            }
-            
-            
+    handleSubmitAppearOptions=(options)=> {
+        if(!options) return;
+        appearOptions=options
+        console.log("appear options",appearOptions)
+        if(this.props.onSubmit){
+            this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
         }
-        console.log("color option",this.state.color)
-        console.log("pre color",this.props.preColor)
+    }
+    handleSubmitStableOptions=(options)=> {
+        if(!options) return;
+        stableOptions=options
+        console.log("stable options",stableOptions)
+        if(this.props.onSubmit){
+            this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
+        }
+    }
+    handleSubmitDisappearOptions=(options)=> {
+        if(!options) return;
+        disappearOptions=options
+        console.log("appear options",disappearOptions)
+        if(this.props.onSubmit){
+            this.props.onSubmit({appearOptions, stableOptions, disappearOptions})
+        }
     }
     render() {
         if(this.props.relationType === 'appear')  {
-            return (
-              <div className='encoding-box'>
-                  <div className='sub-title'>&nbsp;Encoding
-                      <svg className="icon" aria-hidden="true" >
-                          <use xlinkHref="#icon-save"></use>
-                      </svg>
-                      <svg className="icon" aria-hidden="true" >
-                          <use xlinkHref="#icon-set"></use>
-                      </svg> 
-                  </div>
-                  <Visible />
-                  <Position />
-                  <Color preColor={this.props.preColor} onSubmit={this.handleSubmitColor}/>
-                  <Animation />
-                  <Link />   
-                  <Glyph/>    
-              </div>
+          return (
+              <AppearEncoding options={appearOptions} onSubmit={this.handleSubmitAppearOptions}/>
           )
         }
 
         if(this.props.relationType ==='stable')  {
             return (
-              <div className='encoding-box'>
-                  <div className='sub-title'>&nbsp;Encoding
-                      <svg className="icon" aria-hidden="true" >
-                          <use xlinkHref="#icon-save"></use>
-                      </svg>
-                      <svg className="icon" aria-hidden="true" >
-                          <use xlinkHref="#icon-set"></use>
-                      </svg> 
-                  </div>
-                  <Visible />
-                  <Position />
-                  <Color onSubmit={this.handleSubmitColor}/>
-                  <Animation />
-                  <Link />       
-              </div>
+                <StableEncoding options={stableOptions} onSubmit={this.handleSubmitStableOptions}/>
           )
         }
 
         if(this.props.relationType === 'disappear')  {
             return (
-              <div className='encoding-box'>
-                  <div className='sub-title'>&nbsp;Encoding
-                      <svg className="icon" aria-hidden="true" >
-                          <use xlinkHref="#icon-save"></use>
-                      </svg>
-                      <svg className="icon" aria-hidden="true" >
-                          <use xlinkHref="#icon-set"></use>
-                      </svg> 
-                  </div>
-                  <Visible />
-                  <Position />
-                  <Color onSubmit={this.handleSubmitColor}/> 
-                  <Link />        
-              </div>
+                <DisappearEncoding options={disappearOptions} onSubmit={this.handleSubmitDisappearOptions}/>
           )
         }
 
