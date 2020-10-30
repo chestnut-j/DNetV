@@ -8,12 +8,8 @@ export default class Relation extends React.Component {
         super(props)
     }
     handleSubmitType(type){
-        //console.log(this.state.relationType)
         if (this.props.onSubmit) {
-            var preColor = this.props.options.appearOptions.color
-            this.props.onSubmit({type,preColor})
-            console.log("type in relation",type)
-            console.log("option in relation" , this.props.options.appearOptions)
+            this.props.onSubmit(type)
         }
     }
     render() {

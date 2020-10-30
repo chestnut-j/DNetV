@@ -11,7 +11,11 @@ export default class Disappear extends React.Component {
                     <div className='relation-divider'>Disappear</div>
                     <div className='disappear-ctrl'>
                         <div className='left-solid-circle' ></div>
-                        <div className='right-dashed-circle' style={{background: this.props.disappearOptions.color}}></div>
+                        <div className='right-solid-circle'
+                            style={{
+                                background: this.props.disappearOptions.color,
+                                borderStyle: this.props.disappearOptions.visible
+                                }}></div>
                     </div>
             </div>
         )

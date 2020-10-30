@@ -52,11 +52,10 @@ export default class Board extends React.Component {
           }
         )
       }
-    handleSubmitFromRelation = ({type, color}) => {
+    handleSubmitFromRelation = (type) => {
         if(!type) return;
         this.setState({
-            relationType:type,
-            preColor:color
+            relationType:type
         })
       }
     handleSubmitFromEncoding = (options) => {
@@ -64,7 +63,6 @@ export default class Board extends React.Component {
         this.setState(
             state =>({encodingOptions: options}),
             ()=>{
-                console.log("color board",options)
             }
         )
     }

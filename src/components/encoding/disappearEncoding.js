@@ -13,7 +13,30 @@ export default class DisappearEncoding extends React.Component {
                 link:this.props.options.link,
                 glyph:this.props.options.glyph,
                 colorPickerDisplay:false,
+                isVisible:(this.props.options.visible!=='dashed')?true:false,
         }
+    }
+    handleVisibleClick=()=>{
+        this.setState(
+            state =>({
+                visible:'solid',
+                isVisible:true
+            }),
+            ()=>{
+                this.handleSubmitOptions()
+            }
+        )
+    }
+    handleInvisibleClick=()=>{
+        this.setState(
+            state =>({
+                visible:'dashed',
+                isVisible: false
+            }),
+            ()=>{
+                this.handleSubmitOptions()
+            }
+        )
     }
     handleColorClick= () => {
         this.setState({
@@ -25,7 +48,6 @@ export default class DisappearEncoding extends React.Component {
         this.setState(
             state =>({color:colorCode.hex}),
             ()=>{
-                console.log("color",this.state.color)
                 this.handleSubmitOptions()
             }
         )
@@ -35,7 +57,6 @@ export default class DisappearEncoding extends React.Component {
                 const {visible, position, color, animation, link, glyph} = this.state
                 this.props.onSubmit({visible, position, color, animation, link, glyph})
         }
-        console.log("color option",this.state.color)
     }
     render() {
             return (
@@ -49,12 +70,33 @@ export default class DisappearEncoding extends React.Component {
                         </svg> 
                     </div>
 
+                    <div className='subsub-title'>Disappear Encoding</div>
+
                     {/* visble */}
                     <div className='encoding-item'>
                         <div className="encoding-divider">Visible</div>
                         <div className='visible-ctrl'>
-                            <div className='visible-circle1'></div>
-                            <div className='visible-circle2'></div>
+                        <div className='visible-circle1' style={{borderStyle:this.state.visible}}></div>
+                            <div className='visible-circle2' style={{borderStyle:this.state.visible}}></div>
+                        </div>
+                        <div className='visible-picker-box'>
+                                <Button id='visible-button' 
+                                        onClick={this.handleVisibleClick}
+                                        style={{
+                                            color: (this.state.isVisible)? '#6495ED' : '#B0C4DE',
+                                            borderColor: (this.state.isVisible)? '#6495ED' : '#B0C4DE',
+                                            borderWidth: (this.state.isVisible)? '2px' : '1px'
+                                        }}
+                                > Visible </Button>
+                                <Button id='invisible-button'
+                                        onClick={this.handleInvisibleClick} 
+                                        style={{
+                                            color: (!this.state.isVisible)? '#6495ED' : '#B0C4DE',
+                                            borderColor: (!this.state.isVisible)? '#6495ED' : '#B0C4DE',
+                                            borderWidth: (!this.state.isVisible)? '2px' : '1px'
+                                        }}
+                                > Invisible 
+                                </Button>
                         </div>
                     </div>
 
