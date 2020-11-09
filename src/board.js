@@ -11,11 +11,39 @@ export default class Board extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          jsonfile: { },
-          filename:''
+            jsonfile: { },
+            filename:'',
+            relationType: 'appear',
+            preColor:'',
+            encodingOptions: {
+                appearOptions:{
+                    visible:'',
+                    position:'',
+                    color: '#FFFFFF',
+                    animation:'',
+                    link:'',
+                    glyph:'',
+                },
+                stableOptions:{
+                    visible:'',
+                    position:'',
+                    color: '#FFFFFF',
+                    animation:'',
+                    link:'',
+                    glyph:'',
+                },
+                disappearOptions:{
+                    visible:'',
+                    position:'',
+                    color: '#FFFFFF',
+                    animation:'',
+                    link:'',
+                    glyph:'',
+                }
+            }
         }
     }
-    handleSubmit = (file) => {
+    handleSubmitFromGrammar = (file) => {
         if (!file) return;
         this.setState(
           {
@@ -24,6 +52,20 @@ export default class Board extends React.Component {
           }
         )
       }
+    handleSubmitFromRelation = (type) => {
+        if(!type) return;
+        this.setState({
+            relationType:type
+        })
+      }
+    handleSubmitFromEncoding = (options) => {
+        if(!options) return;
+        this.setState(
+            state =>({encodingOptions: options}),
+            ()=>{
+            }
+        )
+    }
     render() {
         return (
             <div className="board">
@@ -31,13 +73,13 @@ export default class Board extends React.Component {
                 <div className="row">
                     <div className="col">
                         <Data />
-                        <Relation />
+                        <Relation options={this.state.encodingOptions} onSubmit={this.handleSubmitFromRelation}/>
                     </div>
                     <div className="col">
-                        <Encoding />
+                        <Encoding preColor={this.state.preColor} relationType={this.state.relationType} onSubmit={this.handleSubmitFromEncoding}/>
                     </div>
                     <div className="col">
-                        <Grammar onSubmit={this.handleSubmit} />
+                        <Grammar onSubmit={this.handleSubmitFromGrammar} />
                     </div>
 
                     <div className="col">

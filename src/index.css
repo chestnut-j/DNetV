@@ -1,18 +1,4 @@
-.board {
-  background: #dddbdb;
-  height:100%;
-  width: 100%;
-}
-.icon {
-    width: 1.4em;
-    height: 1.4em;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
-    float: right;
-    margin-left: 3px;
-    margin-right: 4px;
-}
+
 
 /*data view*/
 .data-box {
@@ -27,6 +13,7 @@
   margin-bottom: 20px;
   margin-left: 20px;
   text-align: center;
+  overflow: hidden; 
 }
 
 
@@ -44,9 +31,99 @@
   margin-bottom: 20px;
   margin-left: 20px;
   text-align: center; 
+  overflow: hidden; 
 }
 
+.relation-item {
+  margin-top: 10px;
+  height:140px;
+}
 
+.relation-divider {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  line-height: 1px;
+  border-left: 50px solid rgb(46, 45, 45);
+  border-right: 50px solid rgb(46, 45, 45);
+  text-align: center;
+}
+
+.time-ctrl {
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 90px;
+  height: 50px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.stable-ctrl {
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 200px;
+  height: 100px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.appear-ctrl {
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 200px;
+  height: 100px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.disappear-ctrl {
+  background-color: #fff;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 200px;
+  height: 100px;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 20px; 
+}
+
+.left-solid-circle {
+  border: 1.5px solid black;
+  border-radius: 50%;
+  width:40px;
+  height:40px;
+  margin: 20px 15px 0px 35px;
+}
+
+.left-dashed-circle {
+  border: 1.5px dashed black;
+  border-radius: 50%;
+  width:40px;
+  height:40px;
+  margin: 20px 15px 0px 35px;
+}
+.right-solid-circle {
+  border: 1.5px solid black;
+  border-radius: 50%;
+  width:40px;
+  height:40px;
+  margin: 40px 0px 15px 35px
+}
+.right-dashed-circle {
+  border: 1.5px dashed black;
+  border-radius: 50%;
+  width:40px;
+  height:40px;
+  margin: 40px 0px 15px 35px;
+}
 /*encoding view*/
 .encoding-box {
   background: #fff;
@@ -64,34 +141,36 @@
 
 
 .encoding-item {
-  border-bottom: 1px solid black;
+  border-bottom: 1px dashed black;
   height:140px;
 }
 
 .encoding-divider {
   font-size: 14px;
-  margin-top: 15px;
+  margin-top: 20px;
   margin-bottom: 15px;
   margin-left: 15px;
   margin-right: 15px;
   line-height: 1px;
-  border-left: 75px solid rgb(46, 45, 45);
-  border-right: 75px solid rgb(46, 45, 45);
+  border-left: 80px solid rgb(46, 45, 45);
+  border-right: 80px solid rgb(46, 45, 45);
   text-align: center;
 }
 
 .visible-ctrl {
+  background-color: #fff;
   border: 1px solid black;
   border-radius: 8px;
   width: 140px;
   height: 80px;
   display: flex;
   margin-left: 20px;
-  margin-top: 20px;
+  margin-top: 5px;
+  float: left;
 }
 
 .visible-circle1 {
-  border: 1px dashed black;
+  border: 1.5px solid black;
   border-radius: 50%;
   width:40px;
   height:40px;
@@ -99,14 +178,33 @@
 }
 
 .visible-circle2 {
-  border: 1px solid black;
+  border: 1.5px solid black;
   border-radius: 50%;
   width:40px;
   height:40px;
   margin: 30px 10px 10px 10px;
 }
 
+.visible-picker-box {
+  float: left;
+  width: 140px;
+  margin-top: 10px;
+  margin-left: 10px;
+  text-align: center;
+}
+
+#visible-button {
+  width: 80px;
+  text-align: center;
+}
+
+#invisible-button {
+  width: 80px;
+  text-align: center;
+}
+
 .position-ctrl {
+  background-color: #fff;
   border: 1px solid black;
   border-radius: 8px;
   width: 140px;
@@ -134,13 +232,31 @@
 
 
 .color-ctrl {
+  background-color: #fff;
   border: 1px solid black;
   border-radius: 8px;
   width: 140px;
   height: 80px;
   display: flex;
+  float: left;
   margin-left: 20px;
-  margin-top: 20px;
+  margin-top: 5px;
+
+}
+.color-picker-box {
+  float: left;
+  width: 70px;
+  margin-top: 25px;
+  margin-left: 20px;
+  
+}
+
+.color-picker {
+  width:70px;
+  height:30px;
+  margin-top: 10px;
+  background-color: #fff;
+  background-attachment: fixed;
 }
 
 .color-circle1 {
@@ -153,15 +269,15 @@
 
 .color-circle2 {
   border: 1px solid black;
-  background-color: cornflowerblue;
+  background: cornflowerblue;
   border-radius: 50%;
   width:40px;
   height:40px;
   margin: 30px 10px 10px 10px;
 }
 
-
 .animation-ctrl {
+  background-color: #fff;
   border: 1px solid black;
   border-radius: 8px;
   width: 140px;
@@ -220,6 +336,7 @@
 
 
 .link-ctrl {
+  background-color: #fff;
   border: 1px solid black;
   border-radius: 8px;
   width: 140px;
@@ -247,7 +364,7 @@
   margin: 30px 10px 10px 85px;
 }
 
-wavy {
+.wavy {
   position: absolute;
   display: block;
   height: .5em;
@@ -258,7 +375,8 @@ wavy {
   overflow: hidden;
   transform: rotate(30deg);
 }
-wavy::before {
+
+.wavy::before {
   content: "\2000\2000";
   /* IE浏览器实线代替 */
   text-decoration: overline;
@@ -266,19 +384,8 @@ wavy::before {
   text-decoration: overline wavy;
 }
 
-.flow-wave {
-  height: 20px;
-  width: 24px;
-  margin-top: 25px;
-  margin-left: 3px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath fill='none' stroke='%23000' d='M0 3.5c5 0 5-3 10-3s5 3 10 3 5-3 10-3 5 3 10 3'/%3E%3C/svg%3E") repeat-x 0 100%; 
-  background-size: 8px 8px;
-  transform: rotate(30deg);
-  
-
-}
-
 .glyph-ctrl {
+  background-color: #fff;
   border: 1px solid black;
   border-radius: 8px;
   width: 140px;
@@ -323,9 +430,11 @@ wavy::before {
   display: flex;
   flex-direction: column;
   padding: 0; 
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-left: 20px;
   text-align: center; 
+  overflow: hidden; 
+  
 }
 
 .filename {
@@ -350,14 +459,15 @@ wavy::before {
 }
 
 
+
 .upload-item {
-    width: 1.5em;
-    height:1.5em;
-    fill: currentColor;
-    float: right;
-    margin-top: -16px;
-    margin-left: 3px;
-    margin-right: 4px;
+  width: 8px;
+  height: 8px;
+  fill: currentColor;
+  float: right;
+  margin-left: 3px;
+  margin-right: 20px;
+  
 }
 
 /*render view*/
@@ -373,6 +483,7 @@ wavy::before {
   margin-bottom: 20px;
   margin-left: 20px;
   text-align: center; 
+  overflow: hidden; 
 }
 
 /*template view*/
@@ -388,6 +499,7 @@ wavy::before {
   margin-bottom: 20px;
   margin-left: 20px;
   text-align: center; 
+  overflow: hidden; 
 }
 
 /*preview view*/
@@ -397,31 +509,68 @@ wavy::before {
   border-radius: 8px;
   height: 750px;
   width: 1000px; 
-  display: flex;
   flex-direction: column;
-  padding: 0; 
+  padding: 0;  
   margin-bottom: 20px;
   margin-left: 20px;
-  text-align: center; 
+  text-align: center;
+  overflow: hidden; 
+}
+
+
+
+/*theme*/
+.board {
+  background: #b2b5b9;
+  height:1080px;
+  width: 1920px;
+}
+.icon {
+    width: 1.4em;
+    height: 1.4em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+    float: right;
+    margin-left: 3px;
+    margin-right: 8px;
+    margin-top: 3px;
+    color: #fff;
 }
 
 .title {
-    background: #443939;
-    font-size: 30px;
-    height: 50px;
-    margin-bottom: 10px;
-    padding-left: 10px;
+    background: #37383a;
+    font-size: 35px;
+    height: 60px;
+    margin-bottom: 20px;
+    padding-left: 12px;
     padding-top: 5px;
     color: #fff;
 }
 
 .sub-title {
-    font-size: 12.5px;
+    font-size: 15px;
+    font-weight: bold;
     text-align: left;
     border-bottom: 1px solid #443939;
-    margin-top: 5px;
-    height: 20px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding-top: 2px;
+    padding-left: 5px;
+    height: 30px;
     width: 100%;
+    background-color: #fff;
+}
+
+.subsub-title {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  border-bottom: 1px dashed #443939;
+  padding-top: 4px;
+  height: 32px;
+  width: 100%;
+  background-color: #fff;
 }
 
 .type {

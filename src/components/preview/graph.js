@@ -14,7 +14,6 @@ export default class Graph extends React.Component {
         this.dealData(this.props)
     }
     dealData = (props) => {
-        document.title = `${props.filename}`
         const graphs = props.jsonfile
         console.log("deal graphs", graphs)
         if (document.getElementById("subgraph") !== null) {
