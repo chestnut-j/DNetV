@@ -1,5 +1,5 @@
 import React from "react"
-import Data from "./components/data.js"
+import Data from "./components/data/data.js"
 import Encoding from "./components/encoding.js"
 import Grammar from "./components/grammar.js"
 import Preview from "./components/preview.js"
@@ -52,6 +52,15 @@ export default class Board extends React.Component {
           }
         )
       }
+      handleSubmitFromData = (file) => {
+        if (!file) return;
+        this.setState(
+          {
+            jsonfile: file.jsonData,
+            filename: file.filename
+          }
+        )
+      }
     handleSubmitFromRelation = (type) => {
         if(!type) return;
         this.setState({
@@ -72,7 +81,7 @@ export default class Board extends React.Component {
                 <div className="title"> DNetV </div>
                 <div className="row">
                     <div className="col">
-                        <Data />
+                        <Data onSubmit={this.handleSubmitFromData} />
                         <Relation options={this.state.encodingOptions} onSubmit={this.handleSubmitFromRelation}/>
                     </div>
                     <div className="col">
