@@ -9,7 +9,7 @@ export default class Stable extends React.Component {
         return(
             <div className='relation-item' onClick={this.props.onClick}>
                     <div className='relation-divider'>Stable</div>
-                    <div className='stable-ctrl' > 
+                    <div className='stable-ctrl relation-rect-container' > 
                         <div className='left-solid-circle'></div>
                         <div className='right-solid-circle' 
                             style={{

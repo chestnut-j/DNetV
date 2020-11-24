@@ -52,9 +52,9 @@ export default class Grammar extends React.Component {
                 const reader = new FileReader()
                 reader.readAsText(file)
                 reader.onload = () => {
-                    // console.log(reader.result)
                     let myData = reader.result
                     let myJson = JSON.parse(myData)
+                    
                     this.setState((state) => ({
                         fileList: [file],
                         jsonData: myJson,

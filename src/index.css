@@ -31,13 +31,9 @@
   margin-bottom: 20px;
   margin-left: 20px;
   text-align: center; 
-  overflow: hidden; 
 }
 
-.relation-item {
-  margin-top: 10px;
-  height:140px;
-}
+
 
 .relation-divider {
   font-size: 14px;
@@ -62,68 +58,6 @@
   margin-top: 20px; 
 }
 
-.stable-ctrl {
-  background-color: #fff;
-  border: 1px solid black;
-  border-radius: 8px;
-  width: 200px;
-  height: 100px;
-  display: flex;
-  margin-left: 10px;
-  margin-top: 20px; 
-}
-
-.appear-ctrl {
-  background-color: #fff;
-  border: 1px solid black;
-  border-radius: 8px;
-  width: 200px;
-  height: 100px;
-  display: flex;
-  margin-left: 10px;
-  margin-top: 20px; 
-}
-
-.disappear-ctrl {
-  background-color: #fff;
-  border: 1px solid black;
-  border-radius: 8px;
-  width: 200px;
-  height: 100px;
-  display: flex;
-  margin-left: 10px;
-  margin-top: 20px; 
-}
-
-.left-solid-circle {
-  border: 1.5px solid black;
-  border-radius: 50%;
-  width:40px;
-  height:40px;
-  margin: 20px 15px 0px 35px;
-}
-
-.left-dashed-circle {
-  border: 1.5px dashed black;
-  border-radius: 50%;
-  width:40px;
-  height:40px;
-  margin: 20px 15px 0px 35px;
-}
-.right-solid-circle {
-  border: 1.5px solid black;
-  border-radius: 50%;
-  width:40px;
-  height:40px;
-  margin: 40px 0px 15px 35px
-}
-.right-dashed-circle {
-  border: 1.5px dashed black;
-  border-radius: 50%;
-  width:40px;
-  height:40px;
-  margin: 40px 0px 15px 35px;
-}
 /*encoding view*/
 .encoding-box {
   background: #fff;

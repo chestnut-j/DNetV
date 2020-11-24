@@ -3,32 +3,31 @@ import {Modal, List, Upload, Button, Slider} from 'antd';
 import 'antd/dist/antd.css';
 import './index.css'
 import * as testData from '../../data/import/test1.json'
-import { groups } from "d3";
 
 const dataset = [
     {
-        dataset:"testData",
+        dataName:"testData",
         description:"Barley yield by variety across the upper midwest in 1931 and 1932",
-        data: testData.default.graphs
+        data: testData.default
     },
     {
-        dataset:"Barley",
+        dataName:"Barley",
         description:"Barley yield by variety across the upper midwest in 1931 and 1932"
     },
     {
-        dataset:"Cars",
+        dataName:"Cars",
         description:"Barley yield by variety across the upper midwest in 1931 and 1932"
     },
     {
-        dataset:"Crimea",
+        dataName:"Crimea",
         description:"Barley yield by variety across the upper midwest in 1931 and 1932"
     },
     {
-        dataset:"Driving",
+        dataName:"Driving",
         description:"Barley yield by variety across the upper midwest in 1931 and 1932"
     },
     {
-        dataset:"Iris",
+        dataName:"Iris",
         description:"Barley yield by variety across the upper midwest in 1931 and 1932"
     },
 ];
@@ -71,6 +70,7 @@ export default class Data extends React.Component {
             sliderValue: [],
             groups: [],
             selectedGroupIndex: 0,
+            data: {}
         }
     }
     handleChangeData = () => {
@@ -93,24 +93,26 @@ export default class Data extends React.Component {
         })
     }
     handleCertainButton = () => {
-        const selectedData = dataset[this.state.selected]
-        if(selectedData.data&&selectedData.data.length){
-            const overviewInfo = getDataInfo(selectedData.data)
-            overviewInfo.name = selectedData.dataset
+        const selectedData = dataset[this.state.selected].data.graphs
+        const selectedDataName = dataset[this.state.selected].dataName
+        if(selectedData&&selectedData.length){
+            const overviewInfo = getDataInfo(selectedData)
+            overviewInfo.name = selectedDataName
             this.setState({
                 modalVisible: false,
                 overview: overviewInfo,
-                sliderValue: [0,overviewInfo.times],
+                sliderValue: [0, overviewInfo.times],
                 groups: [{
                     ...overviewInfo,
-                    startToEnd: [0,overviewInfo.times],
+                    startToEnd: [0, overviewInfo.times],
                 }]
             })
         }
     }
     handleAddButton = () => {
         if(this.state.sliderValue[0]!=this.state.sliderValue[1]){
-            const groupData = dataset[this.state.selected].data.slice(this.state.sliderValue[0],this.state.sliderValue[1])
+            const fileData = dataset[this.state.selected].data.graphs
+            const groupData = fileData.slice(this.state.sliderValue[0], this.state.sliderValue[1])
             const groupInfo = getDataInfo(groupData)
             this.setState({
                 groups: [
@@ -131,23 +133,33 @@ export default class Data extends React.Component {
     }
     selectGroupItem = (index)=>{
         this.setState({
-            selectedGroupIndex:index
+            selectedGroupIndex: index
         })
+        const tempStartToEnd = this.state.groups[this.state.selectedGroupIndex].startToEnd
+        const selectedData = dataset[this.state.selected].data.graphs
+        const data = {
+            jsonData: {
+                graphs: selectedData.slice(tempStartToEnd[0],tempStartToEnd[1]),
+                compareEncode: dataset[this.state.selected].data.compareEncode
+            },
+            filename: dataset[this.state.selected].dataset
+        }
         // 传递数据
+        this.props.onSubmit(data)
     }
     render() {
         const marks = {
             0: {
                 style: {
-                  color: '#f50',
+                  color: '#000',
                 },
-                label: <strong>0</strong>,
+                label: 0,
               },
             [this.state.overview.times]: {
               style: {
-                color: '#f50',
+                color: '#000',
               },
-            label: <strong>{this.state.overview.times}</strong>,
+            label: this.state.overview.times,
             },
           };
         return (
@@ -162,9 +174,34 @@ export default class Data extends React.Component {
                 </div>  
                 <div className='divider'>Overview</div>
                 <div className='item0'>
-                    {`#Name: ${this.state.overview.name}`}&nbsp;&nbsp; {`#Times: ${this.state.overview.times}`} <br/>
-                    {`#Nodes: ${this.state.overview.nodes}`} &nbsp;&nbsp; {`#Links: ${this.state.overview.links}`}
-    
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems : 'center',
+                            position: 'relative',
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            marginTop: 10,
+                        }}
+                    >
+                        <div>{`Name: ${this.state.overview.name}`}</div>
+                        <div>{`Times: ${this.state.overview.times}`}</div>
+                    </div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems : 'center',
+                            position: 'relative',
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            marginTop: 10,
+                        }}
+                    >
+                        <div>{`Nodes: ${this.state.overview.nodes}`}</div>
+                        <div>{`Links: ${this.state.overview.links}`}</div>
+                    </div>
                 </div>
                 <div className='divider'>Selection</div>
                 {
@@ -249,7 +286,7 @@ export default class Data extends React.Component {
                         renderItem={(item, index) => (
                             <List.Item onClick={()=>this.selectDataset(index)} >
                                 <List.Item.Meta
-                                    title={<a href="javascript:void(0)" >{item.dataset}{index===this.state.selected?" selected":""}</a>}
+                                    title={<a href="javascript:void(0)" >{item.dataName}{index===this.state.selected?" selected":""}</a>}
                                     description={item.description}
                                     className={index===this.state.selected?"selected":""}
                                 />

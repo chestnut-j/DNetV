@@ -1,9 +1,9 @@
 import React from "react"
-import Data from "./components/data/data.js"
+import Data from "./components/data/index.js"
 import Encoding from "./components/encoding.js"
 import Grammar from "./components/grammar.js"
 import Preview from "./components/preview.js"
-import Relation from "./components/relation.js"
+import Relation from "./components/relation/index.js"
 import Render from "./components/render.js"
 import Template from "./components/template.js"
 
@@ -16,10 +16,11 @@ export default class Board extends React.Component {
             relationType: 'appear',
             preColor:'',
             encodingOptions: {
+                taskType: 'Time',
                 appearOptions:{
                     visible:'',
                     position:'',
-                    color: '#FFFFFF',
+                    color: '#00FF00',
                     animation:'',
                     link:'',
                     glyph:'',
@@ -35,13 +36,15 @@ export default class Board extends React.Component {
                 disappearOptions:{
                     visible:'',
                     position:'',
-                    color: '#FFFFFF',
+                    color: '#FF0000',
                     animation:'',
                     link:'',
                     glyph:'',
                 }
             }
         }
+        // this.handleSubmitFromRelation= this.handleSubmitFromRelation.bind(this)
+
     }
     handleSubmitFromGrammar = (file) => {
         if (!file) return;
@@ -52,19 +55,23 @@ export default class Board extends React.Component {
           }
         )
       }
-      handleSubmitFromData = (file) => {
+    handleSubmitFromData = (file) => {
         if (!file) return;
+        console.log("handleSubmitFromData-file",file);
         this.setState(
-          {
-            jsonfile: file.jsonData,
-            filename: file.filename
-          }
+            {
+                jsonfile: file.jsonData,
+                filename: file.filename
+            }
         )
-      }
-    handleSubmitFromRelation = (type) => {
-        if(!type) return;
+    }
+    handleSubmitFromRelation = (value) => {
+        if(!value) return;
         this.setState({
-            relationType:type
+            encodingOptions: {
+               ...this.state.encodingOptions,
+               ...value
+            }
         })
       }
     handleSubmitFromEncoding = (options) => {
