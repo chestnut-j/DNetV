@@ -1,9 +1,9 @@
 import React from "react"
-import Data from "./components/data/index.js"
-import Encoding from "./components/encoding.js"
+import Data from "./components/data/data.js"
+import Encoding from "./components/encoding/encoding.js"
 import Grammar from "./components/grammar.js"
 import Preview from "./components/preview.js"
-import Relation from "./components/relation/index.js"
+import Relation from "./components/relation/relation.js"
 import Render from "./components/render.js"
 import Template from "./components/template.js"
 
@@ -16,6 +16,15 @@ export default class Board extends React.Component {
             relationType: 'appear',
             preColor:'',
             encodingOptions: {
+                encodingType: 'position',
+                visible:'',
+                position:'',
+                color: '#00FF00',
+                animation:'',
+                link:'',
+                glyph:'',
+            },
+            relationOptions: {
                 taskType: 'Time',
                 appearOptions:{
                     visible:'',
@@ -68,19 +77,20 @@ export default class Board extends React.Component {
     handleSubmitFromRelation = (value) => {
         if(!value) return;
         this.setState({
-            encodingOptions: {
-               ...this.state.encodingOptions,
+            relationOptions: {
+               ...this.state.relationOptions,
                ...value
             }
         })
       }
-    handleSubmitFromEncoding = (options) => {
-        if(!options) return;
-        this.setState(
-            state =>({encodingOptions: options}),
-            ()=>{
+    handleSubmitFromEncoding = (value) => {
+        if(!value) return;
+        this.setState({
+            encodingOptions: {
+                ...this.state.encodingOptions,
+                ...value
             }
-        )
+        })
     }
     render() {
         return (
@@ -89,10 +99,10 @@ export default class Board extends React.Component {
                 <div className="row">
                     <div className="col">
                         <Data onSubmit={this.handleSubmitFromData} />
-                        <Relation options={this.state.encodingOptions} onSubmit={this.handleSubmitFromRelation}/>
+                        <Relation options={this.state.relationOptions} onSubmit={this.handleSubmitFromRelation}/>
                     </div>
                     <div className="col">
-                        <Encoding preColor={this.state.preColor} relationType={this.state.relationType} onSubmit={this.handleSubmitFromEncoding}/>
+                        <Encoding preColor={this.state.preColor} options={this.state.encodingOptions} onSubmit={this.handleSubmitFromEncoding}/>
                     </div>
                     <div className="col">
                         <Grammar onSubmit={this.handleSubmitFromGrammar} />

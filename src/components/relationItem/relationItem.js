@@ -1,7 +1,7 @@
 import React from 'react'
 import {ChromePicker} from 'react-color'
 import { Button } from 'antd';
-import './index.css'
+import './relationItem.css'
 
 const optionToDetail = {
   appear: {

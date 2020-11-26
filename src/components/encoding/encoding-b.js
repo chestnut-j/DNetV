@@ -1,7 +1,7 @@
 import React from "react"
-import AppearEncoding from './encoding/appearEncoding'
-import StableEncoding from './encoding/stableEncoding'
-import DisappearEncoding from './encoding/disappearEncoding'
+import AppearEncoding from './appearEncoding'
+import StableEncoding from './stableEncoding'
+import DisappearEncoding from './disappearEncoding'
 
 var appearOptions={
     visible:'',

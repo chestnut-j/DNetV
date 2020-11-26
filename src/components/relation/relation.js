@@ -2,9 +2,9 @@ import React from 'react'
 import Appear from './appear'
 import Stable from './stable'
 import Disappear from './disappear'
-import RelationItem from '../relationItem/index.js'
+import RelationItem from '../relationItem/relationItem.js'
 import { Radio } from 'antd';
-import './index.css'
+import './relation.css'
 
 const taskOptions = [
     { label: 'Time', value: 'Time' },

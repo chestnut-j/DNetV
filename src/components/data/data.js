@@ -1,7 +1,7 @@
 import React from "react";
 import {Modal, List, Upload, Button, Slider} from 'antd';
 import 'antd/dist/antd.css';
-import './index.css'
+import './data.css'
 import * as testData from '../../data/import/test1.json'
 
 const dataset = [
