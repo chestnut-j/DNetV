@@ -89,9 +89,9 @@ export default class Encoding extends React.Component {
                                 Visible
                             </Button>
                         </div>
-                        <div className='visible-ctrl'>
-                            <div className='visible-circle1' style={{borderStyle:this.state.visible}}></div>
-                            <div className='visible-circle2' style={{borderStyle:this.state.visible}}></div>
+                        <div className='visible-ctrl item-ctrl'>
+                            <div className='visible-circle1 item-circle1' style={{borderStyle:this.state.visible}}></div>
+                            <div className='visible-circle2 item-circle2' style={{borderStyle:this.state.visible}}></div>
                         </div>
                         <div className='visible-picker-box'>
                         <       Button id='visible-button' 
@@ -125,9 +125,28 @@ export default class Encoding extends React.Component {
                                 Position
                             </Button>
                         </div>
-                        <div className='position-ctrl'>
-                            <div className='position-circle1'></div>
-                            <div className='position-circle2'></div>
+                        <div className='position-ctrl item-ctrl'>
+                            <div className='position-circle1 item-circle1'></div>
+                            <div className='position-circle2 item-circle2'></div>
+                        </div>
+                    </div>
+
+                    {/* animaiton */}
+                    <div className='encoding-item'>
+                        <div className="encoding-item-title" >
+                            <Button 
+                                type= {this.props.options.encodingType ==='animaiton'? 'primary' : 'default' }
+                                onClick = {(e)=>{this.handleButtonOnClick('animaiton', e)}}
+                            block>
+                                Animaiton
+                            </Button>
+                        </div>
+                        <div className='animation-ctrl item-ctrl'>
+                            <div className='animation-circle1 item-circle1'></div>
+                            <div className='ellipse1'></div>
+                            <div className='ellipse2'></div>
+                            <div className='ellipse3'></div>
+                            <div className='animation-circle2 item-circle2'></div>
                         </div>
                     </div>
 
@@ -142,9 +161,9 @@ export default class Encoding extends React.Component {
                             </Button>
                         </div>
                         <div className='color-item'>
-                            <div className='color-ctrl'>
-                                <div className='color-circle1'></div>
-                                <div className='color-circle2' style={{backgroundColor:this.state.color}}></div>
+                            <div className='color-ctrl item-ctrl'>
+                                <div className='color-circle1 item-circle1'></div>
+                                <div className='color-circle2 item-circle2' style={{backgroundColor:this.state.color}}></div>
                             </div>
                             <div className='color-picker-box'>
                                 <Button onClick={this.handleColorClick}> Choose Color</Button>
@@ -168,10 +187,10 @@ export default class Encoding extends React.Component {
                                 Link
                             </Button>
                         </div>
-                        <div className='link-ctrl'>
-                            <div className='link-circle1'></div>
+                        <div className='link-ctrl item-ctrl'>
+                            <div className='link-circle1 item-circle1'></div>
                             <div className='wavy'></div>
-                            <div className='link-circle2'></div>
+                            <div className='link-circle2 item-circle2'></div>
                         </div>
                     </div>
               </div>

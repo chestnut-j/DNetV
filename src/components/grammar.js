@@ -94,7 +94,7 @@ export default class Grammar extends React.Component {
                     <ReactJson
                         className="json-box"
                         {...this.state.jsonOptions}
-                        src={this.state.jsonData}
+                        src={this.props.options}
                     />
                 </div>
             </div>

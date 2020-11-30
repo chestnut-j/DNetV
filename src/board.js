@@ -19,7 +19,7 @@ export default class Board extends React.Component {
                 encodingType: 'position',
                 visible:'',
                 position:'',
-                color: '#00FF00',
+                color: '#FFFFFF',
                 animation:'',
                 link:'',
                 glyph:'',
@@ -93,6 +93,10 @@ export default class Board extends React.Component {
         })
     }
     render() {
+        const grammarOptions = {
+            relationOptions: this.state.relationOptions,
+            encodingOptions: this.state.encodingOptions
+        }
         return (
             <div className="board">
                 <div className="title"> DNetV </div>
@@ -105,7 +109,7 @@ export default class Board extends React.Component {
                         <Encoding preColor={this.state.preColor} options={this.state.encodingOptions} onSubmit={this.handleSubmitFromEncoding}/>
                     </div>
                     <div className="col">
-                        <Grammar onSubmit={this.handleSubmitFromGrammar} />
+                        <Grammar options={grammarOptions} onSubmit={this.handleSubmitFromGrammar} />
                     </div>
 
                     <div className="col">
