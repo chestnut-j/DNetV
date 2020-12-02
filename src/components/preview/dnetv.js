@@ -114,6 +114,7 @@ class DNetV {
         if (keyTime === "last") {
             newGraphSets.forEach((graph, index) => {
                 if (index === 0) return null
+                // 前一个图
                 const compareGraph = newGraphSets[index - 1]
                 const { appear, disappear } = dealCompare(graph, compareGraph)
                 graphCompare[index].appear = appear
@@ -211,10 +212,12 @@ class DNetV {
     layout() {
         let graphPos = this.dealLayout()
         // await this.end(simulation)
+        console.log("graphPos",graphPos)
         this.graphPos = this.assignPos(graphPos)
         return this.graphPos
     }
     dealLayout() {
+        // 将所有图的点和边合并到一起，求出每个点和边的相对布局位置
         let nodes = []
         let links = []
         const { eachWidth, eachHeight } = this.config
@@ -316,6 +319,7 @@ class DNetV {
             height: this.config.height,
             ...configs,
         })
+        console.log("this.graphPos", this.graphPos)
         g.data(this.graphPos)
         g.draw()
     }
@@ -325,6 +329,7 @@ class DNetV {
             simulation.on("end", resolve)
         })
     }
+    // 求交集
     intersection(setA, setB) {
         let _intersection = new Set(setA)
         for (let elem of setA) {
@@ -334,6 +339,7 @@ class DNetV {
         }
         return _intersection
     }
+    // setA 减去 setB
     difference(setA, setB) {
         let _difference = new Set(setA)
         for (let elem of setB) {

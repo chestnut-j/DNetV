@@ -2,7 +2,7 @@ import React from "react"
 import Data from "./components/data/data.js"
 import Encoding from "./components/encoding/encoding.js"
 import Grammar from "./components/grammar.js"
-import Preview from "./components/preview.js"
+import Preview from "./components/preview/preview.js"
 import Relation from "./components/relation/relation.js"
 import Render from "./components/render.js"
 import Template from "./components/template.js"
@@ -23,6 +23,59 @@ export default class Board extends React.Component {
                 animation:'',
                 link:'',
                 glyph:'',
+            },
+            taskType: 'Time',
+            config: {
+                width: 1000,
+                height: 750,
+                eachMargin: 20,
+                eachWidth: 180,
+                eachHeight: 180
+            },
+            comparisonOptions: {
+                chooseItem: 'stableNode',
+                appearNode: {
+                    shape: 'circle',
+                    fillColor: '#FFFFFF',
+                    strokeColor: '#000000',
+                    strokeWidth: 1,
+                    strokeType: 'solid',
+                    textColor: 'white',
+                    radius: 5,
+                },
+                appearLink: {
+                    strokeColor: '#FFFFFF',
+                    strokeType: 'solid',
+                    strokeWidth: 1,
+                },
+                stableNode: {
+                    shape: 'circle',
+                    fillColor: '#000000',
+                    strokeColor: '#000000',
+                    strokeWidth: 1,
+                    radius: 5,
+                    strokeType: 'solid',
+                    textColor: 'white'
+                },
+                stableLink: {
+                    strokeColor: '#000000',
+                    strokeType: 'solid',
+                    strokeWidth: 1,
+                },
+                disappearNode: {
+                    shape: 'circle',
+                    fillColor: '#FFFFFF',
+                    strokeColor: '#000000',
+                    strokeWidth: 1,
+                    radius: 5,
+                    strokeType: 'solid',
+                    textColor: 'white'
+                },
+                disappearLink: {
+                    strokeColor: '#FFFFFF',
+                    strokeType: 'solid',
+                    strokeWidth: 1,
+                }
             },
             relationOptions: {
                 taskType: 'Time',
@@ -66,7 +119,7 @@ export default class Board extends React.Component {
       }
     handleSubmitFromData = (file) => {
         if (!file) return;
-        console.log("handleSubmitFromData-file",file);
+        // console.log("handleSubmitFromData-file",file);
         this.setState(
             {
                 jsonfile: file.jsonData,
@@ -117,7 +170,14 @@ export default class Board extends React.Component {
                             <Render style={{ float: "left" }} />
                             <Template style={{ float: "left" }} />
                         </div>
-                        <Preview jsonfile={this.state.jsonfile} filename={this.state.filename}/>
+                        <Preview 
+                            taskType = {this.state.taskType}
+                            jsonfile={this.state.jsonfile} 
+                            encodingOptions={this.state.encodingOptions} 
+                            relationOptions={this.state.relationOptions}
+                            config = {this.state.config} 
+                            comparisonOptions = {this.state.comparisonOptions}
+                        />
                     </div>
                 </div>
             </div>

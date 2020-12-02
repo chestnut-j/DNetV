@@ -74,7 +74,6 @@ export default class Data extends React.Component {
         }
     }
     handleChangeData = () => {
-        console.log("click");
         this.setState({
             modalVisible: true,
         })
@@ -85,8 +84,6 @@ export default class Data extends React.Component {
         })
     }
     selectDataset = (index) => {
-        console.log("a Select")
-        console.log(index)
         //event.preventDefault();
         this.setState({
             selected: index
@@ -107,6 +104,12 @@ export default class Data extends React.Component {
                     startToEnd: [0, overviewInfo.times],
                 }]
             })
+            const data = {
+                jsonData: dataset[this.state.selected].data,
+                filename: dataset[this.state.selected].dataset
+            }
+            // 传递数据
+            this.props.onSubmit(data)
         }
     }
     handleAddButton = () => {
@@ -126,7 +129,6 @@ export default class Data extends React.Component {
         }
     }
     handleTimeSliderChange = (value)=>{
-        console.log("value", value)
         this.setState({
             sliderValue: value
         })
@@ -135,7 +137,7 @@ export default class Data extends React.Component {
         this.setState({
             selectedGroupIndex: index
         })
-        const tempStartToEnd = this.state.groups[this.state.selectedGroupIndex].startToEnd
+        const tempStartToEnd = this.state.groups[index].startToEnd
         const selectedData = dataset[this.state.selected].data.graphs
         const data = {
             jsonData: {
