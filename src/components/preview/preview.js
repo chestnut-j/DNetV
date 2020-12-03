@@ -27,7 +27,7 @@ export default class Preview extends React.Component {
         }
         // 是否有关键帧，有就和关键帧比较。没有就和前一帧作对比
         const keyFrame = -1
-        console.log("this.props.jsonfile", this.props.jsonfile)
+        console.log("this.props.jsonfile", this.props)
         // 针对每一帧的图数据，加上时间维度
         // 利用节点和链接的id的特性，求出每个id的位置
         // 注意对props利用，不要更改原来数据
@@ -36,7 +36,7 @@ export default class Preview extends React.Component {
         if(this.props.jsonfile.graphs){
             const data = dealData(this.props.jsonfile.graphs, width, height)
             subGraphs = data.subGraphs
-            renderType = `${this.props.taskType}-${this.props.encodingOptions.encodingType}`
+            renderType = `${this.props.relationOptions.taskType}-${this.props.encodingOptions.encodingType}`
         }else{
             renderType = ''
         }
@@ -53,7 +53,7 @@ export default class Preview extends React.Component {
                         case 'Time-position':
                             return <TimePositionDnet
                                     data = {subGraphs}
-                                    comparisonOptions = {this.props.comparisonOptions}
+                                    comparisonOptions = {this.props.relationOptions}
                                     width = {width}
                                     height = {height}
                                     margin = {this.props.config.eachMargin}

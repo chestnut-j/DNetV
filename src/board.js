@@ -24,7 +24,6 @@ export default class Board extends React.Component {
                 link:'',
                 glyph:'',
             },
-            taskType: 'Time',
             config: {
                 width: 1000,
                 height: 750,
@@ -32,21 +31,17 @@ export default class Board extends React.Component {
                 eachWidth: 180,
                 eachHeight: 180
             },
-            comparisonOptions: {
-                chooseItem: 'stableNode',
+            relationOptions: {
+                taskType: 'Time',
+                chooseItem: 'stable-Node',
                 appearNode: {
                     shape: 'circle',
-                    fillColor: '#FFFFFF',
+                    fillColor: 'red',
                     strokeColor: '#000000',
                     strokeWidth: 1,
                     strokeType: 'solid',
                     textColor: 'white',
                     radius: 5,
-                },
-                appearLink: {
-                    strokeColor: '#FFFFFF',
-                    strokeType: 'solid',
-                    strokeWidth: 1,
                 },
                 stableNode: {
                     shape: 'circle',
@@ -57,51 +52,29 @@ export default class Board extends React.Component {
                     strokeType: 'solid',
                     textColor: 'white'
                 },
-                stableLink: {
-                    strokeColor: '#000000',
-                    strokeType: 'solid',
-                    strokeWidth: 1,
-                },
                 disappearNode: {
                     shape: 'circle',
-                    fillColor: '#FFFFFF',
+                    fillColor: 'gray',
                     strokeColor: '#000000',
                     strokeWidth: 1,
                     radius: 5,
                     strokeType: 'solid',
                     textColor: 'white'
                 },
-                disappearLink: {
-                    strokeColor: '#FFFFFF',
+                appearLink: {
+                    strokeColor: 'red',
                     strokeType: 'solid',
                     strokeWidth: 1,
-                }
-            },
-            relationOptions: {
-                taskType: 'Time',
-                appearOptions:{
-                    visible:'',
-                    position:'',
-                    color: '#00FF00',
-                    animation:'',
-                    link:'',
-                    glyph:'',
                 },
-                stableOptions:{
-                    visible:'',
-                    position:'',
-                    color: '#FFFFFF',
-                    animation:'',
-                    link:'',
-                    glyph:'',
+                stableLink: {
+                    strokeColor: '#000000',
+                    strokeType: 'solid',
+                    strokeWidth: 1,
                 },
-                disappearOptions:{
-                    visible:'',
-                    position:'',
-                    color: '#FF0000',
-                    animation:'',
-                    link:'',
-                    glyph:'',
+                disappearLink: {
+                    strokeColor: 'gray',
+                    strokeType: 'solid',
+                    strokeWidth: 1,
                 }
             }
         }
@@ -156,7 +129,11 @@ export default class Board extends React.Component {
                 <div className="row">
                     <div className="col">
                         <Data onSubmit={this.handleSubmitFromData} />
-                        <Relation options={this.state.relationOptions} onSubmit={this.handleSubmitFromRelation}/>
+                        <Relation 
+                            options={this.state.relationOptions} 
+                            taskType={this.state.taskType}
+                            onSubmit={this.handleSubmitFromRelation}
+                        />
                     </div>
                     <div className="col">
                         <Encoding preColor={this.state.preColor} options={this.state.encodingOptions} onSubmit={this.handleSubmitFromEncoding}/>
@@ -171,12 +148,10 @@ export default class Board extends React.Component {
                             <Template style={{ float: "left" }} />
                         </div>
                         <Preview 
-                            taskType = {this.state.taskType}
                             jsonfile={this.state.jsonfile} 
                             encodingOptions={this.state.encodingOptions} 
                             relationOptions={this.state.relationOptions}
                             config = {this.state.config} 
-                            comparisonOptions = {this.state.comparisonOptions}
                         />
                     </div>
                 </div>
