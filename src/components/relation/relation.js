@@ -58,7 +58,7 @@ export default class Relation extends React.Component {
         this.props.onSubmit({chooseItem: index2ChooseItem[Number(index)] })
     }
     handleShapeChange = (value) => {
-        const changeKey = chooseItem.split('-').join('')
+        const changeKey = this.props.options.chooseItem.split('-').join('')
         const changeOptions = this.props.options[changeKey]
         // this.props.onSubmit({[changeKey]: {...changeOptions, shape: value}})
     }
@@ -247,8 +247,7 @@ export default class Relation extends React.Component {
                                 <div 
                                     onClick={(e)=>this.handleColorClick(e, 0)}
                                     style={{
-                                        backgroundColor: 'red',
-                                        // backgroundColor:changeOptions.fillColor,
+                                        backgroundColor:changeOptions.fillColor,
                                         width:'120px',
                                         height: '32px'
                                     }}></div>
