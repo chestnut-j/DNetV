@@ -44,16 +44,13 @@
 
 .comparison-table-container{
   margin: 10px;
-  /* width: 100%; */
   height: 160px;
-  /* border: 1px solid rgb(68, 67, 67); */
 }
 
 .table-first-line{
   display: flex;
   justify-content: flex-end;
   height: 30px;
-  /* border: 1px solid rgb(68, 67, 67); */
 }
 
 .blank-icon{
@@ -79,7 +76,6 @@
   display: grid;
   grid-template-columns: 33% 33% 34%;
   grid-template-rows: 62px 62px;
-  /* border: 1px solid rgb(133, 133, 133); */
 }
 
 .line-icon-container{
@@ -100,19 +96,10 @@
 }
 
 .item-color-picker-box {
-  
-  /* width: 70px;   */
-  
   z-index: 999;
-  /* position: absolute; */
 }
 
 .item-color-picker {
-  /* float: left; */
-  /* width:70px; */
-  /* margin-top: 10px; */
   display: block;
   background-color: #fff;
-
-  /* background-attachment: fixed; */
 }

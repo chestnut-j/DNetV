@@ -45,7 +45,7 @@ export default class Board extends React.Component {
                 },
                 stableNode: {
                     shape: 'circle',
-                    fillColor: '#000000',
+                    fillColor: '#eeeeee',
                     strokeColor: '#000000',
                     strokeWidth: 1,
                     radius: 5,
@@ -131,7 +131,6 @@ export default class Board extends React.Component {
                         <Data onSubmit={this.handleSubmitFromData} />
                         <Relation 
                             options={this.state.relationOptions} 
-                            taskType={this.state.taskType}
                             onSubmit={this.handleSubmitFromRelation}
                         />
                     </div>

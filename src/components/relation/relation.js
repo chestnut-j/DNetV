@@ -3,16 +3,33 @@ import Appear from './appear'
 import Stable from './stable'
 import Disappear from './disappear'
 import RelationItem from '../relationItem/relationItem.js'
-import {ChromePicker} from 'react-color'
+import { ChromePicker } from 'react-color'
 import SampleItem from '../sampleItem/sampleItem.js'
-import { Radio, Select, Input} from 'antd';
+import { Radio, Select, Input } from 'antd';
 import './relation.css'
 
 const { Option } = Select;
 const taskOptions = [
     { label: 'Time', value: 'Time' },
     { label: 'Comparison', value: 'Comparison' },
-  ];
+];
+
+const columnButtonStyle = {
+    boxSizing: 'border-box',
+    width: '62px',
+    padding: '0px',
+    fontSize: '12px',
+    height: '30px',
+    alighItems: 'center'
+}
+const rowButtonStyle = {
+    boxSizing: 'border-box',
+    width: '62px',
+    padding: '0px',
+    fontSize: '12px',
+    height: '62px',
+    alighItems: 'center'
+}
 
 const cloumnOptions = [
     { label: 'appear', value: 'appear' },
@@ -40,97 +57,76 @@ export default class Relation extends React.Component {
         }
     }
     handleOptionChange = (value) => {
-        this.props.onSubmit({...value})
+        this.props.onSubmit({ ...value })
     }
     handleTaskChange = e => {
         this.props.onSubmit({ taskType: e.target.value })
-    };  
+    };
     handleColumnChange = e => {
         const nodeOrLink = this.props.options.chooseItem.split('-')[1]
-        this.props.onSubmit({chooseItem: `${e.target.value}-${nodeOrLink}` })
-    }   
+        this.props.onSubmit({ chooseItem: `${e.target.value}-${nodeOrLink}` })
+    }
     handleRowChange = e => {
         const changeAttr = this.props.options.chooseItem.split('-')[0]
-        this.props.onSubmit({chooseItem: `${changeAttr}-${e.target.value}` })
-    }   
-    handleIconsClick = (e) => {
-        const index = e.target.getAttribute('class').split('-')[2]
-        this.props.onSubmit({chooseItem: index2ChooseItem[Number(index)] })
+        this.props.onSubmit({ chooseItem: `${changeAttr}-${e.target.value}` })
     }
-    handleShapeChange = (value) => {
+    handleIconsClick = (index) => {
+        this.props.onSubmit({ chooseItem: index2ChooseItem[Number(index)] })
+    }
+    changeOptions = (option) => {
         const changeKey = this.props.options.chooseItem.split('-').join('')
         const changeOptions = this.props.options[changeKey]
-        // this.props.onSubmit({[changeKey]: {...changeOptions, shape: value}})
+        this.props.onSubmit({[changeKey]: {...changeOptions, ...option}})
+    }
+    handleShapeChange = (value) => {
+        this.changeOptions({shape: value})
     }
     handleStrokeTypeChange = (value) => {
-        console.log(`selected ${value}`);
+        this.changeOptions({strokeType: value})
     }
-    handleStrokeWidthChange = () =>{
-
+    handleStrokeWidthChange = (e) => {
+        const { value } = e.target
+        this.changeOptions({strokeWidth: value})
     }
-    handleRadiusChange = () => {
-
+    handleRadiusChange = (e) => {
+        const { value } = e.target
+        this.changeOptions({radius: value})
     }
-    handleColorChange=(colorCode)=> {
-        // this.setState({
-        //   color: colorCode.hex
-        // })
-        console.log("handleColorChange---onSubmit", this.props.onSubmit)
-        this.setState()
-        // const tempKey = `${this.props.option.type}Options`
-        // this.props.onSubmit({
-        //   [tempKey]:{
-        //     ...this.props.option,
-        //     color: colorCode.hex
-        //   }
-        // })
+    handleColorChange = (colorCode) => {
+        this.changeOptions({fillColor: colorCode.hex})
     }
 
     handleColorClick = (e, index) => {
         const tempArr = this.state.colorPickerDisplay
-        tempArr[index] = !tempArr[index] 
+        tempArr[index] = !tempArr[index]
         this.setState({
             colorPickerDisplay: tempArr
         })
     }
     render() {
-        const { taskType, chooseItem , appearNode, appearLink, stableNode, stableLink, disappearNode, disappearLink } = this.props.options
+        const { taskType, chooseItem, appearNode, appearLink, stableNode, stableLink, disappearNode, disappearLink } = this.props.options
         // console.log("this.state.taskType",this.state.taskType)
         let changeKey = chooseItem.split('-')
-        const isNode = changeKey[1]==='Node' ? true : false
-        changeKey = changeKey.join('') 
+        const isNode = changeKey[1] === 'Node' ? true : false
+        changeKey = changeKey.join('')
         const changeOptions = this.props.options[changeKey]
-        console.log("changeOptions----", changeOptions)
-        const columnButtonStyle={
-            boxSizing: 'border-box',
-            width: '62px', 
-            padding:'0px', 
-            fontSize: '12px',
-            height: '30px',
-            alighItems: 'center'
-        }
-        const rowButtonStyle={
-            boxSizing: 'border-box',
-            width: '62px', 
-            padding:'0px', 
-            fontSize: '12px',
-            height: '62px',
-            alighItems: 'center'
-        }
+        
         return (
             <div className='relation-box'>
                 <div className='sub-title'>&nbsp;Relation</div>
                 <Radio.Group
-                    options={taskOptions}
+                    // options={taskOptions}
                     onChange={this.handleTaskChange}
                     value={taskType}
                     optionType="button"
                     buttonStyle="solid"
                     style={{
-                        width:'90%',
-                        marginTop: 10,
+                        margin: 10
                     }}
-                />
+                >
+                    <Radio.Button style={{width: 124}} value="Time">Time</Radio.Button>
+                    <Radio.Button style={{width: 124}} value="Comparison">Comparison</Radio.Button>
+                </Radio.Group>
                 <div className='comparison-table-container'>
                     <div className='table-first-line'>
                         <div
@@ -140,7 +136,7 @@ export default class Relation extends React.Component {
                             <Radio.Button style={columnButtonStyle} value="appear">appear</Radio.Button>
                             <Radio.Button style={columnButtonStyle} value="stable">stable</Radio.Button>
                             <Radio.Button style={columnButtonStyle} value="disappear">disappear</Radio.Button>
-                        </Radio.Group>
+                        </Radio.Group>   
                     </div>
                     <div className='table-second-line'>
                         <div className='second-line-left'>
@@ -149,55 +145,43 @@ export default class Relation extends React.Component {
                                 <Radio.Button style={rowButtonStyle} value="Link">Link</Radio.Button>
                             </Radio.Group>
                         </div>
-                        <div 
-                            className='second-line-right'
-                            onClick = {this.handleIconsClick}
-                        >
-                            <div 
+                        <div className='second-line-right' >
+                            <div
                                 id='appear-Node'
-                                className={`line-icon-container ${chooseItem==='appear-Node'? 'choose-icon':''}`}
+                                onClick={() => this.handleIconsClick(0)}
+                                className={`line-icon-container ${chooseItem === 'appear-Node' ? 'choose-icon' : ''}`}
                             >
-                                <SampleItem
-                                    config = {appearNode}
-                                    index = {0}
-                                />
+                                <SampleItem config={appearNode} />
+                            </div>
+                            <div
+                                onClick={() => this.handleIconsClick(1)}
+                                className={`line-icon-container ${chooseItem === 'stable-Node' ? 'choose-icon' : ''}`}
+                            >
+                                <SampleItem config={stableNode} />
+                            </div>
+                            <div
+                                className={`line-icon-container ${chooseItem === 'disappear-Node' ? 'choose-icon' : ''}`}
+                                onClick={() => this.handleIconsClick(2)}
+                            >
+                                <SampleItem config={disappearNode} />
                             </div>
                             <div 
-                                className={`line-icon-container ${chooseItem==='stable-Node'? 'choose-icon':''}`}
+                                onClick={() => this.handleIconsClick(3)}
+                                className={`line-icon-container ${chooseItem === 'appear-Link' ? 'choose-icon' : ''}`}
                             >
-                                <SampleItem
-                                    config = {stableNode}
-                                    index = {1}
-                                />
+                                <SampleItem config={appearLink}  type={'link'} />
                             </div>
                             <div 
-                                className={`line-icon-container ${chooseItem==='disappear-Node'? 'choose-icon':''}`}
+                                onClick={() => this.handleIconsClick(4)}
+                                className={`line-icon-container ${chooseItem === 'stable-Link' ? 'choose-icon' : ''}`}
                             >
-                                <SampleItem
-                                    config = {disappearNode}
-                                    index = {2}
-                                />
+                                <SampleItem config={stableLink} type={'link'} />
                             </div>
-                            <div className={`line-icon-container ${chooseItem==='appear-Link'? 'choose-icon':''}`}>
-                                <SampleItem
-                                    config = {appearLink}
-                                    type = {'link'}
-                                    index = {3}
-                                />
-                            </div>
-                            <div className={`line-icon-container ${chooseItem==='stable-Link'? 'choose-icon':''}`}>
-                                <SampleItem
-                                    config = {stableLink}
-                                    type = {'link'}
-                                    index = {4}
-                                />  
-                            </div>
-                            <div className={`line-icon-container ${chooseItem==='disappear-Link'? 'choose-icon':''}`}>
-                                <SampleItem
-                                    config = {disappearLink}
-                                    type = {'link'}
-                                    index = {5}
-                                />
+                            <div 
+                                onClick={() => this.handleIconsClick(5)}
+                                className={`line-icon-container ${chooseItem === 'disappear-Link' ? 'choose-icon' : ''}`}
+                            >
+                                <SampleItem config={disappearLink} type={'link'}/>
                             </div>
                         </div>
                     </div>
@@ -205,10 +189,11 @@ export default class Relation extends React.Component {
                 <div className='change-option-panle'>
                     {/* 选择形状：圆形、三角形、方形 */}
                     <div className="change-option-item">
+                        <text>Shape:</text>
                         <Select
-                            defaultValue={changeOptions.shape}
+                            value={changeOptions.shape}
                             onChange={this.handleShapeChange}
-                            style={{ width: '100%' }}
+                            style={{ width: 120 }}
                         >
                             <Option key="circle">
                                 <div>circle</div>
@@ -220,42 +205,42 @@ export default class Relation extends React.Component {
                     </div>
                     {/* 选择线型 */}
                     <div className="change-option-item">
-                        <text>strokeType:</text>
-                        <Select defaultValue={changeOptions.strokeType} style={{ width: 120 }} onChange={this.handleStrokeTypeChange}>
+                        <text>StrokeType:</text>
+                        <Select value={changeOptions.strokeType} style={{ width: 120 }} onChange={this.handleStrokeTypeChange}>
                             <Option value="solid">solid</Option>
                             <Option value="dashed">dashed</Option>
                         </Select>
                     </div>
                     {/* 输入线宽 */}
                     <div className="change-option-item">
-                        <text>strokeWidth:</text>
-                        <Input value={1} type='number' onChange={this.handleStrokeWidthChange} style={{width:'120px'}} />
+                        <text>StrokeWidth:</text>
+                        <Input value={changeOptions.strokeWidth} type='number' onChange={this.handleStrokeWidthChange} style={{ width: '120px' }} />
                     </div>
                     {/* 输入半径长度 */}
                     <div className="change-option-item">
-                        <text>radius:</text>
-                        <Input value={changeOptions.radius} type='number' onChange={this.handleRadiusChange} style={{width:'120px'}} />
+                        <text>Radius:</text>
+                        <Input value={changeOptions.radius} type='number' onChange={this.handleRadiusChange} style={{ width: '120px' }} />
                     </div>
                     {/* 填充颜色 */}
                     {
-                        changeOptions.fillColor ? 
-                        <div>
-                            <div 
-                                className='change-option-item'
-                            >
-                                <div >fillColor</div> 
-                                <div 
-                                    onClick={(e)=>this.handleColorClick(e, 0)}
-                                    style={{
-                                        backgroundColor:changeOptions.fillColor,
-                                        width:'120px',
-                                        height: '32px'
-                                    }}></div>
-                            </div>
-                            {this.state.colorPickerDisplay[0] ? ( <ChromePicker className="item-color-picker" 
-                                color={changeOptions.fillColor} 
-                                onChange={this.handleColorChange} />):null} 
-                        </div>:null
+                        changeOptions.fillColor ?
+                            <div>
+                                <div
+                                    className='change-option-item'
+                                >
+                                    <div >fillColor</div>
+                                    <div
+                                        onClick={(e) => this.handleColorClick(e, 0)}
+                                        style={{
+                                            backgroundColor: changeOptions.fillColor,
+                                            width: '120px',
+                                            height: '32px'
+                                        }}></div>
+                                </div>
+                                {this.state.colorPickerDisplay[0] ? (<ChromePicker className="item-color-picker"
+                                    color={changeOptions.fillColor}
+                                    onChange={this.handleColorChange} />) : null}
+                            </div> : null
                     }
                 </div>
                 {/* <RelationItem option={{type: 'appear', ...appearOptions }} onSubmit={this.handleOptionChange}/> */}
