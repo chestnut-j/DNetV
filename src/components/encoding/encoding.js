@@ -1,9 +1,10 @@
 import React from "react"
-import { Button } from 'antd'
+import { Button, Select, Input } from 'antd'
 import {ChromePicker} from 'react-color'
 import './encoding.css'
 
-
+const { Option } = Select;
+const colorIndexToName = ['strokeColor', 'fillColor', 'textColor']
 export default class Encoding extends React.Component {
     constructor(props) {
         super(props)
@@ -17,6 +18,11 @@ export default class Encoding extends React.Component {
             glyph:this.props.options.glyph,
             colorPickerDisplay:false,
             isVisible:(this.props.options.visible!=='dashed')?true:false,
+            elementColorPickerDisplay: [
+                false,
+                false,
+                false
+            ]
         }
     }
     handleVisibleClick=()=>{
@@ -67,18 +73,52 @@ export default class Encoding extends React.Component {
             encodingType: type
         })
     }
+    changeElementStyle = (option) => {
+        const changeKey = this.props.relationOptions.chooseItem.split('-').join('')
+        const changeOptions = this.props.relationOptions[changeKey]
+        this.props.onSubmitToRelation({[changeKey]: {...changeOptions, ...option}})
+    }
+    handleShapeChange = (value) => {
+        this.changeElementStyle({shape: value})
+    }
+    handleStrokeTypeChange = (value) => {
+        this.changeElementStyle({strokeType: value})
+    }
+    handleStrokeWidthChange = (e) => {
+        const { value } = e.target
+        this.changeElementStyle({strokeWidth: value})
+    }
+    handleRadiusChange = (e) => {
+        const { value } = e.target
+        this.changeElementStyle({radius: value})
+    }
+    handleElementColorChange = (colorCode, index) => {
+        this.changeElementStyle({[colorIndexToName[index]]: colorCode.hex})
+    }
+
+    handleElementColorClick = (e, index) => {
+        const tempArr = this.state.elementColorPickerDisplay
+        tempArr[index] = !tempArr[index]
+        this.setState({
+            elementColorPickerDisplay: tempArr
+        })
+    }
     render() {
+        let changeKey = this.props.relationOptions.chooseItem.split('-')
+        const isNode = changeKey[1] === 'Node' ? true : false
+        changeKey = changeKey.join('')
+        const changeOptions = this.props.relationOptions[changeKey]
         return (
             <div className='encoding-box'>
-                    <div className='sub-title'>&nbsp;Encoding
-                        <svg className="icon" aria-hidden="true" >
-                            <use xlinkHref="#icon-save"></use>
-                        </svg>
-                        <svg className="icon" aria-hidden="true" >
-                            <use xlinkHref="#icon-set"></use>
-                        </svg> 
-                    </div>
-
+                <div className='sub-title'>&nbsp;Encoding
+                    <svg className="icon" aria-hidden="true" >
+                        <use xlinkHref="#icon-save"></use>
+                    </svg>
+                    <svg className="icon" aria-hidden="true" >
+                        <use xlinkHref="#icon-set"></use>
+                    </svg> 
+                </div>
+                <div className='encoding-table-container' >
                     {/* visble */}
                     <div className='encoding-item'>
                         <div className="encoding-item-title" >
@@ -89,12 +129,13 @@ export default class Encoding extends React.Component {
                                 Visible
                             </Button>
                         </div>
-                        <div className='visible-ctrl item-ctrl'>
-                            <div className='visible-circle1 item-circle1' style={{borderStyle:this.state.visible}}></div>
-                            <div className='visible-circle2 item-circle2' style={{borderStyle:this.state.visible}}></div>
-                        </div>
-                        <div className='visible-picker-box'>
-                        <       Button id='visible-button' 
+                        <div className="encoding-item-content" >
+                            <div className='visible-ctrl item-ctrl'>
+                                <div className='visible-circle1 item-circle1' style={{borderStyle:this.state.visible}}></div>
+                                <div className='visible-circle2 item-circle2' style={{borderStyle:this.state.visible}}></div>
+                            </div>
+                            <div className='visible-picker-box'>
+                                <Button id='visible-button' 
                                         onClick={this.handleVisibleClick}
                                         style={{
                                             color: (this.state.isVisible)? '#6495ED' : '#B0C4DE',
@@ -111,7 +152,8 @@ export default class Encoding extends React.Component {
                                         }}
                                 > Invisible 
                                 </Button>
-                                
+                                    
+                            </div>
                         </div>
                     </div>
 
@@ -125,9 +167,11 @@ export default class Encoding extends React.Component {
                                 Position
                             </Button>
                         </div>
-                        <div className='position-ctrl item-ctrl'>
-                            <div className='position-circle1 item-circle1'></div>
-                            <div className='position-circle2 item-circle2'></div>
+                        <div className="encoding-item-content" >
+                            <div className='position-ctrl item-ctrl'>
+                                <div className='position-circle1 item-circle1'></div>
+                                <div className='position-circle2 item-circle2'></div>
+                            </div>
                         </div>
                     </div>
 
@@ -141,12 +185,14 @@ export default class Encoding extends React.Component {
                                 Animaiton
                             </Button>
                         </div>
-                        <div className='animation-ctrl item-ctrl'>
-                            <div className='animation-circle1 item-circle1'></div>
-                            <div className='ellipse1'></div>
-                            <div className='ellipse2'></div>
-                            <div className='ellipse3'></div>
-                            <div className='animation-circle2 item-circle2'></div>
+                        <div className="encoding-item-content" >
+                            <div className='animation-ctrl item-ctrl'>
+                                <div className='animation-circle1 item-circle1'></div>
+                                <div className='ellipse1'></div>
+                                <div className='ellipse2'></div>
+                                <div className='ellipse3'></div>
+                                <div className='animation-circle2 item-circle2'></div>
+                            </div>
                         </div>
                     </div>
 
@@ -160,7 +206,7 @@ export default class Encoding extends React.Component {
                                 Color
                             </Button>
                         </div>
-                        <div className='color-item'>
+                        <div className="encoding-item-content" >
                             <div className='color-ctrl item-ctrl'>
                                 <div className='color-circle1 item-circle1'></div>
                                 <div className='color-circle2 item-circle2' style={{backgroundColor:this.state.color}}></div>
@@ -171,8 +217,7 @@ export default class Encoding extends React.Component {
                                     {this.state.colorPickerDisplay ? ( <ChromePicker className="color-picker" 
                                     color={this.state.color} 
                                     onChange={this.handleColorChange} />):null} 
-                                </div>
-                                
+                                </div> 
                             </div>
                         </div>
                     </div>
@@ -187,13 +232,122 @@ export default class Encoding extends React.Component {
                                 Link
                             </Button>
                         </div>
-                        <div className='link-ctrl item-ctrl'>
-                            <div className='link-circle1 item-circle1'></div>
-                            <div className='wavy'></div>
-                            <div className='link-circle2 item-circle2'></div>
+                        <div className="encoding-item-content" >
+                            <div className='link-ctrl item-ctrl'>
+                                <div className='link-circle1 item-circle1'></div>
+                                <div className='wavy'></div>
+                                <div className='link-circle2 item-circle2'></div>
+                            </div>
                         </div>
                     </div>
-              </div>
+
+                    {/* 针对具体元素的编码配置 */}
+                    <div className='change-option-panle'>
+                    {/* 选择形状：圆形、三角形、方形 */}
+                    {
+                    changeOptions.shape?
+                        <div className="change-option-item">
+                            <text>Shape:</text>
+                            <Select
+                                value={changeOptions.shape}
+                                onChange={this.handleShapeChange}
+                                style={{ width: 120 }}
+                            >
+                                <Option key="circle">
+                                    <div>circle</div>
+                                </Option>
+                                <Option key="rect">
+                                    <div>rect</div>
+                                </Option>
+                            </Select>
+                        </div>: null
+                    }
+                    {/* 选择线型 */}
+                    <div className="change-option-item">
+                        <text>StrokeType:</text>
+                        <Select value={changeOptions.strokeType} style={{ width: 120 }} onChange={this.handleStrokeTypeChange}>
+                            <Option value="solid">solid</Option>
+                            <Option value="dashed">dashed</Option>
+                        </Select>
+                    </div>
+                    {/* 输入线宽 */}
+                    <div className="change-option-item">
+                        <text>StrokeWidth:</text>
+                        <Input value={changeOptions.strokeWidth} type='number' onChange={this.handleStrokeWidthChange} style={{ width: '120px' }} />
+                    </div>
+                    {/* 输入半径长度 */}
+                    {
+                        changeOptions.radius?
+                        <div className="change-option-item">
+                            <text>Radius:</text>
+                            <Input value={changeOptions.radius} type='number' onChange={this.handleRadiusChange} style={{ width: '120px' }} />
+                        </div>: null
+                    }
+                    {/* 节点的外边颜色或 线型颜色 */}
+                    {
+                    <div>
+                        <div
+                            className='change-option-item'
+                        >
+                            <div >strokeColor</div>
+                            <div
+                                onClick={(e) => this.handleElementColorClick(e, 0)}
+                                style={{
+                                    backgroundColor: changeOptions.strokeColor,
+                                    width: '120px',
+                                    height: '32px'
+                                }}></div>
+                        </div>
+                        {this.state.elementColorPickerDisplay[0] ? (<ChromePicker className="item-color-picker"
+                            color={changeOptions.strokeColor}
+                            onChange={(value) => this.handleElementColorChange(value, 0)} />) : null}
+                    </div>
+                    }
+                    {/* 节点内部的填充颜色 */}
+                    {
+                    changeOptions.fillColor ?
+                        <div>
+                            <div
+                                className='change-option-item'
+                            >
+                                <div >fillColor</div>
+                                <div
+                                    onClick={(e) => this.handleElementColorClick(e, 1)}
+                                    style={{
+                                        backgroundColor: changeOptions.fillColor,
+                                        width: '120px',
+                                        height: '32px'
+                                    }}></div>
+                            </div>
+                            {this.state.elementColorPickerDisplay[1] ? (<ChromePicker className="item-color-picker"
+                                color={changeOptions.fillColor}
+                                onChange={(value) => this.handleElementColorChange(value, 1)} />) : null}
+                        </div> : null
+                    }
+                    {/* 节点内部的填充颜色 */}
+                    {
+                    changeOptions.textColor ?
+                        <div>
+                            <div
+                                className='change-option-item'
+                            >
+                                <div >textColor</div>
+                                <div
+                                    onClick={(e) => this.handleElementColorClick(e, 2)}
+                                    style={{
+                                        backgroundColor: changeOptions.textColor,
+                                        width: '120px',
+                                        height: '32px'
+                                    }}></div>
+                            </div>
+                            {this.state.elementColorPickerDisplay[2] ? (<ChromePicker className="item-color-picker"
+                                color={changeOptions.textColor}
+                                onChange={(value) => this.handleElementColorChange(value, 2)} />) : null}
+                        </div> : null
+                    }
+                </div>
+            </div>
+        </div>
         )
     }
 }

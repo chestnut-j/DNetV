@@ -8,6 +8,33 @@ import SampleItem from '../sampleItem/sampleItem.js'
 import { Radio, Select, Input } from 'antd';
 import './relation.css'
 
+// Trend或者 Diff 配置
+// 下面是trend配置
+const config = [
+    {
+        elements: 'Node/Link/All',
+        change: 'appear/stable/disappear',
+        encodingOptions:{
+            // 具体的已经选择的配置
+            visible: {
+                isVisible: true,
+            },
+            position: {
+                totalWidth: 1000,
+                eachWidth: 200,
+            },
+            animatoin: {
+                speed: 12
+            },
+            color: {
+                number: 10,
+            }
+        }
+    }
+]
+
+
+
 const { Option } = Select;
 const taskOptions = [
     { label: 'Time', value: 'Time' },
@@ -49,11 +76,6 @@ export default class Relation extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            colorPickerDisplay: [
-                false,
-                false,
-                false
-            ]
         }
     }
     handleOptionChange = (value) => {
@@ -73,44 +95,9 @@ export default class Relation extends React.Component {
     handleIconsClick = (index) => {
         this.props.onSubmit({ chooseItem: index2ChooseItem[Number(index)] })
     }
-    changeOptions = (option) => {
-        const changeKey = this.props.options.chooseItem.split('-').join('')
-        const changeOptions = this.props.options[changeKey]
-        this.props.onSubmit({[changeKey]: {...changeOptions, ...option}})
-    }
-    handleShapeChange = (value) => {
-        this.changeOptions({shape: value})
-    }
-    handleStrokeTypeChange = (value) => {
-        this.changeOptions({strokeType: value})
-    }
-    handleStrokeWidthChange = (e) => {
-        const { value } = e.target
-        this.changeOptions({strokeWidth: value})
-    }
-    handleRadiusChange = (e) => {
-        const { value } = e.target
-        this.changeOptions({radius: value})
-    }
-    handleColorChange = (colorCode) => {
-        this.changeOptions({fillColor: colorCode.hex})
-    }
-
-    handleColorClick = (e, index) => {
-        const tempArr = this.state.colorPickerDisplay
-        tempArr[index] = !tempArr[index]
-        this.setState({
-            colorPickerDisplay: tempArr
-        })
-    }
+   
     render() {
         const { taskType, chooseItem, appearNode, appearLink, stableNode, stableLink, disappearNode, disappearLink } = this.props.options
-        // console.log("this.state.taskType",this.state.taskType)
-        let changeKey = chooseItem.split('-')
-        const isNode = changeKey[1] === 'Node' ? true : false
-        changeKey = changeKey.join('')
-        const changeOptions = this.props.options[changeKey]
-        
         return (
             <div className='relation-box'>
                 <div className='sub-title'>&nbsp;Relation</div>
@@ -185,63 +172,6 @@ export default class Relation extends React.Component {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className='change-option-panle'>
-                    {/* 选择形状：圆形、三角形、方形 */}
-                    <div className="change-option-item">
-                        <text>Shape:</text>
-                        <Select
-                            value={changeOptions.shape}
-                            onChange={this.handleShapeChange}
-                            style={{ width: 120 }}
-                        >
-                            <Option key="circle">
-                                <div>circle</div>
-                            </Option>
-                            <Option key="rect">
-                                <div>rect</div>
-                            </Option>
-                        </Select>
-                    </div>
-                    {/* 选择线型 */}
-                    <div className="change-option-item">
-                        <text>StrokeType:</text>
-                        <Select value={changeOptions.strokeType} style={{ width: 120 }} onChange={this.handleStrokeTypeChange}>
-                            <Option value="solid">solid</Option>
-                            <Option value="dashed">dashed</Option>
-                        </Select>
-                    </div>
-                    {/* 输入线宽 */}
-                    <div className="change-option-item">
-                        <text>StrokeWidth:</text>
-                        <Input value={changeOptions.strokeWidth} type='number' onChange={this.handleStrokeWidthChange} style={{ width: '120px' }} />
-                    </div>
-                    {/* 输入半径长度 */}
-                    <div className="change-option-item">
-                        <text>Radius:</text>
-                        <Input value={changeOptions.radius} type='number' onChange={this.handleRadiusChange} style={{ width: '120px' }} />
-                    </div>
-                    {/* 填充颜色 */}
-                    {
-                        changeOptions.fillColor ?
-                            <div>
-                                <div
-                                    className='change-option-item'
-                                >
-                                    <div >fillColor</div>
-                                    <div
-                                        onClick={(e) => this.handleColorClick(e, 0)}
-                                        style={{
-                                            backgroundColor: changeOptions.fillColor,
-                                            width: '120px',
-                                            height: '32px'
-                                        }}></div>
-                                </div>
-                                {this.state.colorPickerDisplay[0] ? (<ChromePicker className="item-color-picker"
-                                    color={changeOptions.fillColor}
-                                    onChange={this.handleColorChange} />) : null}
-                            </div> : null
-                    }
                 </div>
                 {/* <RelationItem option={{type: 'appear', ...appearOptions }} onSubmit={this.handleOptionChange}/> */}
                 {/* <RelationItem option={{type: 'stable', ...stableOptions }} onSubmit={this.handleOptionChange}/> */}

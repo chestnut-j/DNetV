@@ -78,7 +78,6 @@ export default class Board extends React.Component {
                 }
             }
         }
-        // this.handleSubmitFromRelation= this.handleSubmitFromRelation.bind(this)
 
     }
     handleSubmitFromGrammar = (file) => {
@@ -135,7 +134,12 @@ export default class Board extends React.Component {
                         />
                     </div>
                     <div className="col">
-                        <Encoding preColor={this.state.preColor} options={this.state.encodingOptions} onSubmit={this.handleSubmitFromEncoding}/>
+                        <Encoding 
+                            preColor={this.state.preColor} 
+                            options={this.state.encodingOptions} 
+                            relationOptions={this.state.relationOptions}
+                            onSubmitToRelation={this.handleSubmitFromRelation}
+                            onSubmit={this.handleSubmitFromEncoding}/>
                     </div>
                     <div className="col">
                         <Grammar options={grammarOptions} onSubmit={this.handleSubmitFromGrammar} />
