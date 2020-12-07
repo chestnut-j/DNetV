@@ -126,6 +126,14 @@ export default class Board extends React.Component {
             }
         })
     }
+    handleChangeRenderConfig = (propType, value) => {
+        let renderConfig = this.state.config
+        renderConfig[propType] = value
+        this.setState({
+            config: renderConfig
+        })
+        console.log("change config",this.state.config)
+    }
     render() {
         const grammarOptions = {
             relationOptions: this.state.relationOptions,
@@ -156,7 +164,7 @@ export default class Board extends React.Component {
 
                     <div className="col">
                         <div className="row">
-                            <Render style={{ float: "left" }} />
+                            <Render onChangeConfig={this.handleChangeRenderConfig} style={{ float: "left" }} />
                             <Template style={{ float: "left" }} />
                         </div>
                         <Preview 
