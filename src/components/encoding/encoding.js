@@ -123,21 +123,6 @@ export default class Encoding extends React.Component {
         optionObject[key] = Number(value)
         this.props.onSubmit({[option]: optionObject})
     }
-    handleTimePositionInfo = (e, key) => {
-        const { value } = e.target
-        const postion = this.props.options.position
-        postion[key] = Number(value)
-        this.props.onSubmit({ postion})
-    }
-    handleTimeAnimationInfo = (e, key) => {
-        const { value } = e.target
-        const animation = this.props.options.animation
-        animation[key] = Number(value)
-        this.props.onSubmit({ animation})
-    }
-    handleTimeNumberInfo = (e, key) => {
-
-    }
 
     render() {
         let changeKey = this.props.relationOptions.chooseItem.split('-')
