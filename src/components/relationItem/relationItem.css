@@ -49,19 +49,5 @@
 }
 
 
-.item-color-picker-box {
-  
-  /* width: 70px;   */
-  
-  z-index: 999;
-  /* position: absolute; */
-}
 
-.item-color-picker {
-  /* float: left; */
-  /* width:70px; */
-  margin-top: 10px;
-  background-color: #fff;
 
-  /* background-attachment: fixed; */
-}
