@@ -18,7 +18,7 @@ export default class Preview extends React.Component {
         // 处理数据，处理完后，有每个图的数据，也有总和图的数据。
         // 依赖画布大小，如果是position的编码方式：是小图。否则是大图的方式
         let width,height
-        if(this.props.encodingOptions.encodingType==='position'){
+        if(this.props.encodingOptions.encodingType.indexOf('position') != -1){
             width = this.props.config.eachWidth
             height = this.props.config.eachHeight
         }else{
