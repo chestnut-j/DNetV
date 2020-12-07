@@ -94,6 +94,26 @@
   margin-top: 10px;
 }
 
+.item-right-container {
+  width: 140px;
+  margin-top: 5px;
+  text-align: center;
+  margin-left: 5px;
+}
+
+.item-right-container text {
+  font-size: 12px;
+}
+
+
+.item-right-option {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
 .item-circle1 {
   border-radius: 50%;
   width:30px;
@@ -152,7 +172,6 @@
 }
 
 .color-ctrl {
-  /* float: left; */
 }
 
 

@@ -102,7 +102,6 @@ export default class Relation extends React.Component {
             <div className='relation-box'>
                 <div className='sub-title'>&nbsp;Relation</div>
                 <Radio.Group
-                    // options={taskOptions}
                     onChange={this.handleTaskChange}
                     value={taskType}
                     optionType="button"
