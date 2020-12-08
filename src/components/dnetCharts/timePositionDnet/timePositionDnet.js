@@ -1,26 +1,23 @@
-import React from "react"
+import React from 'react'
 import NodeLinkGraph from '../../nodeLinkGraph/nodeLinkGraph.js'
 
-
 export default function TimePositionDnet(props) {
-
-  if(props.data.length===0) return null
-  console.log("TimePositionDnet----props", props)
-  return (
-    <div
-      className="TimePositionDnet graph"
-    >
-      {
-        props.data.map(dataItem=>{
-          return <NodeLinkGraph
-            data = {dataItem}
-            height = {props.height}
-            width = {props.width}
-            margin = {props.margin}
-            config = {props.comparisonOptions}
-          />
-        })
-      }
-    </div>
-  )
+    if (props.data.length === 0) return null
+    console.log('TimePositionDnet----props', props)
+    return (
+        <div className="TimePositionDnet graph">
+            {props.data.map((dataItem, index) => {
+                return (
+                    <NodeLinkGraph
+                        key={index}
+                        data={dataItem}
+                        height={props.height}
+                        width={props.width}
+                        margin={props.margin}
+                        config={props.comparisonOptions}
+                    />
+                )
+            })}
+        </div>
+    )
 }

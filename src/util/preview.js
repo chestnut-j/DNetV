@@ -1,54 +1,54 @@
-import * as d3 from "d3"
+import * as d3 from 'd3'
 
-// 返回值是 {subgraphs, sumgraphs} 
-export function dealData(originData, width, height){
-  const sumGraphs = getLayout(originData, width, height)
-  const subGraphs = assignPos(originData, sumGraphs)
-  return {sumGraphs, subGraphs}
+// 返回值是 {subgraphs, sumgraphs}
+export function dealData(originData, width, height) {
+    const sumGraphs = getLayout(originData, width, height)
+    const subGraphs = assignPos(originData, sumGraphs)
+    return { sumGraphs, subGraphs }
 }
 
 // 将所有图的点和边合并到一起，求出每个点和边的相对布局位置
 function getLayout(originData, width, height) {
-  let nodes = []
-  let links = []
-  let nodeSets = new Set()
-  let linkSets = new Set()
-  originData.forEach((graph, i) => {
-      graph.nodes.forEach((node) => {
-          nodeSets.add(node.id)
-      })
-      graph.links.forEach((link, j) => {
-          let { source, target } = link
-          if (links.source < links.target) {
-              source = link.target
-              target = links.source
-          }
-          const id = `${source}-${target}`
-          linkSets.add(id)
-      })
-  })
-  nodeSets.forEach((id) => {
-      nodes.push({ id })
-  })
-  linkSets.forEach((link) => {
-      const s = link.split("-")
-      const source = s[0]
-      const target = s[1]
-      links.push({ source, target })
-  })
-  d3.forceSimulation(nodes)
-      .force(
-          "link",
-          d3.forceLink(links).id((d) => d.id)
-      )
-      .force("charge", d3.forceManyBody())
-      .force("center", d3.forceCenter(width / 2, height / 2))
-      .tick(10)
-  return { nodes, links }
+    let nodes = []
+    let links = []
+    let nodeSets = new Set()
+    let linkSets = new Set()
+    originData.forEach((graph, i) => {
+        graph.nodes.forEach((node) => {
+            nodeSets.add(node.id)
+        })
+        graph.links.forEach((link, j) => {
+            let { source, target } = link
+            if (links.source < links.target) {
+                source = link.target
+                target = links.source
+            }
+            const id = `${source}-${target}`
+            linkSets.add(id)
+        })
+    })
+    nodeSets.forEach((id) => {
+        nodes.push({ id })
+    })
+    linkSets.forEach((link) => {
+        const s = link.split('-')
+        const source = s[0]
+        const target = s[1]
+        links.push({ source, target })
+    })
+    d3.forceSimulation(nodes)
+        .force(
+            'link',
+            d3.forceLink(links).id((d) => d.id)
+        )
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .tick(10)
+    return { nodes, links }
 }
 
 // 给子图添加位置，给总图添加节点和链接随时间分布情况
-function assignPos(originData, sumGraphs){
+function assignPos(originData, sumGraphs) {
     let idPos = {}
     // 建立从id到节点的映射
     sumGraphs.nodes.forEach((node) => {
@@ -60,13 +60,13 @@ function assignPos(originData, sumGraphs){
     const subGraphs = originData.map((graph, index) => {
         const nodes = graph.nodes.map((node) => {
             const id = node.id
-            const x = idPos[node.id].x 
+            const x = idPos[node.id].x
             const y = idPos[node.id].y
             const time = index
-            if(!node2Array[id]){
-                node2Array[id] = new Array(index+1).fill(0) 
-            }else{
-                while(node2Array[id].length<index+1){
+            if (!node2Array[id]) {
+                node2Array[id] = new Array(index + 1).fill(0)
+            } else {
+                while (node2Array[id].length < index + 1) {
                     node2Array[id].push(0)
                 }
             }
@@ -79,19 +79,19 @@ function assignPos(originData, sumGraphs){
             const source = {
                 id: link.source,
                 x: sourcePos.x,
-                y: sourcePos.y,
+                y: sourcePos.y
             }
             const target = {
                 id: link.target,
                 x: targetPos.x,
-                y: targetPos.y,
+                y: targetPos.y
             }
             const time = index
             const id = `${link.source}-${link.target}`
-            if(!link2Array[id]){
-                link2Array[id] = new Array(index+1).fill(0) 
-            }else{
-                while(link2Array[id].length<index+1){
+            if (!link2Array[id]) {
+                link2Array[id] = new Array(index + 1).fill(0)
+            } else {
+                while (link2Array[id].length < index + 1) {
                     link2Array[id].push(0)
                 }
             }
@@ -103,17 +103,17 @@ function assignPos(originData, sumGraphs){
                 id
             }
         })
-        return { nodes, links}
+        return { nodes, links }
     })
 
     const graphLength = originData.length
-    for(let key in node2Array){
-        while(node2Array[key].length<graphLength){
+    for (let key in node2Array) {
+        while (node2Array[key].length < graphLength) {
             node2Array[key].push(0)
         }
     }
-    for(let key in link2Array){
-        while(link2Array[key].length<graphLength){
+    for (let key in link2Array) {
+        while (link2Array[key].length < graphLength) {
             link2Array[key].push(0)
         }
     }
@@ -154,7 +154,3 @@ function union(setA, setB) {
     }
     return _union
 }
-
-
-
-
