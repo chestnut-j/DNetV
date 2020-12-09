@@ -16,7 +16,7 @@ export default class Board extends React.Component {
             relationType: 'appear',
             preColor:'',
             encodingOptions: {
-                encodingType: ['position'],
+                encodingType: ['animation'],
                 visible:{
                     isVisible: true
                 },
@@ -28,14 +28,14 @@ export default class Board extends React.Component {
                     number: 10
                 },
                 animation: {
-                    speed: 12
+                    speed: 800
                 },
                 link:'',
                 glyph:'',
             },
             config: {
-                width: 1000,
-                height: 750,
+                width: 500,
+                height: 500,
                 eachMargin: 20,
                 eachWidth: 180,
                 eachHeight: 180
