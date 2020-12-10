@@ -1,60 +1,73 @@
-import * as d3 from "d3"
-import { NetV } from "./NetV"
-
+import { link, NetV } from './NetV'
+import * as u from './util/dealfun'
 class DNetV {
-    constructor(config, container) {
+    constructor() {
+        this.elements = {}
+        this.nodeSets = new Set()
+        this.linkSets = new Set()
+        // this.nodes = []
+        // this.links = []
+        // this.layout()
+        // this.compareEncode()
+        // this.draw()
+        // this.dealTimeEncode(config.timeEncode, data, config)
+    }
+    initData(data, config) {
+        this.elementsName = ['nodes', 'links'] //元素：点、边
+        this.times = Object.fromEntries(data.map((d) => [d.time, {}])) //时间：key值
         const defaultConfig = {
             width: 1000,
             height: 750,
             padding: 50,
             eachWidth: 200,
-            eachHeight: 200,
+            eachHeight: 200
         }
         Object.assign(config, defaultConfig)
         this.config = config
-        this.oldGraphs = config.graphs
-        this.container = container
-        this.times = Array.from(this.config.graphs.keys())
-        this.graphCompare = this.times.map((time) => {
-            return null
-        })
-        this.initGraph()
-        this.initGraphSets()
-        this.layout()
-        this.compareEncode()
-        this.draw()
+        this.oldData = data
+        let { timeGraphs, nodesSet, linksSet } = u.getTimeId(data)
+        this.timeGraphs = timeGraphs
+        this.nodesSet = nodesSet
+        this.linksSet = linksSet
+        this.timeGraphs = u.getGraphLayout(this.timeGraphs, nodesSet, linksSet) //函数里面直接改了timeGraphs
 
-        // this.dealTimeEncode(config.timeEncode, data, config)
+        // this.graphCompare = this.times.map((time) => {
+        //     return null
+        // })
+        // this.initGraph()
+        // this.initGraphSets()
+        // this.initComparison()
     }
-    compareEncode() {
-        this.config.compareEncode.forEach((d) => {
-            const { times, nodes, keyTime, encode } = d
+    initComparison() {
+        this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyTime: 'next' }])
+    }
+    dealCompareData(configs) {
+        configs.forEach((d) => {
+            const { times, nodes, keyTime } = d
             let timeArr = this.times
-            if (times !== "all") {
+            if (times !== 'all') {
                 timeArr = times
             }
             let nodeSets = this.nodeSets
-            if (nodes !== "all") {
+            if (nodes !== 'all') {
                 nodeSets = new Set(nodes)
             }
-            this.compareData(nodeSets, timeArr, keyTime, encode)
+            this.compareData(nodeSets, timeArr, keyTime)
         })
     }
     initGraphSets() {
-        this.nodeSets = new Set()
-        this.linkSets = new Set()
         this.graphSets = this.graphs.map((graph) => {
             const nodes = new Set(graph.nodes.map((node) => node.id))
             const links = new Set(graph.links.map((link) => link.id))
-            this.nodeSets = this.union(this.nodeSets, nodes)
-            this.linkSets = this.union(this.linkSets, links)
+            this.nodeSets = u.union(this.nodeSets, nodes)
+            this.linkSets = u.union(this.linkSets, links)
             return { nodes, links }
         })
         this.nodes = [...this.nodeSets]
         this.links = [...this.linkSets]
     }
     initGraph() {
-        this.graphs = this.oldGraphs.map((graph, time) => {
+        this.graphs = this.oldData.map((graph, time) => {
             const nodes = graph.nodes.map((node) => {
                 return { ...node, time }
             })
@@ -68,23 +81,20 @@ class DNetV {
             return { nodes, links }
         })
     }
-    compareData(nodeSets, times, keyTime, encode) {
+    compareData(nodeSets, timesArr, keyTime, encode) {
         const dealCompare = (graph, compareGraph) => {
-            const appearNodes = this.intersection(
-                this.difference(graph.nodes, compareGraph.nodes),
+            const appearNodes = u.intersection(
+                u.difference(graph.nodes, compareGraph.nodes),
                 nodeSets
             )
-            const disappearNodes = this.intersection(
-                this.difference(compareGraph.nodes, graph.nodes),
+            const disappearNodes = u.intersection(
+                u.difference(compareGraph.nodes, graph.nodes),
                 nodeSets
             )
-            const appearLinks = this.difference(graph.links, compareGraph.links)
-            const disappearLinks = this.difference(
-                compareGraph.links,
-                graph.links
-            )
+            const appearLinks = u.difference(graph.links, compareGraph.links)
+            const disappearLinks = u.difference(compareGraph.links, graph.links)
             appearLinks.forEach((link) => {
-                const arr = link.split("-")
+                const arr = link.split('-')
                 const source = arr[0]
                 const target = arr[1]
                 if (!nodeSets.has(source) || !nodeSets.has(target)) {
@@ -92,7 +102,7 @@ class DNetV {
                 }
             })
             disappearLinks.forEach((link) => {
-                const arr = link.split("-")
+                const arr = link.split('-')
                 const source = arr[0]
                 const target = arr[1]
                 if (!nodeSets.has(source) || !nodeSets.has(target)) {
@@ -102,16 +112,16 @@ class DNetV {
             const appear = { nodes: appearNodes, links: appearLinks }
             const disappear = {
                 nodes: disappearNodes,
-                links: disappearLinks,
+                links: disappearLinks
             }
             return { appear, disappear }
         }
         let graphCompare = []
-        const newGraphSets = times.map((time) => {
+        const newGraphSets = timesArr.map((time) => {
             graphCompare.push({})
             return this.graphSets[time]
         })
-        if (keyTime === "last") {
+        if (keyTime === 'last') {
             newGraphSets.forEach((graph, index) => {
                 if (index === 0) return null
                 // 前一个图
@@ -121,24 +131,18 @@ class DNetV {
                 graphCompare[index - 1].disappear = disappear
             })
         } else {
-            if ((keyTime = "next")) {
+            if ((keyTime = 'next')) {
                 newGraphSets.forEach((graph, index) => {
                     if (index === newGraphSets.length - 1) return null
                     const compareGraph = newGraphSets[index + 1]
-                    const { appear, disappear } = dealCompare(
-                        graph,
-                        compareGraph
-                    )
+                    const { appear, disappear } = dealCompare(graph, compareGraph)
                     graphCompare[index].appear = appear
                     graphCompare[index + 1].disappear = disappear
                 })
             } else {
                 const graph = this.graphSets[keyTime]
                 newGraphSets.forEach((compareGraph, index) => {
-                    const { appear, disappear } = dealCompare(
-                        graph,
-                        compareGraph
-                    )
+                    const { appear, disappear } = dealCompare(graph, compareGraph)
                     graphCompare[index].appear = appear
                     graphCompare[index].disappear = disappear
                 })
@@ -146,64 +150,58 @@ class DNetV {
         }
         this.graphPos.nodes.forEach((node) => {
             const { time, originId } = node
-            if (
-                graphCompare[time] === null ||
-                graphCompare[time] === undefined
-            ) {
+            if (graphCompare[time] === null || graphCompare[time] === undefined) {
                 return
             }
             if (
-                graphCompare[time].hasOwnProperty("appear") &&
+                graphCompare[time].hasOwnProperty('appear') &&
                 graphCompare[time].appear.nodes.has(originId)
             ) {
                 node.fill = {
                     r: encode.appear.color[0] / 255,
                     g: encode.appear.color[1] / 255,
                     b: encode.appear.color[2] / 255,
-                    a: 1,
+                    a: 1
                 }
             } else {
                 if (
-                    graphCompare[time].hasOwnProperty("disappear") &&
+                    graphCompare[time].hasOwnProperty('disappear') &&
                     graphCompare[time].disappear.nodes.has(originId)
                 ) {
                     node.fill = {
                         r: encode.disappear.color[0] / 255,
                         g: encode.disappear.color[1] / 255,
                         b: encode.disappear.color[2] / 255,
-                        a: 1,
+                        a: 1
                     }
                 }
             }
         })
         this.graphPos.links.forEach((link) => {
             const { time, originId } = link
-            if (
-                graphCompare[time] === null ||
-                graphCompare[time] === undefined
-            ) {
+            if (graphCompare[time] === null || graphCompare[time] === undefined) {
                 return
             }
             if (
-                graphCompare[time].hasOwnProperty("appear") &&
+                graphCompare[time].hasOwnProperty('appear') &&
                 graphCompare[time].appear.links.has(originId)
             ) {
                 link.strokeColor = {
                     r: encode.appear.color[0] / 255,
                     g: encode.appear.color[1] / 255,
                     b: encode.appear.color[2] / 255,
-                    a: 1,
+                    a: 1
                 }
             } else {
                 if (
-                    graphCompare[time].hasOwnProperty("disappear") &&
+                    graphCompare[time].hasOwnProperty('disappear') &&
                     graphCompare[time].disappear.links.has(originId)
                 ) {
                     link.strokeColor = {
                         r: encode.disappear.color[0] / 255,
                         g: encode.disappear.color[1] / 255,
                         b: encode.disappear.color[2] / 255,
-                        a: 1,
+                        a: 1
                     }
                 }
             }
@@ -212,7 +210,7 @@ class DNetV {
     layout() {
         let graphPos = this.dealLayout()
         // await this.end(simulation)
-        console.log("graphPos",graphPos)
+        console.log('graphPos', graphPos)
         this.graphPos = this.assignPos(graphPos)
         return this.graphPos
     }
@@ -242,18 +240,18 @@ class DNetV {
             nodes.push({ id })
         })
         linkSets.forEach((link) => {
-            const s = link.split("-")
+            const s = link.split('-')
             const source = s[0]
             const target = s[1]
             links.push({ source, target })
         })
         d3.forceSimulation(nodes)
             .force(
-                "link",
+                'link',
                 d3.forceLink(links).id((d) => d.id)
             )
-            .force("charge", d3.forceManyBody())
-            .force("center", d3.forceCenter(eachWidth / 2, eachWidth / 2))
+            .force('charge', d3.forceManyBody())
+            .force('center', d3.forceCenter(eachWidth / 2, eachWidth / 2))
             .tick(10)
         return { nodes, links }
     }
@@ -290,7 +288,7 @@ class DNetV {
                     time,
                     originId,
                     originSource,
-                    originTarget,
+                    originTarget
                 }
             })
             sumGraph.nodes = sumGraph.nodes.concat(nodes)
@@ -304,63 +302,34 @@ class DNetV {
                 r: 5,
                 fill: { r: 199 / 255, g: 198 / 255, b: 198 / 255, a: 1 },
                 strokeWidth: 1,
-                strokeColor: { r: 44 / 255, g: 44 / 255, b: 44 / 255, a: 0.5 },
+                strokeColor: { r: 44 / 255, g: 44 / 255, b: 44 / 255, a: 0.5 }
             },
             link: {
                 strokeWidth: 1,
-                strokeColor: { r: 44 / 255, g: 44 / 255, b: 44 / 255, a: 0.5 },
+                strokeColor: { r: 44 / 255, g: 44 / 255, b: 44 / 255, a: 0.5 }
             },
             nodeLimit: 1e6,
-            linkLimit: 1e6,
+            linkLimit: 1e6
         }
         const g = new NetV({
             container: this.container,
             width: this.config.width,
             height: this.config.height,
-            ...configs,
+            ...configs
         })
-        console.log("this.graphPos", this.graphPos)
+        console.log('this.graphPos', this.graphPos)
         g.data(this.graphPos)
         g.draw()
     }
     dealTimeEncode(groups, data, config) {}
     end(simulation) {
         return new Promise((resolve) => {
-            simulation.on("end", resolve)
+            simulation.on('end', resolve)
         })
-    }
-    // 求交集
-    intersection(setA, setB) {
-        let _intersection = new Set(setA)
-        for (let elem of setA) {
-            if (!setB.has(elem)) {
-                _intersection.delete(elem)
-            }
-        }
-        return _intersection
-    }
-    // setA 减去 setB
-    difference(setA, setB) {
-        let _difference = new Set(setA)
-        for (let elem of setB) {
-            _difference.delete(elem)
-        }
-        return _difference
-    }
-    union(setA, setB) {
-        let _union = new Set(setA)
-        for (let elem of setB) {
-            _union.add(elem)
-        }
-        return _union
     }
 }
 
-export default (config, container) => {
-    if (!config.hasOwnProperty("graphs")) {
-        return
-    }
-    const dnetv = new DNetV(config, container)
-    // dnetv.layout()
-    // dnetv.draw()
+export default () => {
+    const dnetv = new DNetV()
+    return dnetv
 }

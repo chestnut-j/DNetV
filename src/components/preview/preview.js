@@ -1,6 +1,7 @@
 import React from 'react'
 import Graph from './graph'
 import { dealData } from '../../util/preview.js'
+import dnetv from './dnetv'
 import TimePositionDnet from '../dnetCharts/timePositionDnet/timePositionDnet.js'
 import TimeAnimationDnet from '../dnetCharts/timeAnimationDnet/timeAnimationDnet.js'
 import TimeChartDnet from '../dnetCharts/timeChartDnet/timeChartDnet.js'
@@ -14,6 +15,7 @@ export default class Preview extends React.Component {
     }
     constructor(props) {
         super(props)
+        this.dnetv = dnetv()
         this.state = { data: [] }
     }
     componentWillReceiveProps(nextProps) {
@@ -24,12 +26,12 @@ export default class Preview extends React.Component {
         // 处理数据，处理完后，有每个图的数据，也有总和图的数据。
         // 依赖画布大小，如果是position的编码方式：是小图。否则是大图的方式
         let width, height
-        if (props.encodingOptions.encodingType === 'position') {
-            width = props.config.eachWidth
-            height = props.config.eachHeight
+        if (this.props.encodingOptions.encodingType.indexOf('position') != -1) {
+            width = this.props.config.eachWidth
+            height = this.props.config.eachHeight
         } else {
-            width = props.config.width
-            height = props.config.height
+            width = this.props.config.width
+            height = this.props.config.height
         }
         // 是否有关键帧，有就和关键帧比较。没有就和前一帧作对比
         const keyFrame = -1
@@ -40,6 +42,7 @@ export default class Preview extends React.Component {
         let sumGraphs = [],
             subGraphs = []
         if (props.jsonfile.graphs) {
+            this.dnetv.initData(props.jsonfile.graphs, {})
             const data = dealData(props.jsonfile.graphs, width, height)
             subGraphs = data.subGraphs
         }

@@ -9,6 +9,7 @@ export default function LinkItem(props){
       y2 = {props.target.y}
       stroke = {props.strokeColor}
       strokeWidth = {`${props.strokeWidth}px`}
+      strokeDasharray = {props.strokeType==='solid'?'':`${props.strokeWidth*2},${props.strokeWidth*2} `}
     >
     </line>
   )
