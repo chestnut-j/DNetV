@@ -5,7 +5,7 @@ import './encoding.css'
 
 const { Option } = Select;
 const colorIndexToName = ['strokeColor', 'fillColor', 'textColor']
-export default class Encoding extends React.Component {
+export default class Encoding extends React.Component {1
     constructor(props) {
         super(props)
         this.state = {
@@ -31,17 +31,6 @@ export default class Encoding extends React.Component {
                 isVisible: value
             }
         })
-    }
-    handleVisibleClick = () => {
-        this.setState(
-            state => ({
-                visible: 'solid',
-                isVisible: true
-            }),
-            () => {
-                this.handleSubmitOptions()
-            }
-        )
     }
     handleInvisibleClick = () => {
         this.setState(
@@ -210,8 +199,8 @@ export default class Encoding extends React.Component {
                     <div className='encoding-item'>
                         <div className="encoding-item-title" >
                             <Button
-                                type={this.props.options.encodingType.indexOf('animaiton') > -1 ? 'primary' : 'default'}
-                                onClick={(e) => { this.handleButtonOnClick('animaiton', e) }}
+                                type={this.props.options.encodingType.indexOf('animation') > -1 ? 'primary' : 'default'}
+                                onClick={(e) => { this.handleButtonOnClick('animation', e) }}
                                 block>
                                 Animaiton
                             </Button>

@@ -9,8 +9,8 @@ export default function TimePositionDnet(props) {
             {props.data.map((dataItem, index) => {
                 return (
                     <NodeLinkGraph
-                        key={index}
                         data={dataItem}
+                        key={`time-position-${index}`}
                         height={props.height}
                         width={props.width}
                         margin={props.margin}

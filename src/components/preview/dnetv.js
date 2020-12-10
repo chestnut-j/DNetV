@@ -14,22 +14,28 @@ class DNetV {
     }
     initData(data, config) {
         this.elementsName = ['nodes', 'links'] //元素：点、边
-        this.times = Object.fromEntries(data.map((d) => [d.time, {}])) //时间：key值
-        const defaultConfig = {
-            width: 1000,
-            height: 750,
-            padding: 50,
-            eachWidth: 200,
-            eachHeight: 200
-        }
-        Object.assign(config, defaultConfig)
+        // this.times = Object.fromEntries(data.map((d) => [d.time, {}])) //时间：key值
+        // const defaultConfig = {
+        //     width: 1000,
+        //     height: 750,
+        //     padding: 50,
+        //     eachWidth: 200,
+        //     eachHeight: 200
+        // }
+        // Object.assign(config, defaultConfig)
         this.config = config
         this.oldData = data
         let { timeGraphs, nodesSet, linksSet } = u.getTimeId(data)
         this.timeGraphs = timeGraphs
         this.nodesSet = nodesSet
         this.linksSet = linksSet
-        this.timeGraphs = u.getGraphLayout(this.timeGraphs, nodesSet, linksSet) //函数里面直接改了timeGraphs
+        this.timeGraphs = u.getGraphLayout(
+            this.timeGraphs,
+            nodesSet,
+            linksSet,
+            this.config.width,
+            this.config.height
+        ) //函数里面直接改了timeGraphs
 
         // this.graphCompare = this.times.map((time) => {
         //     return null

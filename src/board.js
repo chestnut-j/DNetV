@@ -1,41 +1,41 @@
-import React from "react"
-import Data from "./components/data/data.js"
-import Encoding from "./components/encoding/encoding.js"
-import Grammar from "./components/grammar.js"
-import Preview from "./components/preview/preview.js"
-import Relation from "./components/relation/relation.js"
-import Render from "./components/render.js"
-import Template from "./components/template.js"
+import React from 'react'
+import Data from './components/data/data.js'
+import Encoding from './components/encoding/encoding.js'
+import Grammar from './components/grammar.js'
+import Preview from './components/preview/preview.js'
+import Relation from './components/relation/relation.js'
+import Render from './components/render.js'
+import Template from './components/template.js'
 
 export default class Board extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            jsonfile: { },
-            filename:'',
+            jsonfile: {},
+            filename: '',
             relationType: 'appear',
-            preColor:'',
+            preColor: '',
             encodingOptions: {
                 encodingType: ['position'],
-                visible:{
+                visible: {
                     isVisible: true
                 },
                 position: {
                     totalWidth: 1000,
-                    eachWidth: 200,
+                    eachWidth: 200
                 },
                 color: {
                     number: 10
                 },
                 animation: {
-                    speed: 12
+                    speed: 800
                 },
-                link:'',
-                glyph:'',
+                link: '',
+                glyph: ''
             },
             config: {
-                width: 1000,
-                height: 750,
+                width: 500,
+                height: 500,
                 eachMargin: 20,
                 eachWidth: 180,
                 eachHeight: 180
@@ -50,7 +50,7 @@ export default class Board extends React.Component {
                     strokeWidth: 1,
                     strokeType: 'solid',
                     textColor: 'white',
-                    radius: 5,
+                    radius: 5
                 },
                 stableNode: {
                     shape: 'circle',
@@ -73,52 +73,47 @@ export default class Board extends React.Component {
                 appearLink: {
                     strokeColor: 'red',
                     strokeType: 'solid',
-                    strokeWidth: 1,
+                    strokeWidth: 1
                 },
                 stableLink: {
                     strokeColor: '#000000',
                     strokeType: 'solid',
-                    strokeWidth: 1,
+                    strokeWidth: 1
                 },
                 disappearLink: {
                     strokeColor: 'gray',
                     strokeType: 'solid',
-                    strokeWidth: 1,
+                    strokeWidth: 1
                 }
             }
         }
-
     }
     handleSubmitFromGrammar = (file) => {
-        if (!file) return;
-        this.setState(
-          {
+        if (!file) return
+        this.setState({
             jsonfile: file.jsonData,
             filename: file.filename
-          }
-        )
-      }
+        })
+    }
     handleSubmitFromData = (file) => {
-        if (!file) return;
+        if (!file) return
         // console.log("handleSubmitFromData-file",file);
-        this.setState(
-            {
-                jsonfile: file.jsonData,
-                filename: file.filename
-            }
-        )
+        this.setState({
+            jsonfile: file.jsonData,
+            filename: file.filename
+        })
     }
     handleSubmitFromRelation = (value) => {
-        if(!value) return;
+        if (!value) return
         this.setState({
             relationOptions: {
-               ...this.state.relationOptions,
-               ...value
+                ...this.state.relationOptions,
+                ...value
             }
         })
-      }
+    }
     handleSubmitFromEncoding = (value) => {
-        if(!value) return;
+        if (!value) return
         this.setState({
             encodingOptions: {
                 ...this.state.encodingOptions,
@@ -132,7 +127,7 @@ export default class Board extends React.Component {
         this.setState({
             config: renderConfig
         })
-        console.log("change config",this.state.config)
+        console.log('change config', this.state.config)
     }
     render() {
         const grammarOptions = {
@@ -145,18 +140,19 @@ export default class Board extends React.Component {
                 <div className="row">
                     <div className="col">
                         <Data onSubmit={this.handleSubmitFromData} />
-                        <Relation 
-                            options={this.state.relationOptions} 
+                        <Relation
+                            options={this.state.relationOptions}
                             onSubmit={this.handleSubmitFromRelation}
                         />
                     </div>
                     <div className="col">
-                        <Encoding 
-                            preColor={this.state.preColor} 
-                            options={this.state.encodingOptions} 
+                        <Encoding
+                            preColor={this.state.preColor}
+                            options={this.state.encodingOptions}
                             relationOptions={this.state.relationOptions}
                             onSubmitToRelation={this.handleSubmitFromRelation}
-                            onSubmit={this.handleSubmitFromEncoding}/>
+                            onSubmit={this.handleSubmitFromEncoding}
+                        />
                     </div>
                     <div className="col">
                         <Grammar options={grammarOptions} onSubmit={this.handleSubmitFromGrammar} />
@@ -164,14 +160,17 @@ export default class Board extends React.Component {
 
                     <div className="col">
                         <div className="row">
-                            <Render onChangeConfig={this.handleChangeRenderConfig} style={{ float: "left" }} />
-                            <Template style={{ float: "left" }} />
+                            <Render
+                                onChangeConfig={this.handleChangeRenderConfig}
+                                style={{ float: 'left' }}
+                            />
+                            <Template style={{ float: 'left' }} />
                         </div>
-                        <Preview 
-                            jsonfile={this.state.jsonfile} 
-                            encodingOptions={this.state.encodingOptions} 
+                        <Preview
+                            jsonfile={this.state.jsonfile}
+                            encodingOptions={this.state.encodingOptions}
                             relationOptions={this.state.relationOptions}
-                            config = {this.state.config} 
+                            config={this.state.config}
                         />
                     </div>
                 </div>
