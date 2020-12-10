@@ -2,6 +2,8 @@ import React from "react"
 
 import NodeItem from '../nodeItem/nodeItem.js'
 import LinkItem from '../linkItem/linkItem.js'
+import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
+
 
 const defaultConfig = {
   width: 300,
@@ -142,7 +144,11 @@ export default function NodeLinkGraph(props) {
             <g>
               {
                 data.nodes.map(v=>{
-                  return <NodeItem {...config[v.comparisonType ? v.comparisonType : 'stableNode']} {...v} key = {v.id}/>
+                  return <>
+                    <HalfNodeItem {...config[v.comparisonType ? v.comparisonType : 'appearNode']} {...v} key = {`left-${v.id}`} direction={'left'}/>
+                    <HalfNodeItem {...config[v.comparisonType ? v.comparisonType : 'disappearNode']} {...v} key = {`right-${v.id}`} direction={'right'}/>
+                  </>
+                  // return <NodeItem {...config[v.comparisonType ? v.comparisonType : 'stableNode']} {...v} key = {v.id}/>
                 })
               }
             </g>
