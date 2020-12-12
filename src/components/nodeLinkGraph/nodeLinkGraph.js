@@ -138,7 +138,7 @@ export default function NodeLinkGraph(props) {
                     {Object.values(data.links).map((v) => {
                         return (
                             <LinkItem
-                                {...config[v.comparisonType ? v.comparisonType : 'stableLink']}
+                                {...config[v.status ? `${v.status}Link` : 'stableLink']}
                                 {...v}
                                 key={v.timeId}
                             />
@@ -149,7 +149,7 @@ export default function NodeLinkGraph(props) {
                     {Object.values(data.nodes).map((v) => {
                         return (
                             <NodeItem
-                                {...config[v.comparisonType ? v.comparisonType : 'stableNode']}
+                                {...config[v.status ? `${v.status}Node` : 'stableNode']}
                                 {...v}
                                 key={v.timeId}
                             />
