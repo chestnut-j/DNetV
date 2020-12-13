@@ -159,13 +159,14 @@ export const getCompareData = (timeGraphSet, nodeSet, linkSet, keyTime, timeGrap
         }
     }
     timeArr.forEach((time) => {
-        Object.keys(result[time]).forEach((statue) => {
-            const { nodes, links } = result[time][statue]
-            nodes.forEach((id) => (timeGraphs[time].nodes[id].statue = statue))
-            links.forEach((id) => (timeGraphs[time].links[id].statue = statue))
+        Object.keys(result[time]).forEach((status) => {
+            const { nodes, links } = result[time][status]
+            nodes.forEach((id) => (timeGraphs[time].nodes[id].status = status))
+            links.forEach((id) => (timeGraphs[time].links[id].status = status))
         })
     })
     return timeGraphs
+    /*
     this.graphPos.nodes.forEach((node) => {
         const { time, originId } = node
         if (graphCompare[time] === null || graphCompare[time] === undefined) {
@@ -224,4 +225,5 @@ export const getCompareData = (timeGraphSet, nodeSet, linkSet, keyTime, timeGrap
             }
         }
     })
+    */
 }

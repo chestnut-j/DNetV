@@ -89,11 +89,11 @@ export default class Encoding extends React.Component {1
     }
     handleStrokeWidthChange = (e) => {
         const { value } = e.target
-        this.changeElementStyle({ strokeWidth: value })
+        this.changeElementStyle({ strokeWidth: Number(value) })
     }
     handleRadiusChange = (e) => {
         const { value } = e.target
-        this.changeElementStyle({ radius: value })
+        this.changeElementStyle({ radius: Number(value) })
     }
     handleElementColorChange = (colorCode, index) => {
         this.changeElementStyle({ [colorIndexToName[index]]: colorCode.hex })

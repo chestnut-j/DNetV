@@ -31,12 +31,14 @@ export default function Preview(props) {
     useEffect(() => {
         if (props.jsonfile.graphs) {
             let data = dnetv()
+            console.log("props.jsonfile.graphs", props.jsonfile.graphs)
             data.initData(props.jsonfile.graphs, { width, height })
             console.log(data.timeGraphs)
             // const d = dealData(props.jsonfile.graphs, width, height)
             setSubGraphs(Object.values(data.timeGraphs))
             // setSubGraphs(data.subGraphs)
             // setSumGraphs(data.sumGraphs)
+            console.log("-----setSubGraphs----", subGraphs)
         }
     }, [width, height, props.jsonfile.graphs])
 
@@ -53,7 +55,6 @@ export default function Preview(props) {
         props.encodingOptions.encodingType[0],
         props.jsonfile.graphs
     ])
-
     return (
         <div className="preview-box">
             <div className="sub-title">
