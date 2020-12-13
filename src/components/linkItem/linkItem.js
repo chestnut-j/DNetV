@@ -3,6 +3,7 @@ import React from 'react'
 export default function LinkItem(props) {
     return (
         <line
+            id={props.timeId}
             x1={props.source.x}
             y1={props.source.y}
             x2={props.target.x}
