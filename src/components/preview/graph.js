@@ -1,5 +1,5 @@
-import React from "react"
-import DNetV from "./dnetv"
+import React from 'react'
+import DNetV from './dnetv'
 import NodeLinkGraph from '../nodeLinkGraph/nodeLinkGraph.js'
 
 var graphs
@@ -29,13 +29,15 @@ export default class Graph extends React.Component {
     //     return <div id="graph" className="graph"></div>
     // }
     render() {
-        return <div id="graph" className="graph">
-            {/* <NodeLinkGraph></NodeLinkGraph>
+        return (
+            <div id="graph" className="graph">
+                {/* <NodeLinkGraph></NodeLinkGraph>
             <NodeLinkGraph></NodeLinkGraph>
             <NodeLinkGraph></NodeLinkGraph>
             <NodeLinkGraph></NodeLinkGraph>
             <NodeLinkGraph></NodeLinkGraph>
             <NodeLinkGraph></NodeLinkGraph> */}
-        </div>
+            </div>
+        )
     }
 }

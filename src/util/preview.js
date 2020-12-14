@@ -131,14 +131,13 @@ function assignPos(originData, sumGraphs) {
 
 // 将对象数据转化为数组数据
 export function converObject2Array(data) {
-    return Object.values(data).map(v=>{
+    return Object.values(data).map((v) => {
         return {
             links: Object.values(v.links),
             nodes: Object.values(v.nodes)
         }
     })
-}   
-
+}
 
 // 求交集
 function intersection(setA, setB) {

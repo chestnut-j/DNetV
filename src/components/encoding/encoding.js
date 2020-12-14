@@ -6,7 +6,6 @@ import './encoding.css'
 const { Option } = Select
 const colorIndexToName = ['strokeColor', 'fillColor', 'textColor']
 export default class Encoding extends React.Component {
-    1
     constructor(props) {
         super(props)
         this.state = {

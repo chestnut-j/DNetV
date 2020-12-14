@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { link } from '../NetV'
+// import { link } from '../NetV'
 export const _intersection = (setA, setB) => {
     let intersection = new Set(setA)
     for (let elem of setA) {
@@ -137,7 +137,7 @@ export const getCompareData = (timeGraphSet, nodeSet, linkSet, keyTime, timeGrap
             result[lastTime].stable = stable
         })
     } else {
-        if ((keyTime = 'next')) {
+        if (keyTime === 'next') {
             timeArr.forEach((time, index) => {
                 if (index === timeArr.length - 1) return
                 const graphSet = timeGraphSet[time]
@@ -154,7 +154,7 @@ export const getCompareData = (timeGraphSet, nodeSet, linkSet, keyTime, timeGrap
                 result[time].stable = stable
             })
         } else {
-            timeArr.forEach((time, index) => {
+            timeArr.forEach((time) => {
                 const graphSet = timeGraphSet[time]
                 result[time] = _dealCompare(graphSet, timeGraphSet[keyTime], nodeSet, linkSet)
             })

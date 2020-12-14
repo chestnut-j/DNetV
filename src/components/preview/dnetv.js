@@ -1,4 +1,4 @@
-import { link, NetV } from './NetV'
+// import { link, NetV } from './NetV'
 import * as u from './util/dealfun'
 class DNetV {
     constructor() {
@@ -53,7 +53,7 @@ class DNetV {
             u.getCompareData(timeGraphSet, nodeSet, linkSet, keyTime, this.timeGraphs) //函数里面直接改了timeGraphs
         })
     }
-    dealTimeEncode(groups, data, config) {}
+    // dealTimeEncode(groups, data, config) {}
     end(simulation) {
         return new Promise((resolve) => {
             simulation.on('end', resolve)

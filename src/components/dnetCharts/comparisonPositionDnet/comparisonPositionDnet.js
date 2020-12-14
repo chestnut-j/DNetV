@@ -1,9 +1,5 @@
-import React from "react"
+import React from 'react'
 
 export default function ComparisonPositionDnet(props) {
-
-
-  return (
-    <div>ComparisonPositionDnet</div>
-  )
+    return <div>ComparisonPositionDnet</div>
 }

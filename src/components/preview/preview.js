@@ -20,7 +20,7 @@ export default function Preview(props) {
 
     // 数据更新时重新计算
     useEffect(() => {
-        if (props.encodingOptions.encodingType.indexOf('position') != -1) {
+        if (props.encodingOptions.encodingType.indexOf('position') !== -1) {
             setWidth(props.config.eachWidth)
             setHeight(props.config.eachHeight)
         } else {
