@@ -33,11 +33,10 @@ export default function Preview(props) {
             let data = dnetv()
             data.initData(props.jsonfile.graphs, { width, height })
             setSubGraphs(converObject2Array(data.timeGraphs))
-
+            console.log('-----setSubGraphs----', data.timeGraphs)
             // const data = dealData(props.jsonfile.graphs, width, height)
             // setSubGraphs(data.subGraphs)
             // setSumGraphs(data.sumGraphs)
-            // console.log("-----setSubGraphs----", subGraphs)
         }
     }, [width, height, props.jsonfile.graphs])
 

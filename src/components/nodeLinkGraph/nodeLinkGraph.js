@@ -4,7 +4,6 @@ import NodeItem from '../nodeItem/nodeItem.js'
 import LinkItem from '../linkItem/linkItem.js'
 import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
-
 const defaultConfig = {
     width: 300,
     height: 300,
@@ -118,7 +117,7 @@ const tempData = {
 export default function NodeLinkGraph(props) {
     // console.log("props",props)
     const { config, data, width, height, margin } = props
-    console.log("----NodeLinkGraph----data---links---", data.links)
+    console.log('----NodeLinkGraph----data---links---', data.links)
     return (
         <div
             className="nlg-container"
@@ -137,25 +136,13 @@ export default function NodeLinkGraph(props) {
             >
                 <g>
                     {data.links.map((v) => {
-                        console.log("----v.timeId---vvvv----", v.timeId, v.target.x, v.source.x)
-                        return (
-                            <LinkItem
-                                {...config[v.status ? `${v.status}Link` : 'stableLink']}
-                                {...v}
-                                key={`link-${v.timeId}`}
-                            />
-                        )
+                        console.log('----v.timeId---vvvv----', v.timeId, v.target.x, v.source.x)
+                        return <LinkItem {...config[v.status[0]]} {...v} key={`link-${v.timeId}`} />
                     })}
                 </g>
                 <g>
                     {data.nodes.map((v) => {
-                        return (
-                            <NodeItem
-                                {...config[v.status ? `${v.status}Node` : 'stableNode']}
-                                {...v}
-                                key={`node-${v.timeId}`}
-                            />
-                        )
+                        return <NodeItem {...config[v.status[0]]} {...v} key={`node-${v.timeId}`} />
                     })}
                 </g>
             </svg>

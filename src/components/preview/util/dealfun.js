@@ -37,7 +37,7 @@ export const getTimeId = (graphs) => {
         graph.nodes.forEach((node) => {
             const id = node.id
             const timeId = `${time}-${id}`
-            timeGraphs[time].nodes[id] = { id, timeId, time }
+            timeGraphs[time].nodes[id] = { id, timeId, time, status: new Set(['stableNode']) }
             timeGraphSet[time].nodes.add(id)
             nodeSet.add(id)
         })
@@ -58,7 +58,8 @@ export const getTimeId = (graphs) => {
                 target,
                 sourceTimeId,
                 targetTimeId,
-                time
+                time,
+                status: new Set(['stableLink'])
             }
             linkSet.add(id)
             timeGraphSet[time].links.add(id)
@@ -162,9 +163,11 @@ export const getCompareData = (timeGraphSet, nodeSet, linkSet, keyTime, timeGrap
     timeArr.forEach((time) => {
         Object.keys(result[time]).forEach((status) => {
             const { nodes, links } = result[time][status]
-            nodes.forEach((id) => (timeGraphs[time].nodes[id].status = status))
-            links.forEach((id) => (timeGraphs[time].links[id].status = status))
+            nodes.forEach((id) => timeGraphs[time].nodes[id].status.add(status + 'Node'))
+            links.forEach((id) => timeGraphs[time].links[id].status.add(status + 'Link'))
         })
+        Object.values(timeGraphs[time].nodes).forEach((node) => (node.status = [...node.status]))
+        Object.values(timeGraphs[time].links).forEach((link) => (link.status = [...link.status]))
     })
     return timeGraphs
     /*
