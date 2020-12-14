@@ -5,10 +5,10 @@ export default function LinkItem(props) {
     return (
         <line
             id={props.timeId}
-            x1={props.source.x}
-            y1={props.source.y}
-            x2={props.target.x}
-            y2={props.target.y}
+            x1={props.source.x + (props.xOffset ? props.xOffset : 0)}
+            y1={props.source.y + (props.yOffset ? props.yOffset : 0)}
+            x2={props.target.x + (props.xOffset ? props.xOffset : 0)}
+            y2={props.target.y + (props.yOffset ? props.yOffset : 0)}
             stroke={props.strokeColor}
             strokeWidth={`${props.strokeWidth}px`}
             strokeDasharray={

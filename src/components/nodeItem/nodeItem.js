@@ -5,8 +5,8 @@ export default function NodeItem(props) {
         return (
             <circle
                 id={props.timeId}
-                cx={props.x}
-                cy={props.y}
+                cx={props.x + (props.xOffset ? props.xOffset : 0)}
+                cy={props.y + (props.yOffset ? props.yOffset : 0)}
                 fill={props.fillColor}
                 stroke={props.strokeColor}
                 strokeWidth={`${props.strokeWidth}px`}
@@ -20,8 +20,8 @@ export default function NodeItem(props) {
         return (
             <rect
                 id={props.timeId}
-                x={props.x - props.radius}
-                y={props.y - props.radius}
+                x={props.x + (props.xOffset ? props.xOffset : 0) - props.radius}
+                y={props.y + (props.yOffset ? props.yOffset : 0) - props.radius}
                 fill={props.fillColor}
                 stroke={props.strokeColor}
                 strokeWidth={`${props.strokeWidth}px`}

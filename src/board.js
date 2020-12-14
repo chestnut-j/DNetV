@@ -22,7 +22,7 @@ export default class Board extends React.Component {
                 },
                 position: {
                     totalWidth: 1000,
-                    eachWidth: 200
+                    eachWidth: 500
                 },
                 color: {
                     number: 10
@@ -34,11 +34,11 @@ export default class Board extends React.Component {
                 glyph: ''
             },
             config: {
-                width: 500,
-                height: 500,
+                width: 1000,
+                height: 730,
                 eachMargin: 20,
-                eachWidth: 180,
-                eachHeight: 180
+                eachWidth: 200,
+                eachHeight: 200
             },
             relationOptions: {
                 taskType: 'Time',
