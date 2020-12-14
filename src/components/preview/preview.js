@@ -3,6 +3,7 @@ import Graph from './graph'
 import { dealData, converObject2Array } from '../../util/preview.js'
 import TimePositionDnet from '../dnetCharts/timePositionDnet/timePositionDnet.js'
 import TimeAnimationDnet from '../dnetCharts/timeAnimationDnet/timeAnimationDnet.js'
+import TimeColorDnet from '../dnetCharts/timeColorDnet/timeColorDnet.js'
 import TimeChartDnet from '../dnetCharts/timeChartDnet/timeChartDnet.js'
 import ComparisonPositionDnet from '../dnetCharts/comparisonPositionDnet/comparisonPositionDnet.js'
 import ComparisonAnimationDnet from '../dnetCharts/comparisonAnimationDnet/comparisonAnimationDnet.js'
@@ -85,6 +86,16 @@ export default function Preview(props) {
                                 margin={props.config.eachMargin}
                             />
                         )
+                    case 'Time-color':
+                        return (
+                            <TimeColorDnet
+                                data={subGraphs}
+                                comparisonOptions={props.relationOptions}
+                                width={width}
+                                height={height}
+                                margin={props.config.eachMargin}
+                            />
+                        )
                     case 'Time-chart':
                         return <TimeChartDnet />
                     case 'Comparison-position':
@@ -95,11 +106,6 @@ export default function Preview(props) {
                         return null
                 }
             })()}
-            <Graph
-                jsonfile={props.jsonfile}
-                encodingOptions={props.encodingOptions}
-                relationOptions={props.relationOptions}
-            />
         </div>
     )
 }
