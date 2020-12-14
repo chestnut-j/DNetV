@@ -43,7 +43,6 @@ export default class Encoding extends React.Component {
         this.setState({
             colorPickerDisplay: !this.state.colorPickerDisplay
         })
-        console.log('display', this.state.colorPickerDisplay)
     }
     handleColorChange = (colorCode) => {
         this.setState(
@@ -60,7 +59,6 @@ export default class Encoding extends React.Component {
         }
     }
     handleButtonOnClick(type, event) {
-        console.log('handleButtonOnClick(type, event)', type, event)
         const tempArr = [...this.props.options.encodingType]
         const tempIndex = tempArr.indexOf(type)
         if (tempIndex === -1) {

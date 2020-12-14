@@ -15,7 +15,6 @@ export default function TimeAnimationDnet(props) {
         // 切换数据后暂停，帧号归零
         setPlayOrPause(false)
         setFrameIndex(0)
-        console.log('props---useEffect')
         setTimeout(() => {
             // 将playOrPause改成true会自动播放动画，所以不用去单独执行controlAnimation函数
             setPlayOrPause(true)
@@ -47,12 +46,11 @@ export default function TimeAnimationDnet(props) {
             if (playOrPause) {
                 const len = props.data.length
                 const nextFrame = (frameIndex + 1) % len
-                console.log('controlAnimation----nextFrame', nextFrame)
                 setFrameIndex(nextFrame)
             }
         }, props.speed)
     }
-
+    // console.log("-----comparisonOptions---", props.comparisonOptions)
     return props.data[frameIndex] ? (
         <div className="TimeAnimationDnet graph">
             <NodeLinkGraph
@@ -60,16 +58,15 @@ export default function TimeAnimationDnet(props) {
                 height={props.height}
                 width={props.width}
                 margin={props.margin}
-                config={props.comparisonOptions}
+                comparisonOptions={props.comparisonOptions}
             />
             <div className="tad-control-container">
                 {playOrPause ? (
                     <PauseCircleOutlined className="tad-control-icon" onClick={handlePlayOrPause} />
                 ) : (
-                    <PlayCircleOutlined className="tad-control-icon" onClick={handlePlayOrPause} />
-                )}
+                        <PlayCircleOutlined className="tad-control-icon" onClick={handlePlayOrPause} />
+                    )}
                 <Slider
-                    // marks={marks}
                     style={{
                         width: '150px',
                         marginLeft: '20px'

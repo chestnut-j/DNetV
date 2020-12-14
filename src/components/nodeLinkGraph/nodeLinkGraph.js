@@ -1,123 +1,11 @@
 import React from 'react'
+import NodeItemContainer from '../nodeItemContainer/nodeItemContainer.js'
+import LinkItemContainer from '../linkItemContainer/linkItemContainer.js'
 
-import NodeItem from '../nodeItem/nodeItem.js'
-import LinkItem from '../linkItem/linkItem.js'
-import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
-
-const defaultConfig = {
-    width: 300,
-    height: 300,
-    margin: 10,
-    appearNode: {
-        shape: 'circle',
-        fillColor: '#FFFFFF',
-        strokeColor: '#000000',
-        strokeWidth: 1,
-        strokeType: 'solid',
-        textColor: 'white',
-        radius: 5
-    },
-    appearLink: {
-        strokeColor: '#000000',
-        strokeType: 'solid',
-        strokeWidth: 1
-    },
-    stableNode: {
-        shape: 'circle',
-        fillColor: '#FFFFFF',
-        strokeColor: '#000000',
-        strokeWidth: 1,
-        strokeType: 'solid',
-        textColor: 'white',
-        radius: 5
-    },
-    stableLink: {
-        strokeColor: '#000000',
-        strokeType: 'solid',
-        strokeWidth: 1
-    },
-    disappearNode: {
-        shape: 'circle',
-        fillColor: '#FFFFFF',
-        strokeColor: '#000000',
-        strokeWidth: 1,
-        strokeType: 'solid',
-        textColor: 'white',
-        radius: 5
-    },
-    disappearLink: {
-        strokeColor: '#000000',
-        strokeType: 'solid',
-        strokeWidth: 1
-    }
-}
-const tempData = {
-    links: [
-        {
-            id: '1234-0',
-            originId: '1234-1235',
-            time: 0,
-            source: {
-                id: '1234',
-                x: 120,
-                y: 120
-            },
-            target: {
-                id: '1235',
-                x: 10,
-                y: 110
-            },
-            comparisonType: 'appearLink'
-        },
-        {
-            id: '12-0',
-            originId: '1234-1236',
-            time: 0,
-            source: {
-                id: '1234',
-                x: 120,
-                y: 120
-            },
-            target: {
-                id: '1236',
-                x: 50,
-                y: 160
-            },
-            comparisonType: 'disappearLink'
-        }
-    ],
-    nodes: [
-        {
-            id: '1234-0',
-            originId: '1234',
-            time: 0,
-            x: 120,
-            y: 120,
-            comparisonType: 'stableNode'
-        },
-        {
-            id: '1235-0',
-            originId: '1235',
-            time: 0,
-            x: 10,
-            y: 110,
-            comparisonType: 'appearNode'
-        },
-        {
-            id: '1236-0',
-            originId: '1236',
-            time: 0,
-            x: 50,
-            y: 160,
-            comparisonType: 'disappearNode'
-        }
-    ]
-}
+// import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
 export default function NodeLinkGraph(props) {
-    // console.log("props",props)
-    const { config, data, width, height, margin } = props
-    console.log('----NodeLinkGraph----data---links---', data.links)
+    const { comparisonOptions, data, width, height, margin } = props
     return (
         <div
             className="nlg-container"
@@ -136,13 +24,20 @@ export default function NodeLinkGraph(props) {
             >
                 <g>
                     {data.links.map((v) => {
-                        console.log('----v.timeId---vvvv----', v.timeId, v.target.x, v.source.x)
-                        return <LinkItem {...config[v.status[0]]} {...v} key={`link-${v.timeId}`} />
+                        return <LinkItemContainer 
+                            comparisonOptions = {comparisonOptions}
+                            {...v}
+                            key={`link-${v.timeId}`}
+                        />
                     })}
                 </g>
                 <g>
                     {data.nodes.map((v) => {
-                        return <NodeItem {...config[v.status[0]]} {...v} key={`node-${v.timeId}`} />
+                        return < NodeItemContainer
+                            comparisonOptions = {comparisonOptions}
+                            {...v}
+                            key={`node-${v.timeId}`}
+                        />
                     })}
                 </g>
             </svg>

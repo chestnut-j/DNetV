@@ -1,12 +1,11 @@
 import React from 'react'
-import NodeItem from '../../nodeItem/nodeItem.js'
-import LinkItem from '../../linkItem/linkItem.js'
+import NodeItemContainer from '../../nodeItemContainer/nodeItemContainer.js'
+import LinkItemContainer from '../../linkItemContainer/linkItemContainer.js'
 
 export default function TimePositionDnet(props) {
     const { data, height, width, margin, comparisonOptions } = props
     const len = data.length
     if (len === 0) return null
-    console.log('TimePositionDnet----props', props)
     return (
         <div
             style={{
@@ -32,8 +31,8 @@ export default function TimePositionDnet(props) {
                             <g>
                                 {dataItem.links.map((v) => {
                                     return (
-                                        <LinkItem
-                                            {...comparisonOptions[v.status[0]]}
+                                        <LinkItemContainer 
+                                            comparisonOptions = {comparisonOptions}
                                             {...v}
                                             key={`link-${v.timeId}`}
                                         />
@@ -43,8 +42,8 @@ export default function TimePositionDnet(props) {
                             <g>
                                 {dataItem.nodes.map((v) => {
                                     return (
-                                        <NodeItem
-                                            {...comparisonOptions[v.status[0]]}
+                                        <NodeItemContainer
+                                            comparisonOptions = {comparisonOptions}
                                             {...v}
                                             key={`node-${v.timeId}`}
                                         />
