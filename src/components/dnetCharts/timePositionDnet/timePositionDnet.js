@@ -8,13 +8,14 @@ export default function TimePositionDnet(props) {
     if (len === 0) return null
     console.log('TimePositionDnet----props', props)
     return (
-        <div 
+        <div
             style={{
                 width: '100%',
                 height: '730px',
-                overflowX: 'auto',
+                overflowX: 'auto'
             }}
-            className="TimePositionDnet">
+            className="TimePositionDnet"
+        >
             <svg
                 className="nlg-container-svg"
                 width={`${width * len + margin * (len - 1)}px`}
@@ -24,12 +25,15 @@ export default function TimePositionDnet(props) {
             >
                 {data.map((dataItem, index) => {
                     return (
-                        <g key={`subGraph-${index}`} transform={`translate(${index * width + index * margin},0)`}>
+                        <g
+                            key={`subGraph-${index}`}
+                            transform={`translate(${index * width + index * margin},0)`}
+                        >
                             <g>
                                 {dataItem.links.map((v) => {
                                     return (
                                         <LinkItem
-                                            {...comparisonOptions[v.status ? `${v.status}Link` : 'stableLink']}
+                                            {...comparisonOptions[v.status[0]]}
                                             {...v}
                                             key={`link-${v.timeId}`}
                                         />
@@ -40,7 +44,7 @@ export default function TimePositionDnet(props) {
                                 {dataItem.nodes.map((v) => {
                                     return (
                                         <NodeItem
-                                            {...comparisonOptions[v.status ? `${v.status}Node` : 'stableNode']}
+                                            {...comparisonOptions[v.status[0]]}
                                             {...v}
                                             key={`node-${v.timeId}`}
                                         />
