@@ -118,6 +118,7 @@ const tempData = {
 export default function NodeLinkGraph(props) {
     // console.log("props",props)
     const { config, data, width, height, margin } = props
+    console.log("----NodeLinkGraph----data---links---", data.links)
     return (
         <div
             className="nlg-container"
@@ -135,23 +136,24 @@ export default function NodeLinkGraph(props) {
                 preserveAspectRatio="xMinYMin"
             >
                 <g>
-                    {Object.values(data.links).map((v) => {
+                    {data.links.map((v) => {
+                        console.log("----v.timeId---vvvv----", v.timeId, v.target.x, v.source.x)
                         return (
                             <LinkItem
                                 {...config[v.status ? `${v.status}Link` : 'stableLink']}
                                 {...v}
-                                key={v.timeId}
+                                key={`link-${v.timeId}`}
                             />
                         )
                     })}
                 </g>
                 <g>
-                    {Object.values(data.nodes).map((v) => {
+                    {data.nodes.map((v) => {
                         return (
                             <NodeItem
                                 {...config[v.status ? `${v.status}Node` : 'stableNode']}
                                 {...v}
-                                key={v.timeId}
+                                key={`node-${v.timeId}`}
                             />
                         )
                     })}

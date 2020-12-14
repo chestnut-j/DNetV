@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function LinkItem(props) {
+    // console.log("------source---target----f--", props.source, props.target)
     return (
         <line
             x1={props.source.x}

@@ -87,6 +87,7 @@ export const getGraphLayout = (timeGraphs, nodeSet, linkSet, width, height) => {
         .force('charge', d3.forceManyBody())
         .force('center', d3.forceCenter(width / 2, height / 2))
         .tick(10)
+        .stop()
     const layoutNodes = Object.fromEntries(nodes.map((d) => [d.id, d]))
     const layoutLinks = Object.fromEntries(links.map((d) => [d.id, d]))
     Object.values(timeGraphs).forEach((graph) => {
