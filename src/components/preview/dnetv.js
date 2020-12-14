@@ -36,9 +36,7 @@ class DNetV {
         // })
         // this.initGraph()
         // this.initGraphSets()
-        this.CompareState = this.dealCompareData([
-            { times: 'all', nodes: 'all', links: 'all', keyTime: 'last' }
-        ])
+        this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyTime: 'next' }]) //函数里面直接改了timeGraphs
     }
     dealCompareData(configs) {
         configs.forEach((d) => {
@@ -52,7 +50,7 @@ class DNetV {
                     timeGraphSet[time] = this.timeGraphSet[time]
                 }
             })
-            u.getCompareData(timeGraphSet, nodeSet, linkSet, keyTime, this.timeGraphs)
+            u.getCompareData(timeGraphSet, nodeSet, linkSet, keyTime, this.timeGraphs) //函数里面直接改了timeGraphs
         })
     }
     dealTimeEncode(groups, data, config) {}

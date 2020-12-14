@@ -13,7 +13,6 @@ export default function Preview(props) {
     const [width, setWidth] = useState(props.config.width)
     const [height, setHeight] = useState(props.config.height)
     const [subGraphs, setSubGraphs] = useState([])
-    const [sumGraphs, setSumGraphs] = useState({})
     const [renderType, setRenderType] = useState(
         `${props.relationOptions.taskType}-${props.encodingOptions.encodingType[0]}`
     )

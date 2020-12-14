@@ -4,6 +4,7 @@ export default function LinkItem(props) {
     // console.log("------source---target----f--", props.source, props.target)
     return (
         <line
+            id={props.timeId}
             x1={props.source.x}
             y1={props.source.y}
             x2={props.target.x}
