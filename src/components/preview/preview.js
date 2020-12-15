@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import Graph from './graph'
-import { dealData, converObject2Array } from '../../util/preview.js'
+import { converObject2Array } from '../../util/preview.js'
 import TimePositionDnet from '../dnetCharts/timePositionDnet/timePositionDnet.js'
 import TimeAnimationDnet from '../dnetCharts/timeAnimationDnet/timeAnimationDnet.js'
 import TimeColorDnet from '../dnetCharts/timeColorDnet/timeColorDnet.js'
@@ -36,13 +35,6 @@ export default function Preview(props) {
             data.initData(props.jsonfile.graphs, { width, height })
             setSubGraphs(converObject2Array(data.timeGraphs))
             setSumGraphs(data.sumGraphs)
-            // console.log("--data.sumGraphs--", data.sumGraphs)
-            // console.log('-----setSubGraphs----', data.timeGraphs)
-            // const data = dealData(props.jsonfile.graphs, width, height)
-            // setSubGraphs(data.subGraphs)
-            // setSumGraphs(data.sumGraphs)
-
-            // console.log('-----setSubGraphs----', data.timeGraphs)
         }
     }, [width, height, props.jsonfile.graphs])
 
