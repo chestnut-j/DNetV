@@ -16,7 +16,7 @@ export default class Board extends React.Component {
             relationType: 'appear',
             preColor: '',
             encodingOptions: {
-                encodingType: ['position'],
+                encodingType: ['color'],
                 visible: {
                     isVisible: true
                 },

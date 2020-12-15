@@ -14,6 +14,7 @@ export default function Preview(props) {
     const [width, setWidth] = useState(props.config.width)
     const [height, setHeight] = useState(props.config.height)
     const [subGraphs, setSubGraphs] = useState([])
+    const [sumGraphs, setSumGraphs] = useState({})
     const [renderType, setRenderType] = useState(
         `${props.relationOptions.taskType}-${props.encodingOptions.encodingType[0]}`
     )
@@ -34,11 +35,14 @@ export default function Preview(props) {
             let data = dnetv()
             data.initData(props.jsonfile.graphs, { width, height })
             setSubGraphs(converObject2Array(data.timeGraphs))
+            setSumGraphs(data.sumGraphs)
+            // console.log("--data.sumGraphs--", data.sumGraphs)
             // console.log('-----setSubGraphs----', data.timeGraphs)
             // const data = dealData(props.jsonfile.graphs, width, height)
             // setSubGraphs(data.subGraphs)
             // setSumGraphs(data.sumGraphs)
-            console.log('-----setSubGraphs----', data.timeGraphs)
+
+            // console.log('-----setSubGraphs----', data.timeGraphs)
         }
     }, [width, height, props.jsonfile.graphs])
 
@@ -89,7 +93,8 @@ export default function Preview(props) {
                     case 'Time-color':
                         return (
                             <TimeColorDnet
-                                data={subGraphs}
+                                len={subGraphs.length}
+                                data={sumGraphs}
                                 comparisonOptions={props.relationOptions}
                                 width={width}
                                 height={height}
