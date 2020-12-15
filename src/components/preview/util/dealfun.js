@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+import { sum } from 'd3'
 // import { link } from '../NetV'
 export const _intersection = (setA, setB) => {
     let intersection = new Set(setA)
@@ -24,22 +25,34 @@ export const _union = (setA, setB) => {
     }
     return union
 }
-export const getTimeId = (graphs) => {
+export const getTimeId = (graphs, times) => {
     window.d3 = d3
     let timeGraphs = {}
     let nodeSet = new Set()
     let linkSet = new Set()
     let timeGraphSet = {}
+    let sumGraphs = { nodes: {}, links: {} }
+    const l = Object.keys(times).length
+
     graphs.forEach((graph) => {
         const time = graph.time
+        const timeIndex = times[time]
         timeGraphSet[time] = { nodes: new Set(), links: new Set() }
         timeGraphs[time] = { nodes: {}, links: {} }
         graph.nodes.forEach((node) => {
             const id = node.id
             const timeId = `${time}-${id}`
-            timeGraphs[time].nodes[id] = { id, timeId, time, status: new Set(['stableNode']) }
+            timeGraphs[time].nodes[id] = { id, timeId, time, status: [], timeIndex }
             timeGraphSet[time].nodes.add(id)
             nodeSet.add(id)
+            if (!sumGraphs.nodes[id]) {
+                let existTimeIndex = new Array(l).fill(0)
+                let existTimes = new Array(l).fill('')
+                let existStatus = new Array(l).fill(0).map((d) => [])
+                sumGraphs.nodes[id] = { id, existTimeIndex, existTimes, existStatus }
+            }
+            sumGraphs.nodes[id].existTimeIndex[times[time]] = 1
+            sumGraphs.nodes[id].existTimes[times[time]] = time
         })
         graph.links.forEach((link) => {
             let { source, target } = link
@@ -59,27 +72,32 @@ export const getTimeId = (graphs) => {
                 sourceTimeId,
                 targetTimeId,
                 time,
-                status: new Set(['stableLink'])
+                timeIndex,
+                status: []
             }
             linkSet.add(id)
             timeGraphSet[time].links.add(id)
+            if (!sumGraphs.links[id]) {
+                let existTimeIndex = new Array(l).fill(0)
+                let existTimes = new Array(l).fill('')
+                let existStatus = new Array(l).fill(0).map((d) => [])
+                sumGraphs.links[id] = {
+                    id,
+                    source,
+                    target,
+                    existTimeIndex,
+                    existTimes,
+                    existStatus
+                }
+            }
+            sumGraphs.links[id].existTimeIndex[times[time]] = 1
+            sumGraphs.links[id].existTimes[times[time]] = time
         })
     })
-    return { timeGraphs, nodeSet, linkSet, timeGraphSet }
+    return { timeGraphs, nodeSet, linkSet, timeGraphSet, sumGraphs }
 }
-export const getGraphLayout = (timeGraphs, nodeSet, linkSet, width, height) => {
-    let nodes = []
-    let links = []
-    nodeSet.forEach((id) => {
-        nodes.push({ id })
-    })
-    linkSet.forEach((id) => {
-        const s = id.split('-')
-        const source = s[0]
-        const target = s[1]
-        links.push({ source, target, id })
-    })
-
+export const getGraphLayout = (timeGraphs, sumGraphs, width, height) => {
+    let { nodes, links } = sumGraphs
     d3.forceSimulation(nodes)
         .force(
             'link',
@@ -117,7 +135,15 @@ export const _dealCompare = (graph, compareGraph, nodeSet, linkSet) => {
         stable: { nodes: stableNodes, links: stableLinks }
     }
 }
-export const getCompareData = (timeGraphSet, nodeSet, linkSet, keyTime, timeGraphs) => {
+export const getCompareData = (
+    timeGraphSet,
+    nodeSet,
+    linkSet,
+    keyTime,
+    timeGraphs,
+    sumGraphs,
+    times
+) => {
     const timeArr = Object.keys(timeGraphSet)
     let result = Object.fromEntries(timeArr.map((time) => [time, {}]))
     if (keyTime === 'last') {
@@ -163,12 +189,32 @@ export const getCompareData = (timeGraphSet, nodeSet, linkSet, keyTime, timeGrap
     timeArr.forEach((time) => {
         Object.keys(result[time]).forEach((status) => {
             const { nodes, links } = result[time][status]
-            nodes.forEach((id) => timeGraphs[time].nodes[id].status.add(status + 'Node'))
-            links.forEach((id) => timeGraphs[time].links[id].status.add(status + 'Link'))
+            nodes.forEach((id) => {
+                const s = status + 'Node'
+                timeGraphs[time].nodes[id].status.push(s)
+                sumGraphs.nodes[id].existStatus[times[time]].push(s)
+            })
+            links.forEach((id) => {
+                const s = status + 'Link'
+                timeGraphs[time].links[id].status.push(s)
+                sumGraphs.links[id].existStatus[times[time]].push(s)
+            })
         })
-        Object.values(timeGraphs[time].nodes).forEach((node) => (node.status = [...node.status]))
-        Object.values(timeGraphs[time].links).forEach((link) => (link.status = [...link.status]))
+        Object.values(timeGraphs[time].nodes).forEach((node) => {
+            if (!node.status.length) {
+                node.status.push('stableNode')
+                sumGraphs.nodes[node.id].existStatus[times[time]].push('stableNode')
+            }
+        })
+        Object.values(timeGraphs[time].links).forEach((link) => {
+            if (!link.status.length) {
+                link.status.push('stableLink')
+                sumGraphs.links[link.id].existStatus[times[time]].push('stableLink')
+            }
+        })
     })
+    sumGraphs.nodes = Object.values(sumGraphs.nodes)
+    sumGraphs.links = Object.values(sumGraphs.links)
     return timeGraphs
     /*
     this.graphPos.nodes.forEach((node) => {

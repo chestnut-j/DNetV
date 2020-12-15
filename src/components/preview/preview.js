@@ -38,6 +38,7 @@ export default function Preview(props) {
             // const data = dealData(props.jsonfile.graphs, width, height)
             // setSubGraphs(data.subGraphs)
             // setSumGraphs(data.sumGraphs)
+            console.log('-----setSubGraphs----', data.timeGraphs)
         }
     }, [width, height, props.jsonfile.graphs])
 
