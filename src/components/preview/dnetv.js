@@ -34,11 +34,19 @@ class DNetV {
         // this.initGraph()
         // this.initGraphSets()
         this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyTime: 'next' }]) //函数里面直接改了timeGraphs
-        u.getGraphLayout(this.timeGraphs, this.sumGraphs, this.config.width, this.config.height) //函数里面直接改了timeGraphs
-
+        this.dealLayout(config.layout ? config.layout : undefined)
+        this.subGraphs = Object.values(this.timeGraphs).map((v) => ({
+            links: Object.values(v.links),
+            nodes: Object.values(v.nodes)
+        }))
         // this.sumGraphs = u.dealSumGraphs(this.timeGraphs, this.nodeSet, this.linkSet)
     }
-
+    dealLayout(layout = 'offLine') {
+        if (layout === 'offLine') {
+            this.sumGraphs = u.offLineLayout(this.sumGraphs, this.config.width, this.config.height)
+        }
+        u.getGraphLayout(this.timeGraphs, this.sumGraphs) //函数里面直接改了timeGraphs
+    }
     dealCompareData(configs) {
         configs.forEach((d) => {
             const { times, nodes, links, keyTime } = d

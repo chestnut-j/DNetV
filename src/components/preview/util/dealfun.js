@@ -48,7 +48,7 @@ export const getTimeId = (graphs, times) => {
             if (!sumGraphs.nodes[id]) {
                 let existTimeIndex = new Array(l).fill(0)
                 let existTimes = new Array(l).fill('')
-                let existStatus = new Array(l).fill(0).map((d) => [])
+                let existStatus = new Array(l).fill(0).map(() => [])
                 sumGraphs.nodes[id] = { id, existTimeIndex, existTimes, existStatus }
             }
             sumGraphs.nodes[id].existTimeIndex[times[time]] = 1
@@ -80,7 +80,7 @@ export const getTimeId = (graphs, times) => {
             if (!sumGraphs.links[id]) {
                 let existTimeIndex = new Array(l).fill(0)
                 let existTimes = new Array(l).fill('')
-                let existStatus = new Array(l).fill(0).map((d) => [])
+                let existStatus = new Array(l).fill(0).map(() => [])
                 sumGraphs.links[id] = {
                     id,
                     source,
@@ -96,7 +96,7 @@ export const getTimeId = (graphs, times) => {
     })
     return { timeGraphs, nodeSet, linkSet, timeGraphSet, sumGraphs }
 }
-export const getGraphLayout = (timeGraphs, sumGraphs, width, height) => {
+export const offLineLayout = (sumGraphs, width, height) => {
     let { nodes, links } = sumGraphs
     d3.forceSimulation(nodes)
         .force(
@@ -108,6 +108,10 @@ export const getGraphLayout = (timeGraphs, sumGraphs, width, height) => {
         .stop()
         .tick(10)
         .stop()
+    return sumGraphs
+}
+export const getGraphLayout = (timeGraphs, sumGraphs) => {
+    let { nodes, links } = sumGraphs
     const layoutNodes = Object.fromEntries(nodes.map((d) => [d.id, d]))
     const layoutLinks = Object.fromEntries(links.map((d) => [d.id, d]))
     Object.values(timeGraphs).forEach((graph) => {
@@ -120,7 +124,6 @@ export const getGraphLayout = (timeGraphs, sumGraphs, width, height) => {
     })
     return timeGraphs
 }
-
 export const getComparison = () => {}
 export const _dealCompare = (graph, compareGraph, nodeSet, linkSet) => {
     const appearNodes = _intersection(_difference(graph.nodes, compareGraph.nodes), nodeSet)
