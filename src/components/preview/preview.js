@@ -4,6 +4,7 @@ import TimePositionDnet from '../dnetCharts/timePositionDnet/timePositionDnet.js
 import TimeAnimationDnet from '../dnetCharts/timeAnimationDnet/timeAnimationDnet.js'
 import TimeColorDnet from '../dnetCharts/timeColorDnet/timeColorDnet.js'
 import TimeChartDnet from '../dnetCharts/timeChartDnet/timeChartDnet.js'
+import TimeLinkDnet from '../dnetCharts/timeLinkDnet/timeLinkDnet.js'
 import ComparisonPositionDnet from '../dnetCharts/comparisonPositionDnet/comparisonPositionDnet.js'
 import ComparisonAnimationDnet from '../dnetCharts/comparisonAnimationDnet/comparisonAnimationDnet.js'
 import dnetv from './dnetv'
@@ -13,7 +14,7 @@ export default function Preview(props) {
     const [width, setWidth] = useState(props.config.width)
     const [height, setHeight] = useState(props.config.height)
     const [subGraphs, setSubGraphs] = useState([])
-    const [sumGraphs, setSumGraphs] = useState({})
+    const [sumGraphs, setSumGraphs] = useState({nodes:[],links:[]})
     const [renderType, setRenderType] = useState(
         `${props.relationOptions.taskType}-${props.encodingOptions.encodingType[0]}`
     )
@@ -35,6 +36,7 @@ export default function Preview(props) {
             data.initData(props.jsonfile.graphs, { width, height })
             setSubGraphs(converObject2Array(data.timeGraphs))
             setSumGraphs(data.sumGraphs)
+            
         }
     }, [width, height, props.jsonfile.graphs])
 
@@ -51,6 +53,8 @@ export default function Preview(props) {
         props.encodingOptions.encodingType[0],
         props.jsonfile.graphs
     ])
+    console.log("data.sumGraphs",sumGraphs)
+    console.log("subgraphs", subGraphs)
     return (
         <div className="preview-box">
             <div className="sub-title">
@@ -91,6 +95,19 @@ export default function Preview(props) {
                                 width={width}
                                 height={height}
                                 margin={props.config.eachMargin}
+                            />
+                        )
+                    case 'Time-link':
+                        return (
+                            <TimeLinkDnet
+                                data={subGraphs}
+                                nodeNum={sumGraphs.nodes.length}
+                                comparisonOptions={props.relationOptions}
+                                width={width}
+                                height={height}
+                                margin={props.config.eachMargin}
+                                xDistance={props.encodingOptions.link.xDistance}
+                                yDistance={props.encodingOptions.link.yDistance}
                             />
                         )
                     case 'Time-chart':

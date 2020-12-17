@@ -210,7 +210,7 @@ export default class Encoding extends React.Component {
                             </div>
                             <div className="item-right-container">
                                 <div className="item-right-option">
-                                    <text>TotalWidth:</text>
+                                    <div>TotalWidth:</div>
                                     <Input
                                         value={options.position.totalWidth}
                                         type="number"
@@ -221,7 +221,7 @@ export default class Encoding extends React.Component {
                                     />
                                 </div>
                                 <div className="item-right-option">
-                                    <text>EachWidth:</text>
+                                    <div>EachWidth:</div>
                                     <Input
                                         value={options.position.eachWidth}
                                         type="number"
@@ -262,7 +262,7 @@ export default class Encoding extends React.Component {
                             </div>
                             <div className="item-right-container">
                                 <div className="item-right-option">
-                                    <text>Speed:</text>
+                                    <div>Speed:</div>
                                     <Input
                                         value={options.animation.speed}
                                         type="number"
@@ -303,7 +303,7 @@ export default class Encoding extends React.Component {
                             </div>
                             <div className="item-right-container">
                                 <div className="item-right-option">
-                                    <text>Number:</text>
+                                    <div>Number:</div>
                                     <Input
                                         value={options.color.number}
                                         type="number"
@@ -340,6 +340,30 @@ export default class Encoding extends React.Component {
                                 <div className="wavy"></div>
                                 <div className="link-circle2 item-circle2"></div>
                             </div>
+                            <div className="item-right-container">
+                                <div className="item-right-option">
+                                    <div>xDistance:</div>
+                                    <Input
+                                        value={options.link.xDistance}
+                                        type="number"
+                                        onChange={(e) =>
+                                            this.handleTimeOptionsInput(e, 'link', 'xDistance')
+                                        }
+                                        style={{ width: '65px' }}
+                                    />
+                                </div>
+                                <div className="item-right-option">
+                                    <div>yDistance:</div>
+                                    <Input
+                                        value={options.link.yDistance}
+                                        type="number"
+                                        onChange={(e) =>
+                                            this.handleTimeOptionsInput(e, 'link', 'yDistance')
+                                        }
+                                        style={{ width: '65px' }}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -348,7 +372,7 @@ export default class Encoding extends React.Component {
                         {/* 选择形状：圆形、三角形、方形 */}
                         {changeOptions.shape ? (
                             <div className="change-option-item">
-                                <text>Shape:</text>
+                                <div>Shape:</div>
                                 <Select
                                     value={changeOptions.shape}
                                     onChange={this.handleShapeChange}
@@ -365,7 +389,7 @@ export default class Encoding extends React.Component {
                         ) : null}
                         {/* 选择线型 */}
                         <div className="change-option-item">
-                            <text>StrokeType:</text>
+                            <div>StrokeType:</div>
                             <Select
                                 value={changeOptions.strokeType}
                                 style={{ width: 120 }}
@@ -377,7 +401,7 @@ export default class Encoding extends React.Component {
                         </div>
                         {/* 输入线宽 */}
                         <div className="change-option-item">
-                            <text>StrokeWidth:</text>
+                            <div>StrokeWidth:</div>
                             <Input
                                 value={changeOptions.strokeWidth}
                                 type="number"
@@ -388,7 +412,7 @@ export default class Encoding extends React.Component {
                         {/* 输入半径长度 */}
                         {changeOptions.radius ? (
                             <div className="change-option-item">
-                                <text>Radius:</text>
+                                <div>Radius:</div>
                                 <Input
                                     value={changeOptions.radius}
                                     type="number"

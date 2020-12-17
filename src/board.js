@@ -16,7 +16,7 @@ export default class Board extends React.Component {
             relationType: 'appear',
             preColor: '',
             encodingOptions: {
-                encodingType: ['color'],
+                encodingType: ['link'],
                 visible: {
                     isVisible: true
                 },
@@ -30,7 +30,10 @@ export default class Board extends React.Component {
                 animation: {
                     speed: 800
                 },
-                link: '',
+                link: {
+                    xDistance: 250,
+                    yDistance: 40
+                },
                 glyph: ''
             },
             config: {
