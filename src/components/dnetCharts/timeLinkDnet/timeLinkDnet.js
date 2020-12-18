@@ -37,7 +37,7 @@ export default function TimeLinkDnet(props) {
                                 d={v}
                                 fill={'none'}
                                 stroke={links.color}
-                                strokeWidth={`2px`}
+                                strokeWidth={'1px'}
                                 key = {`curve-link-${index}`}
                             />
                             )

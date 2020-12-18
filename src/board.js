@@ -39,7 +39,7 @@ export default class Board extends React.Component {
             config: {
                 width: 500,
                 height: 500,
-                eachMargin: 10,
+                eachMargin: 20,
                 eachWidth: 200,
                 eachHeight: 200
             },
@@ -66,7 +66,7 @@ export default class Board extends React.Component {
                 },
                 disappearNode: {
                     shape: 'circle',
-                    fillColor: '#71F7EF',
+                    fillColor: '#90B5FB',
                     strokeColor: '#000000',
                     strokeWidth: 1,
                     radius: 6,
@@ -84,7 +84,7 @@ export default class Board extends React.Component {
                     strokeWidth: 2
                 },
                 disappearLink: {
-                    strokeColor: '#71F7EF',
+                    strokeColor: '#90B5FB',
                     strokeType: 'solid',
                     strokeWidth: 2
                 }
