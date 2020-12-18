@@ -22,8 +22,8 @@ export default function TimeColorDnet(props) {
                     width: '100%',
                     height: '20px',
                     display: 'flex',
-                    justifyContent: 'flex-end',
-                    margin: '5px'
+                    justifyContent: 'flex-start',
+                    margin: '10px'
                 }}
             >
                 <div

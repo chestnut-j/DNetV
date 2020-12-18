@@ -37,9 +37,9 @@ export default class Board extends React.Component {
                 glyph: ''
             },
             config: {
-                width: 1000,
-                height: 730,
-                eachMargin: 20,
+                width: 500,
+                height: 500,
+                eachMargin: 10,
                 eachWidth: 200,
                 eachHeight: 200
             },
@@ -48,45 +48,45 @@ export default class Board extends React.Component {
                 chooseItem: 'stable-Node',
                 appearNode: {
                     shape: 'circle',
-                    fillColor: 'red',
+                    fillColor: '#FD8F8F',
                     strokeColor: '#000000',
                     strokeWidth: 1,
                     strokeType: 'solid',
                     textColor: 'white',
-                    radius: 5
+                    radius: 6
                 },
                 stableNode: {
                     shape: 'circle',
-                    fillColor: '#eeeeee',
+                    fillColor: '#DAD5D5',
                     strokeColor: '#000000',
                     strokeWidth: 1,
-                    radius: 5,
+                    radius: 6,
                     strokeType: 'solid',
                     textColor: 'white'
                 },
                 disappearNode: {
                     shape: 'circle',
-                    fillColor: 'gray',
+                    fillColor: '#71F7EF',
                     strokeColor: '#000000',
                     strokeWidth: 1,
-                    radius: 5,
+                    radius: 6,
                     strokeType: 'solid',
                     textColor: 'white'
                 },
                 appearLink: {
-                    strokeColor: 'red',
+                    strokeColor: '#FD8F8F',
                     strokeType: 'solid',
-                    strokeWidth: 1
+                    strokeWidth: 2
                 },
                 stableLink: {
-                    strokeColor: '#000000',
+                    strokeColor: '#908F8F',
                     strokeType: 'solid',
-                    strokeWidth: 1
+                    strokeWidth: 2
                 },
                 disappearLink: {
-                    strokeColor: 'gray',
+                    strokeColor: '#71F7EF',
                     strokeType: 'solid',
-                    strokeWidth: 1
+                    strokeWidth: 2
                 }
             }
         }
