@@ -130,7 +130,6 @@ export default class Board extends React.Component {
         this.setState({
             config: renderConfig
         })
-        console.log('change config', this.state.config)
     }
     render() {
         const grammarOptions = {

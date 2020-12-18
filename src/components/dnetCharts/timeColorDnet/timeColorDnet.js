@@ -7,7 +7,7 @@ export default function TimeColorDnet(props) {
     if (props.len === 0) return null
     const legendData = new Array(props.len).fill(0)
     const singleLegendWidth = 15
-    let colorScale = getPiePathColor(props.len,'red', 'green')
+    let colorScale = getPiePathColor(props.len,'#FD8F8F', '#90B5FB')
     return (
         <div
             style={{
