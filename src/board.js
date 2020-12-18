@@ -31,7 +31,7 @@ export default class Board extends React.Component {
                     speed: 800
                 },
                 link: {
-                    xDistance: 250,
+                    xDistance: 100,
                     yDistance: 40
                 },
                 glyph: ''
