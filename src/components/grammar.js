@@ -2,7 +2,6 @@ import React from "react"
 import ReactJson from "react-json-view"
 import { Upload } from "antd"
 import FileSaver from "file-saver"
-import Graph from "./preview/graph"
 
 export default class Grammar extends React.Component {
     constructor(props) {
@@ -70,7 +69,12 @@ export default class Grammar extends React.Component {
             },
         }
         return (
-            <div className="grammar-box">
+            <div 
+                style={{
+                    width:`${this.props.width ? this.props.width: 280}px`,
+                    height: `${this.props.height ? this.props.height: 970}px`
+                }}
+                className="grammar-box">
                 <div className="sub-title">
                     &nbsp;Grammar
                     <Upload

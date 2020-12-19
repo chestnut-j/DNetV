@@ -53,10 +53,16 @@ export default function Preview(props) {
         props.encodingOptions.encodingType[0],
         props.jsonfile.graphs
     ])
-    console.log("data.sumGraphs",sumGraphs)
-    console.log("subgraphs", subGraphs)
+    // console.log("data.sumGraphs",sumGraphs)
+    // console.log("subgraphs", subGraphs)
+    console.log("renderType---------", renderType)
     return (
-        <div className="preview-box">
+        <div 
+            style={{
+                width:`${props.width ? props.width: 1010}px`,
+                height: `${props.height ? props.height: 760}px`
+            }}
+            className="preview-box">
             <div className="sub-title">
                 &nbsp;Preview
                 <svg className="icon" aria-hidden="true">

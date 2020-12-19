@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Data from './components/data/data.js'
 import Encoding from './components/encoding/encoding.js'
 import Grammar from './components/grammar.js'
@@ -6,11 +6,13 @@ import Preview from './components/preview/preview.js'
 import Relation from './components/relation/relation.js'
 import Render from './components/render.js'
 import Template from './components/template.js'
+import ExampleBoard from './components/exampleBoard/exampleBoard.js'
 
 export default class Board extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            board: 'system',
             jsonfile: {},
             filename: '',
             relationType: 'appear',
@@ -131,6 +133,14 @@ export default class Board extends React.Component {
             config: renderConfig
         })
     }
+    handleBoardSwitch = (value) => {
+        console.log('value', value, this.state.board)
+        if (this.state.board !== value) {
+            this.setState({
+                board: value
+            })
+        }
+    }
     render() {
         const grammarOptions = {
             relationOptions: this.state.relationOptions,
@@ -138,44 +148,70 @@ export default class Board extends React.Component {
         }
         return (
             <div className="board">
-                <div className="title"> DNetV </div>
-                <div className="row">
-                    <div className="col">
-                        <Data onSubmit={this.handleSubmitFromData} />
-                        <Relation
-                            options={this.state.relationOptions}
-                            onSubmit={this.handleSubmitFromRelation}
-                        />
+                <div className="window-header">
+                    <div className="title"> DNetV </div>
+                    <div
+                        className={`header-sub-title ${
+                            this.state.board === 'system' ? 'header-sub-choose' : ''
+                        }`}
+                        onClick={() => this.handleBoardSwitch('system')}
+                    >
+                        System
                     </div>
-                    <div className="col">
-                        <Encoding
-                            preColor={this.state.preColor}
-                            options={this.state.encodingOptions}
-                            relationOptions={this.state.relationOptions}
-                            onSubmitToRelation={this.handleSubmitFromRelation}
-                            onSubmit={this.handleSubmitFromEncoding}
-                        />
-                    </div>
-                    <div className="col">
-                        <Grammar options={grammarOptions} onSubmit={this.handleSubmitFromGrammar} />
-                    </div>
-
-                    <div className="col">
-                        <div className="row">
-                            <Render
-                                onChangeConfig={this.handleChangeRenderConfig}
-                                style={{ float: 'left' }}
-                            />
-                            <Template style={{ float: 'left' }} />
-                        </div>
-                        <Preview
-                            jsonfile={this.state.jsonfile}
-                            encodingOptions={this.state.encodingOptions}
-                            relationOptions={this.state.relationOptions}
-                            config={this.state.config}
-                        />
+                    <div className="header-sub-divide"></div>
+                    <div
+                        className={`header-sub-title ${
+                            this.state.board === 'example' ? 'header-sub-choose' : ''
+                        }`}
+                        onClick={() => this.handleBoardSwitch('example')}
+                    >
+                        Example
                     </div>
                 </div>
+                {this.state.board === 'example' ? (
+                    <ExampleBoard></ExampleBoard>
+                ) : (
+                    <div className="row">
+                        <div className="col">
+                            <Data onSubmit={this.handleSubmitFromData} />
+                            <Relation
+                                options={this.state.relationOptions}
+                                onSubmit={this.handleSubmitFromRelation}
+                            />
+                        </div>
+                        <div className="col">
+                            <Encoding
+                                preColor={this.state.preColor}
+                                options={this.state.encodingOptions}
+                                relationOptions={this.state.relationOptions}
+                                onSubmitToRelation={this.handleSubmitFromRelation}
+                                onSubmit={this.handleSubmitFromEncoding}
+                            />
+                        </div>
+                        <div className="col">
+                            <Grammar
+                                options={grammarOptions}
+                                onSubmit={this.handleSubmitFromGrammar}
+                            />
+                        </div>
+
+                        <div className="col">
+                            <div className="row">
+                                <Render
+                                    onChangeConfig={this.handleChangeRenderConfig}
+                                    style={{ float: 'left' }}
+                                />
+                                <Template style={{ float: 'left' }} />
+                            </div>
+                            <Preview
+                                jsonfile={this.state.jsonfile}
+                                encodingOptions={this.state.encodingOptions}
+                                relationOptions={this.state.relationOptions}
+                                config={this.state.config}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         )
     }
