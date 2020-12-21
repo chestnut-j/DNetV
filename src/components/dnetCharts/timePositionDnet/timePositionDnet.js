@@ -26,13 +26,13 @@ export default function TimePositionDnet(props) {
                     return (
                         <g
                             key={`subGraph-${index}`}
-                            transform={`translate(${index * width + index * margin},0)`}
+                            // transform={`translate(${index * width + index * margin},0)`}
                         >
                             <g>
                                 {dataItem.links.map((v) => {
                                     return (
-                                        <LinkItemContainer 
-                                            comparisonOptions = {comparisonOptions}
+                                        <LinkItemContainer
+                                            comparisonOptions={comparisonOptions}
                                             {...v}
                                             key={`link-${v.timeId}`}
                                         />
@@ -43,7 +43,7 @@ export default function TimePositionDnet(props) {
                                 {dataItem.nodes.map((v) => {
                                     return (
                                         <NodeItemContainer
-                                            comparisonOptions = {comparisonOptions}
+                                            comparisonOptions={comparisonOptions}
                                             {...v}
                                             key={`node-${v.timeId}`}
                                         />

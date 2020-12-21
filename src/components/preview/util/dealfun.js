@@ -145,34 +145,61 @@ export function adjustLayout2Svg(nodes, links, width, height) {
         link.target.y = nodeId2Coord[link.target.id].y
     })
 }
-export const horizontalLayout = (sumGraphs, window, height) => {}
-export const offLineLayout = (sumGraphs, width, height) => {
+export const verticalLayout = (sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
+    const { eachWidth, eachHeight } = configs
+    const l = nodes.length
+    let nodesObj = {}
+    nodes.forEach((node, index) => {
+        node.y = (eachHeight / l) * index
+        node.x = 0
+        nodesObj[node.id] = { ...node }
+    })
+    links.forEach((link) => {
+        link.source = nodesObj[link.source]
+        link.target = nodesObj[link.target]
+    })
+    return sumGraphs
+
+    // adjustLayout2Svg(nodes, links, width, height)
+}
+export const offLineLayout = (sumGraphs, configs) => {
+    let { nodes, links } = sumGraphs
+    const { eachWidth, eachHeight } = configs
     d3.forceSimulation(nodes)
         .force(
             'link',
             d3.forceLink(links).id((d) => d.id)
         )
         .force('charge', d3.forceManyBody())
-        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('center', d3.forceCenter(eachWidth / 2, eachHeight / 2))
         .stop()
         .tick(10)
         .stop()
-    adjustLayout2Svg(nodes, links, width, height)
+    adjustLayout2Svg(nodes, links, eachWidth, eachHeight)
     // console.log("nodes---links----width---height", nodes, links, width, height)
     return sumGraphs
 }
 
-export const getGraphLayout = (timeGraphs, sumGraphs) => {
+export const getGraphLayout = (timeGraphs, sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
+    const { timeArr, eachWidth, eachMargin } = configs
+    const positionFlag = timeArr.indexOf('position') === -1 ? 0 : 1
     const layoutNodes = Object.fromEntries(nodes.map((d) => [d.id, d]))
     const layoutLinks = Object.fromEntries(links.map((d) => [d.id, d]))
-    Object.values(timeGraphs).forEach((graph) => {
+    let timeGraphsValues = Object.values(timeGraphs)
+    const l = timeGraphsValues.length
+    timeGraphsValues.forEach((graph) => {
         Object.values(graph.nodes).forEach((node) => {
             Object.assign(node, layoutNodes[node.id])
+            node.x += positionFlag * node.timeIndex * (eachWidth + eachMargin)
         })
+    })
+    timeGraphsValues.forEach((graph) => {
         Object.values(graph.links).forEach((link) => {
             Object.assign(link, layoutLinks[link.id])
+            link.source = graph.nodes[link.source.id]
+            link.target = graph.nodes[link.target.id]
         })
     })
     return timeGraphs
