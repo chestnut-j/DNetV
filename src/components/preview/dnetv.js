@@ -45,6 +45,13 @@ class DNetV {
         if (layout === 'offLine') {
             this.sumGraphs = u.offLineLayout(this.sumGraphs, this.config.width, this.config.height)
         }
+        if (layout === 'horizontal') {
+            this.sumGraphs = u.horizontalLayout(
+                this.sumGraphs,
+                this.config.width,
+                this.config.height
+            )
+        }
         u.getGraphLayout(this.timeGraphs, this.sumGraphs) //函数里面直接改了timeGraphs
     }
     dealCompareData(configs) {

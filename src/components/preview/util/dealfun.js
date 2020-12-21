@@ -97,51 +97,55 @@ export const getTimeId = (graphs, times) => {
     return { timeGraphs, nodeSet, linkSet, timeGraphSet, sumGraphs }
 }
 
-export function adjustLayout2Svg(nodes, links, width, height){
-    let minX = width, maxX = -1, minY = height, maxY = -1, ratio
+export function adjustLayout2Svg(nodes, links, width, height) {
+    let minX = width,
+        maxX = -1,
+        minY = height,
+        maxY = -1,
+        ratio
     const margin = 10
     // ratio取x轴和y轴比较小的
     // 找到比例后，先调整节点的坐标，并记录映射值，再调整链接坐标
-    nodes.forEach((node)=>{
-        if(node.x<minX){
+    nodes.forEach((node) => {
+        if (node.x < minX) {
             minX = node.x
         }
-        if(node.x>maxX){
+        if (node.x > maxX) {
             maxX = node.x
         }
-        if(node.y<minY){
+        if (node.y < minY) {
             minY = node.y
         }
-        if(node.y>maxY){
+        if (node.y > maxY) {
             maxY = node.y
         }
     })
-    const ratioX = (maxX-minX)/(width - margin*2)
-    const ratioY = (maxY-minY)/(height - margin*2)
+    const ratioX = (maxX - minX) / (width - margin * 2)
+    const ratioY = (maxY - minY) / (height - margin * 2)
     ratio = ratioX > ratioY ? ratioX : ratioY
     const translateX = minX - margin
     const translateY = minY - margin
     const nodeId2Coord = {}
-    nodes.forEach((node)=>{
+    nodes.forEach((node) => {
         // 平移
         node.x -= translateX
         node.y -= translateY
         // 放缩
-        node.x = (node.x - margin)/ratio + margin
-        node.y = (node.y - margin)/ratio + margin
+        node.x = (node.x - margin) / ratio + margin
+        node.y = (node.y - margin) / ratio + margin
         nodeId2Coord[node.id] = {
             x: node.x,
             y: node.y
         }
     })
-    links.forEach(link=>{
+    links.forEach((link) => {
         link.source.x = nodeId2Coord[link.source.id].x
         link.source.y = nodeId2Coord[link.source.id].y
         link.target.x = nodeId2Coord[link.target.id].x
         link.target.y = nodeId2Coord[link.target.id].y
     })
 }
-
+export const horizontalLayout = (sumGraphs, window, height) => {}
 export const offLineLayout = (sumGraphs, width, height) => {
     let { nodes, links } = sumGraphs
     d3.forceSimulation(nodes)
