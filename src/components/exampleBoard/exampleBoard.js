@@ -19,13 +19,16 @@ export default function ExampleBoard() {
 
     return (
         <div className="example-board">
-            {configs.map((configItem) => {
+            {configs.map((configItem, index) => {
                 const grammarOptions = {
                     relationOptions: configItem.relationOptions,
                     encodingOptions: configItem.encodingOptions
                 }
                 return (
-                    <div div className="example-row">
+                    <div
+                        className="example-row"
+                        key={`example-row-${index}`}  
+                      >
                         <Grammar
                             options={grammarOptions}
                             // onSubmit={this.handleSubmitFromGrammar}
