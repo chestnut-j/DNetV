@@ -32,7 +32,7 @@ export default function TimePositionDnet(props) {
                                 {dataItem.links.map((v) => {
                                     return (
                                         <LinkItemContainer
-                                            comparisonOptions={comparisonOptions}
+                                            // comparisonOptions={comparisonOptions}
                                             {...v}
                                             key={`link-${v.timeId}`}
                                         />
@@ -43,7 +43,7 @@ export default function TimePositionDnet(props) {
                                 {dataItem.nodes.map((v) => {
                                     return (
                                         <NodeItemContainer
-                                            comparisonOptions={comparisonOptions}
+                                            // comparisonOptions={comparisonOptions}
                                             {...v}
                                             key={`node-${v.timeId}`}
                                         />

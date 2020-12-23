@@ -11,8 +11,8 @@ import dnetv from './dnetv'
 
 export default function Preview(props) {
     // 要计算
-    const [width, setWidth] = useState(props.config.eachWidth)
-    const [height, setHeight] = useState(props.config.eachHeight)
+    const [width, setWidth] = useState(props.config.width)
+    const [height, setHeight] = useState(props.config.height)
     const [subGraphs, setSubGraphs] = useState([])
     const [sumGraphs, setSumGraphs] = useState({ nodes: [], links: [] })
     const [renderType, setRenderType] = useState(props.config.renderType)
@@ -20,8 +20,8 @@ export default function Preview(props) {
     // 数据更新时重新计算
     useEffect(() => {
         // if (props.config.timeArr.indexOf('position') !== -1) {
-        setWidth(props.config.eachWidth)
-        setHeight(props.config.eachHeight)
+        setWidth(props.config.width)
+        setHeight(props.config.height)
         // } else {
         //     setWidth(props.config.width)
         //     setHeight(props.config.height)
@@ -30,10 +30,10 @@ export default function Preview(props) {
 
     useEffect(() => {
         if (props.jsonfile.graphs) {
-            let data = dnetv()
-            data.initData(props.jsonfile.graphs, props.config)
-            setSubGraphs(converObject2Array(data.timeGraphs))
-            setSumGraphs(data.sumGraphs)
+            // let data = dnetv()
+            // data.initData(props.jsonfile.graphs, props.config)
+            setSubGraphs(converObject2Array(props.data.timeGraphs))
+            setSumGraphs(props.data.sumGraphs)
         }
     }, [width, height, props.jsonfile.graphs])
 
@@ -79,7 +79,7 @@ export default function Preview(props) {
                                 data={subGraphs}
                                 comparisonOptions={props.config}
                                 width={width}
-                                speed={props.config.animation.speed}
+                                speed={props.config.speed}
                                 height={height}
                                 margin={props.config.eachMargin}
                             />
@@ -104,8 +104,8 @@ export default function Preview(props) {
                                 width={width}
                                 height={height}
                                 margin={props.config.eachMargin}
-                                xDistance={props.config.link.xDistance}
-                                yDistance={props.config.link.yDistance}
+                                xDistance={props.config.xDistance}
+                                yDistance={props.config.yDistance}
                             />
                         )
                     case 'Time-chart':

@@ -1,5 +1,8 @@
 import * as d3 from 'd3'
 import { sum } from 'd3'
+import { defaultConfigs } from './defaultConfig'
+import * as assign from 'assign-deep'
+import { configs } from 'eslint-plugin-prettier'
 // import { link } from '../NetV'
 export const _intersection = (setA, setB) => {
     let intersection = new Set(setA)
@@ -42,14 +45,14 @@ export const getTimeId = (graphs, times) => {
         graph.nodes.forEach((node) => {
             const id = node.id
             const timeId = `${time}-${id}`
-            timeGraphs[time].nodes[id] = { id, timeId, time, status: [], timeIndex }
+            timeGraphs[time].nodes[id] = { id, timeId, time, status: [], timeIndex, style: {} }
             timeGraphSet[time].nodes.add(id)
             nodeSet.add(id)
             if (!sumGraphs.nodes[id]) {
                 let existTimeIndex = new Array(l).fill(0)
                 let existTimes = new Array(l).fill('')
                 let existStatus = new Array(l).fill(0).map(() => [])
-                sumGraphs.nodes[id] = { id, existTimeIndex, existTimes, existStatus }
+                sumGraphs.nodes[id] = { id, existTimeIndex, existTimes, existStatus, style: {} }
             }
             sumGraphs.nodes[id].existTimeIndex[times[time]] = 1
             sumGraphs.nodes[id].existTimes[times[time]] = time
@@ -73,7 +76,8 @@ export const getTimeId = (graphs, times) => {
                 targetTimeId,
                 time,
                 timeIndex,
-                status: []
+                status: [],
+                style: {}
             }
             linkSet.add(id)
             timeGraphSet[time].links.add(id)
@@ -87,7 +91,8 @@ export const getTimeId = (graphs, times) => {
                     target,
                     existTimeIndex,
                     existTimes,
-                    existStatus
+                    existStatus,
+                    style: {}
                 }
             }
             sumGraphs.links[id].existTimeIndex[times[time]] = 1
@@ -180,11 +185,79 @@ export const offLineLayout = (sumGraphs, configs) => {
     // console.log("nodes---links----width---height", nodes, links, width, height)
     return sumGraphs
 }
-
+export const assignConfigs = (configs) => {
+    const a = defaultConfigs
+    let sumConfigs = { ...defaultConfigs.basic }
+    Object.keys(configs).forEach((key) => {
+        let encoding = {}
+        if (typeof configs[key] === 'string') {
+            encoding[configs[key]] = {}
+        } else if (Object.prototype.toString.call(configs[key]) === '[object Array]') {
+            configs[key].forEach((k) => {
+                if (typeof k === 'string') {
+                    encoding[k] = {}
+                } else {
+                    Object.keys(k).forEach((d) => {
+                        encoding[d] = k[d]
+                    })
+                }
+            })
+        }
+        Object.keys(encoding).forEach((e) => {
+            if (defaultConfigs[key]) {
+                assign(sumConfigs, defaultConfigs[key][e], encoding[e])
+            }
+        })
+        sumConfigs.renderType = configs.renderType //妥协 rendertype
+    })
+    return sumConfigs
+}
+export const getMarkingLine = (sumGraphs, timeGraphs, configs) => {
+    let markingLine = {}
+    Object.values(sumGraphs.nodes).forEach((node) => {
+        const { id, existTimes } = node
+        markingLine[id] = []
+        existTimes.forEach((time) => {
+            if (time !== '') {
+                const { x, y } = timeGraphs[time].nodes[id]
+                const l = markingLine[id].length
+                if (l) {
+                    markingLine[id][l - 1].target = { x, y }
+                }
+                markingLine[id].push({ source: { x, y } })
+            }
+        })
+        markingLine[id].pop()
+    })
+    return markingLine
+}
+export const setStyle = (timeGraphs, sumGraphs, configs) => {
+    Object.values(timeGraphs).forEach((graph) => {
+        Object.values(graph.nodes).forEach((node) => {
+            node.status.forEach((d) => {
+                if (d in configs) {
+                    node.style[d] = configs[d]
+                }
+            })
+            if (!Object.values(node.style).length) {
+                node.style.nodeStyle = configs.nodeStyle
+            }
+        })
+        Object.values(graph.links).forEach((link) => {
+            link.status.forEach((d) => {
+                if (d in configs) {
+                    link.style[d] = configs[d]
+                }
+            })
+            if (!Object.values(link.style).length) {
+                link.style.linkStyle = configs.linkStyle
+            }
+        })
+    })
+}
 export const getGraphLayout = (timeGraphs, sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
     const { timeArr, eachWidth, eachMargin } = configs
-    const positionFlag = timeArr.indexOf('position') === -1 ? 0 : 1
     const layoutNodes = Object.fromEntries(nodes.map((d) => [d.id, d]))
     const layoutLinks = Object.fromEntries(links.map((d) => [d.id, d]))
     let timeGraphsValues = Object.values(timeGraphs)
@@ -192,7 +265,9 @@ export const getGraphLayout = (timeGraphs, sumGraphs, configs) => {
     timeGraphsValues.forEach((graph) => {
         Object.values(graph.nodes).forEach((node) => {
             Object.assign(node, layoutNodes[node.id])
-            node.x += positionFlag * node.timeIndex * (eachWidth + eachMargin)
+            if (configs.positionFlag) {
+                node.x += node.timeIndex * (eachWidth + eachMargin)
+            }
         })
     })
     timeGraphsValues.forEach((graph) => {
