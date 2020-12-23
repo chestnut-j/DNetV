@@ -54,18 +54,19 @@ export default function TimeAnimationDnet(props) {
     return props.data[frameIndex] ? (
         <div className="TimeAnimationDnet graph">
             <NodeLinkGraph
+                {...props}
                 data={props.data[frameIndex]}
                 height={props.height}
                 width={props.width}
                 margin={props.margin}
-                comparisonOptions={props.comparisonOptions}
+                // comparisonOptions={props.comparisonOptions}
             />
             <div className="tad-control-container">
                 {playOrPause ? (
                     <PauseCircleOutlined className="tad-control-icon" onClick={handlePlayOrPause} />
                 ) : (
-                        <PlayCircleOutlined className="tad-control-icon" onClick={handlePlayOrPause} />
-                    )}
+                    <PlayCircleOutlined className="tad-control-icon" onClick={handlePlayOrPause} />
+                )}
                 <Slider
                     style={{
                         width: '150px',

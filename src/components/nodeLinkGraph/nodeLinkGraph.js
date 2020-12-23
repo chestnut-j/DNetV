@@ -24,20 +24,26 @@ export default function NodeLinkGraph(props) {
             >
                 <g>
                     {data.links.map((v) => {
-                        return <LinkItemContainer 
-                            comparisonOptions = {comparisonOptions}
-                            {...v}
-                            key={`link-${v.timeId}`}
-                        />
+                        return (
+                            <LinkItemContainer
+                                {...props}
+                                // comparisonOptions = {comparisonOptions}
+                                {...v}
+                                key={`link-${v.timeId}`}
+                            />
+                        )
                     })}
                 </g>
                 <g>
                     {data.nodes.map((v) => {
-                        return < NodeItemContainer
-                            comparisonOptions = {comparisonOptions}
-                            {...v}
-                            key={`node-${v.timeId}`}
-                        />
+                        return (
+                            <NodeItemContainer
+                                // comparisonOptions = {comparisonOptions}
+                                {...v}
+                                {...props}
+                                key={`node-${v.timeId}`}
+                            />
+                        )
                     })}
                 </g>
             </svg>

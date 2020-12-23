@@ -3,8 +3,12 @@ import Grammar from '../../components/grammar.js'
 import Preview from '../../components/preview/preview.js'
 import * as testData from '../../data/import/test1.json'
 import { configSet } from './config.js'
+import { new_configSet } from './new_config'
 import './exampleBoard.css'
-
+import { defaultConfigs } from '../preview/util/defaultConfig'
+import { configs } from 'eslint-plugin-prettier'
+import { Result } from 'antd'
+import dnetv from '../preview/dnetv.js'
 const dataset = [
     {
         dataName: 'testData',
@@ -16,32 +20,63 @@ const dataset = [
 export default function ExampleBoard() {
     const [jsonData, setJsonData] = useState(dataset[0].data)
     const [configs, setConfigs] = useState(configSet)
-
+    // const assignConfigs = (configs) => {
+    //     const { time, comparison } = configs
+    //     const timeArr = typeof time === 'string' ? [time] : time
+    //     const comparisonArr = typeof comparison === 'string' ? [comparison] : comparison
+    //     let result = { timeArr, comparisonArr, ...defaultConfigs }
+    //     Object.keys(configs).forEach((key) => {
+    //         if (Object.prototype.toString.call(key) === '[object Object]') {
+    //             Object.keys(configs[key]).forEach(
+    //                 (item) => (result[key][item] = { ...configs[key][item], ...result[key][item] })
+    //             )
+    //         } else {
+    //             if (!(key in result)) {
+    //                 result[key] = configs[key]
+    //             }
+    //         }
+    //     })
+    //     result.renderType = result.timeArr[0]
+    //     return result
+    // }
     return (
         <div className="example-board">
-            {configs.map((configItem, index) => {
-                const grammarOptions = {
-                    relationOptions: configItem.relationOptions,
-                    encodingOptions: configItem.encodingOptions
-                }
+            {new_configSet.map((configItem, index) => {
+                // const result = assignConfigs(new_configSet[index])
+                // const grammarOptions = {
+                //     relationOptions: assignConfigs(configItem.relationOptions),
+                //     encodingOptions: assignConfigs(configItem.encodingOptions)
+                // }
+                let data = dnetv()
+                data.initData(jsonData.graphs, configItem)
+                // data.configs.renderType = 'position'
+                // console.log('---encodingOptions---', configItem.encodingOptions)
+                // console.log('---relationOptions---', configItem.relationOptions)
+                // delete configItem.relationOptions.chooseItem
+                // delete configItem.encodingOptions.taskType
                 return (
                     <div
                         className="example-row"
                         key={`example-row-${index}`}  
                       >
                         <Grammar
-                            options={grammarOptions}
+                            options={new_configSet[index]}
                             // onSubmit={this.handleSubmitFromGrammar}
                             width={940}
                             height={600}
                         />
                         <Preview
                             jsonfile={jsonData}
-                            encodingOptions={configItem.encodingOptions}
-                            relationOptions={configItem.relationOptions}
-                            config={configItem.config}
+                            // time={'Time'}
+                            // timeArr={result.timeArr}
+                            data={data}
+                            config={data.configs}
+                            // encodingOptions={configItem.encodingOptions}
+                            // relationOptions={configItem.relationOptions}
+                            // config={configItem.config}
                             width={940}
                             height={600}
+                            index={index}
                         />
                     </div>
                 )

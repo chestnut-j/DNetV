@@ -14,55 +14,47 @@ export default function Preview(props) {
     const [width, setWidth] = useState(props.config.width)
     const [height, setHeight] = useState(props.config.height)
     const [subGraphs, setSubGraphs] = useState([])
-    const [sumGraphs, setSumGraphs] = useState({nodes:[],links:[]})
-    const [renderType, setRenderType] = useState(
-        `${props.relationOptions.taskType}-${props.encodingOptions.encodingType[0]}`
-    )
+    const [sumGraphs, setSumGraphs] = useState({ nodes: [], links: [] })
+    const [renderType, setRenderType] = useState(props.config.renderType)
 
     // 数据更新时重新计算
     useEffect(() => {
-        if (props.encodingOptions.encodingType.indexOf('position') !== -1) {
-            setWidth(props.config.eachWidth)
-            setHeight(props.config.eachHeight)
-        } else {
-            setWidth(props.config.width)
-            setHeight(props.config.height)
-        }
-    }, [props.config, props.encodingOptions.encodingType])
+        // if (props.config.timeArr.indexOf('position') !== -1) {
+        setWidth(props.config.width)
+        setHeight(props.config.height)
+        // } else {
+        //     setWidth(props.config.width)
+        //     setHeight(props.config.height)
+        // }
+    }, [props.config, props.config.time])
 
     useEffect(() => {
         if (props.jsonfile.graphs) {
-            let data = dnetv()
-            data.initData(props.jsonfile.graphs, { width, height })
-            setSubGraphs(converObject2Array(data.timeGraphs))
-            setSumGraphs(data.sumGraphs)
-            
+            // let data = dnetv()
+            // data.initData(props.jsonfile.graphs, props.config)
+            setSubGraphs(converObject2Array(props.data.timeGraphs))
+            setSumGraphs(props.data.sumGraphs)
         }
     }, [width, height, props.jsonfile.graphs])
 
     useEffect(() => {
         if (props.jsonfile.graphs) {
-            setRenderType(
-                `${props.relationOptions.taskType}-${props.encodingOptions.encodingType[0]}`
-            )
+            setRenderType(props.config.renderType)
         } else {
             setRenderType('')
         }
-    }, [
-        props.relationOptions.taskType,
-        props.encodingOptions.encodingType[0],
-        props.jsonfile.graphs
-    ])
+    }, [props.time, props.config.timeArr, props.jsonfile.graphs])
     // console.log("data.sumGraphs",sumGraphs)
     // console.log("subgraphs", subGraphs)
-    console.log("renderType---------", renderType)
+    console.log('renderType---------', renderType)
     return (
-        <div 
+        <div
             style={{
-                width:`${props.width ? props.width: 1010}px`,
-                height: `${props.height ? props.height: 760}px`
+                width: `${props.width ? props.width : 1010}px`,
+                height: `${props.height ? props.height : 760}px`
             }}
-            className="preview-box">
+            className="preview-box"
+        >
             <div className="sub-title">
                 &nbsp;Preview
                 <svg className="icon" aria-hidden="true">
@@ -71,49 +63,49 @@ export default function Preview(props) {
             </div>
             {(() => {
                 switch (renderType) {
-                    case 'Time-position':
+                    case 'position':
                         return (
                             <TimePositionDnet
                                 data={subGraphs}
-                                comparisonOptions={props.relationOptions}
+                                comparisonOptions={props.config}
                                 width={width}
                                 height={height}
                                 margin={props.config.eachMargin}
                             />
                         )
-                    case 'Time-animation':
+                    case 'animation':
                         return (
                             <TimeAnimationDnet
                                 data={subGraphs}
-                                comparisonOptions={props.relationOptions}
+                                comparisonOptions={props.config}
                                 width={width}
-                                speed={props.encodingOptions.animation.speed}
+                                speed={props.config.speed}
                                 height={height}
                                 margin={props.config.eachMargin}
                             />
                         )
-                    case 'Time-color':
+                    case 'color':
                         return (
                             <TimeColorDnet
                                 len={subGraphs.length}
                                 data={sumGraphs}
-                                comparisonOptions={props.relationOptions}
+                                comparisonOptions={props.config}
                                 width={width}
                                 height={height}
                                 margin={props.config.eachMargin}
                             />
                         )
-                    case 'Time-link':
+                    case 'link':
                         return (
                             <TimeLinkDnet
                                 data={subGraphs}
                                 nodeNum={sumGraphs.nodes.length}
-                                comparisonOptions={props.relationOptions}
+                                comparisonOptions={props.config}
                                 width={width}
                                 height={height}
                                 margin={props.config.eachMargin}
-                                xDistance={props.encodingOptions.link.xDistance}
-                                yDistance={props.encodingOptions.link.yDistance}
+                                xDistance={props.config.xDistance}
+                                yDistance={props.config.yDistance}
                             />
                         )
                     case 'Time-chart':
