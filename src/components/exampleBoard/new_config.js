@@ -1,23 +1,65 @@
 export const new_configSet = [
     {
-        // time: 'position',
-        // comparison: 'color'
+        time: ['timeLine', 'color', 'insert'],
         renderType: 'position'
     },
     {
-        // time: 'position',
+        time: ['timeLine', 'insert'],
+        renderType: 'position'
+    },
+    {
+        time: [
+            'timeLine',
+            {
+                insert: {
+                    position: 'bottom', //目前就实现这一个。。。
+                    linkStyle: {
+                        shape: 'curve'
+                    }
+                }
+            }
+        ],
+        renderType: 'position'
+    },
+    {
+        renderType: 'position'
+    },
+    {
+        time: 'timeLine',
+        renderType: 'position'
+    },
+    {
+        comparison: 'color',
+        renderType: 'position'
+    },
+
+    {
+        time: 'timeLine',
         comparison: 'color',
         renderType: 'position'
     },
     {
-        time: 'position',
-        // comparison: 'color'
+        time: {
+            timeLine: {
+                element: 'node'
+            }
+        },
+        comparison: 'color',
         renderType: 'position'
     },
     {
-        time: 'position',
+        time: {
+            position: {
+                element: 'link'
+            }
+        },
         comparison: 'color',
         renderType: 'position'
+    },
+
+    {
+        time: 'animation',
+        renderType: 'animation'
     },
     {
         time: 'animation',
@@ -25,16 +67,68 @@ export const new_configSet = [
         renderType: 'animation'
     },
     {
-        time: ['animation', 'position'],
+        time: ['animation', 'timeLine'],
         comparison: 'color',
         renderType: 'animation'
+    },
+    {
+        time: [
+            'animation',
+            {
+                timeLine: {
+                    element: 'node'
+                }
+            }
+        ],
+        comparison: 'color',
+        renderType: 'animation'
+    },
+    {
+        time: [
+            'animation',
+            {
+                timeLine: {
+                    element: 'link'
+                }
+            }
+        ],
+        comparison: 'color',
+        renderType: 'animation'
+    },
+    {
+        layout: 'vertical',
+        time: {
+            timeLine: {
+                element: 'link'
+            }
+        },
+        renderType: 'position'
+    },
+    {
+        layout: 'vertical',
+        time: {
+            timeLine: {
+                element: 'node'
+            }
+        },
+        renderType: 'position'
+    },
+    {
+        time: ['timeLine', 'insert'],
+        renderType: 'position'
+    },
+    {
+        time: [
+            'timeLine',
+            {
+                insert: {
+                    position: 'bottom', //目前就实现这一个。。。
+                    linkStyle: {
+                        shape: 'curve'
+                    }
+                }
+            }
+        ],
+        renderType: 'position'
     }
-    // // {
-    // //     time: 'color'
-    // // },
-    // {
-    //     time: 'link',
-    //     comparison: 'color',
-    //     layout: 'vertical'
-    // }
 ]

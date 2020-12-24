@@ -46,7 +46,7 @@ export default function Preview(props) {
     }, [props.time, props.config.timeArr, props.jsonfile.graphs])
     // console.log("data.sumGraphs",sumGraphs)
     // console.log("subgraphs", subGraphs)
-    console.log('renderType---------', renderType)
+    // console.log('renderType---------', renderType)
     return (
         <div
             style={{
@@ -79,7 +79,7 @@ export default function Preview(props) {
                                 data={subGraphs}
                                 comparisonOptions={props.config}
                                 width={width}
-                                speed={props.config.speed}
+                                speed={props.config.time.animation.speed}
                                 height={height}
                                 margin={props.config.eachMargin}
                             />

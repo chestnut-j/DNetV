@@ -9,6 +9,7 @@ import { defaultConfigs } from '../preview/util/defaultConfig'
 import { configs } from 'eslint-plugin-prettier'
 import { Result } from 'antd'
 import dnetv from '../preview/dnetv.js'
+import * as _ from 'lodash'
 const dataset = [
     {
         dataName: 'testData',
@@ -49,6 +50,8 @@ export default function ExampleBoard() {
                 // }
                 let data = dnetv()
                 data.initData(jsonData.graphs, configItem)
+                let grammarConfig = _.cloneDeep(new_configSet[index])
+                delete grammarConfig.renderType
                 // data.configs.renderType = 'position'
                 // console.log('---encodingOptions---', configItem.encodingOptions)
                 // console.log('---relationOptions---', configItem.relationOptions)
@@ -57,10 +60,10 @@ export default function ExampleBoard() {
                 return (
                     <div div className="example-row">
                         <Grammar
-                            options={new_configSet[index]}
+                            options={grammarConfig}
                             // onSubmit={this.handleSubmitFromGrammar}
-                            width={940}
-                            height={600}
+                            width={200}
+                            height={300}
                         />
                         <Preview
                             jsonfile={jsonData}
@@ -71,8 +74,8 @@ export default function ExampleBoard() {
                             // encodingOptions={configItem.encodingOptions}
                             // relationOptions={configItem.relationOptions}
                             // config={configItem.config}
-                            width={940}
-                            height={600}
+                            width={1700}
+                            height={300}
                             index={index}
                         />
                     </div>
