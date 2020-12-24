@@ -17,7 +17,8 @@ class DNetV {
         this.elementsName = ['nodes', 'links'] //元素：点、边
         this.times = Object.fromEntries(data.map((d, index) => [d.time, index])) //时间：key值
         // Object.assign(config, defaultConfig)
-        this.configs = u.assignConfigs(configs)
+        // this.configs = u.assignConfigs(configs)
+        this.configs = configs
         this.oldData = data
         let { timeGraphs, nodeSet, linkSet, timeGraphSet, sumGraphs } = u.getTimeId(
             data,
@@ -29,11 +30,11 @@ class DNetV {
         this.nodeSet = nodeSet
         this.linkSet = linkSet
         this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyTime: 'next' }]) //函数里面直接改了timeGraphs
-        this.dealLayout(configs.layout ? configs.layout : undefined)
-        this.markingLine = configs.markingLine
+        this.dealLayout(configs.layout.chooseTypes ? configs.layout.chooseTypes : undefined)
+        this.markingLine = configs.time.markingLine
             ? u.getMarkingLine(this.sumGraphs, this.timeGraphs, this.configs)
             : {}
-        u.setStyle(this.timeGraphs, this.sumGraphs, this.configs)
+        // u.setStyle(this.timeGraphs, this.sumGraphs, this.configs)
         this.subGraphs = Object.values(this.timeGraphs).map((v) => ({
             links: Object.values(v.links),
             nodes: Object.values(v.nodes)

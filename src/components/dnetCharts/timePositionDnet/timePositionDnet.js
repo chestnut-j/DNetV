@@ -3,7 +3,9 @@ import NodeItemContainer from '../../nodeItemContainer/nodeItemContainer.js'
 import LinkItemContainer from '../../linkItemContainer/linkItemContainer.js'
 
 export default function TimePositionDnet(props) {
-    const { data, height, width, margin, comparisonOptions } = props
+    const {data, config} = props
+    const { height, width, margin, nodeStyle, linkStyle} = config.basic
+    const comparisonOptions = config.comparison
     const len = data.length
     if (len === 0) return null
     return (
@@ -32,7 +34,8 @@ export default function TimePositionDnet(props) {
                                 {dataItem.links.map((v) => {
                                     return (
                                         <LinkItemContainer
-                                            // comparisonOptions={comparisonOptions}
+                                            comparisonOptions={comparisonOptions}
+                                            linkStyle={linkStyle}
                                             {...v}
                                             key={`link-${v.timeId}`}
                                         />
@@ -43,7 +46,8 @@ export default function TimePositionDnet(props) {
                                 {dataItem.nodes.map((v) => {
                                     return (
                                         <NodeItemContainer
-                                            // comparisonOptions={comparisonOptions}
+                                            comparisonOptions={comparisonOptions}
+                                            nodeStyle={nodeStyle}
                                             {...v}
                                             key={`node-${v.timeId}`}
                                         />

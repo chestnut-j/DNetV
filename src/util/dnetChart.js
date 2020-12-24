@@ -1,15 +1,202 @@
 import * as d3 from 'd3'
+import { configs } from 'eslint-plugin-prettier'
+
+const TIME_CONFIG = [
+    'position',
+    'animation',
+    'color',
+    'link'
+]
+
+const LAYOUT_CONFIG = [
+    'offLine',
+    'vertical'
+]
+
+export const defaultConfigs = {
+    layout: {
+        chooseTypes: 'offLine',
+        vertical: {
+            yDistance: 40,
+            linkStyle: {
+                shape: 'curve'
+            }
+        }
+    },
+    time: {
+        animation: {
+            speed: 800
+        },
+        markingLine: {
+            strokeColor: '#FD8F8F',
+            strokeWidth: 1,
+            strokeDasharray: '5,5'
+            // xDistance: 100
+            // yDistance: 40
+        },
+        position: {
+            positionFlag: 1,
+            eachMargin: 5,
+            eachWidth: 200,
+            eachHeight: 200
+        }
+    },
+    comparison: {
+        appearNode: {
+            shape: 'circle',
+            fillColor: '#FD8F8F',
+            strokeColor: '#000000',
+            strokeWidth: 1,
+            strokeType: 'solid',
+            textColor: 'white',
+            radius: 6
+        },
+        stableNode: {
+            shape: 'circle',
+            fillColor: '#DAD5D5',
+            strokeColor: '#000000',
+            strokeWidth: 1,
+            radius: 6,
+            strokeType: 'solid',
+            textColor: 'white'
+        },
+        disappearNode: {
+            shape: 'circle',
+            fillColor: '#90B5FB',
+            strokeColor: '#000000',
+            strokeWidth: 1,
+            radius: 6,
+            strokeType: 'solid',
+            textColor: 'white'
+        },
+        appearLink: {
+            strokeColor: '#FD8F8F',
+            strokeType: 'solid',
+            strokeWidth: 2
+        },
+        stableLink: {
+            strokeColor: '#908F8F',
+            strokeType: 'solid',
+            strokeWidth: 2
+        },
+        disappearLink: {
+            strokeColor: '#90B5FB',
+            strokeType: 'solid',
+            strokeWidth: 2
+        }
+    },
+    basic: {
+        width: 200,
+        height: 200,
+        margin: 10,
+        nodeStyle: {
+            shape: 'circle',
+            fillColor: '#DAD5D5',
+            strokeColor: '#000000',
+            strokeWidth: 1,
+            radius: 6,
+            strokeType: 'solid',
+            textColor: 'white'
+        },
+        linkStyle: {
+            shape: 'line',
+            strokeColor: '#908F8F',
+            strokeType: 'solid',
+            strokeWidth: 2
+        }
+    }
+}
+
+export const timeEncodingOrder = {
+    'position': 0, 
+    'animation': 1,
+    'color': 2,
+    'link': 3,
+}
+
+export function getRenderType(arr){
+    arr.sort((a,b)=>timeEncodingOrder[b]-timeEncodingOrder[a])
+    return arr.join('-')
+}
+
+
+
+
+// 根据输入的参数，和默认的配置，合成最终的配置
+// 检验输入的参数，确保基础config没有问题
+export function composeConfig(configItem){
+    const config = deepClone(defaultConfigs)
+    if(!configItem.time||Object.prototype.toString.call(configItem.time)!= '[object Array]'){
+        config.time.chooseTypes = ['position']
+    }else{
+        config.time.chooseTypes = configItem.time.filter((item)=>TIME_CONFIG.indexOf(item)>-1)
+    }
+    config.comparison.isOn = configItem.comparison? true : false
+    config.layout.chooseTypes = LAYOUT_CONFIG.indexOf(configItem.layout)> -1 ? configItem.layout : 'offLine'
+    if(Object.prototype.toString.call(configItem.coverConfig)==='[object Object]'){
+        coverConfig(config, configItem.coverConfig)
+    }
+    return config
+}
+
+export function deepClone(Obj) {   
+    var buf;   
+    if (Obj instanceof Array) {   
+        buf = [];  //创建一个空的数组 
+        var i = Obj.length;   
+        while (i--) {   
+            buf[i] = deepClone(Obj[i]);   
+        }   
+        return buf;   
+    }else if (Obj instanceof Object){   
+        buf = {};  //创建一个空对象 
+        for (var k in Obj) {  //为这个对象添加新的属性 
+            buf[k] = deepClone(Obj[k]);   
+        }   
+        return buf;   
+    }else{   
+        return Obj;   
+    }   
+} 
+
+
+export function coverConfig(originConfig, newConfig){
+    if(Object.prototype.toString.call(newConfig)==='[object Array]'){
+        for(let i=0;i<newConfig.length;i++){
+            if(typeof(newConfig[i]) !== 'object'){
+                originConfig[i] = newConfig[i]
+            }else if(Object.prototype.toString.call(newConfig[i])==='[object Array]'&&Object.prototype.toString.call(originConfig[i])==='[object Array]') {
+                coverConfig(originConfig[i], newConfig[i])
+            }else if(Object.prototype.toString.call(newConfig[i])==='[object Object]'&&Object.prototype.toString.call(originConfig[i])==='[object Object]'){
+                coverConfig(originConfig[i], newConfig[i])
+            }
+        }
+    }else if(Object.prototype.toString.call(newConfig)==='[object Object]'){
+        for(let key in newConfig){
+            if(typeof(newConfig[key]) !== 'object'){
+                // 直接覆盖
+                originConfig[key] = newConfig[key]
+            }else if(Object.prototype.toString.call(newConfig[key])==='[object Array]'&&Object.prototype.toString.call(originConfig[key])==='[object Array]') {
+                // 递归覆盖
+                coverConfig(originConfig[key], newConfig[key])
+            }else if(Object.prototype.toString.call(newConfig[key])==='[object Object]'&&Object.prototype.toString.call(originConfig[key])==='[object Object]'){
+                // 递归覆盖
+                coverConfig(originConfig[key], newConfig[key])
+            }
+        }
+    }
+}
 
 export function getDividedOptions(props, status) {
     const firstOption = {
         ...props,
-        ...props.style[status[0]]
-        // comparisonOptions: ''
+        ...props.comparisonOptions[status[0]],
+        comparisonOptions: ''
     }
     const secondOption = {
         ...props,
-        ...props.style[status[1]]
-        // comparisonOptions: ''
+        ...props.comparisonOptions[status[1]],
+        comparisonOptions: ''
     }
     const middleX = (props.source.x + props.target.x) / 2
     const middleY = (props.source.y + props.target.y) / 2

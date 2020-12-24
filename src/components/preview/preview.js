@@ -8,6 +8,7 @@ import TimeLinkDnet from '../dnetCharts/timeLinkDnet/timeLinkDnet.js'
 import ComparisonPositionDnet from '../dnetCharts/comparisonPositionDnet/comparisonPositionDnet.js'
 import ComparisonAnimationDnet from '../dnetCharts/comparisonAnimationDnet/comparisonAnimationDnet.js'
 import dnetv from './dnetv'
+import { getRenderType } from '../../util/dnetChart'
 
 export default function Preview(props) {
     // 要计算
@@ -19,34 +20,47 @@ export default function Preview(props) {
 
     // 数据更新时重新计算
     useEffect(() => {
-        // if (props.config.timeArr.indexOf('position') !== -1) {
         setWidth(props.config.width)
-        setHeight(props.config.height)
-        // } else {
-        //     setWidth(props.config.width)
-        //     setHeight(props.config.height)
-        // }
-    }, [props.config, props.config.time])
+    }, [props.config.width])
 
     useEffect(() => {
-        if (props.jsonfile.graphs) {
-            // let data = dnetv()
-            // data.initData(props.jsonfile.graphs, props.config)
-            setSubGraphs(converObject2Array(props.data.timeGraphs))
-            setSumGraphs(props.data.sumGraphs)
+        setWidth(props.config.height)
+    }, [props.config.height])
+
+    useEffect(() => {
+        if (props.data) {
+            let dnetvInstance = dnetv()
+            dnetvInstance.initData(props.data, props.config)
+            console.log("---dnetvInstance---",dnetvInstance)
+            setSubGraphs(converObject2Array(dnetvInstance.timeGraphs))
+            
+            setSumGraphs(dnetvInstance.sumGraphs)
         }
-    }, [width, height, props.jsonfile.graphs])
+    }, [props.config, props.data])
 
     useEffect(() => {
-        if (props.jsonfile.graphs) {
-            setRenderType(props.config.renderType)
+        if (props.data) {
+            setRenderType(getRenderType(props.config.time.chooseTypes))
         } else {
             setRenderType('')
         }
-    }, [props.time, props.config.timeArr, props.jsonfile.graphs])
+    }, [props.config.time])
     // console.log("data.sumGraphs",sumGraphs)
     // console.log("subgraphs", subGraphs)
-    console.log('renderType---------', renderType)
+    console.log('----renderType---------', renderType)
+    console.log("--subGraphs--", subGraphs)
+    const tempRenderType = 'animation'
+    // return (
+    //     <div
+    //         style={{
+    //             width: `${props.width ? props.width : 1010}px`,
+    //             height: `${props.height ? props.height : 760}px`
+    //         }}
+    //         className="preview-box"
+    //     >
+
+    //     </div>
+    // )
     return (
         <div
             style={{
@@ -62,26 +76,24 @@ export default function Preview(props) {
                 </svg>
             </div>
             {(() => {
-                switch (renderType) {
+                switch (tempRenderType) {
                     case 'position':
                         return (
                             <TimePositionDnet
                                 data={subGraphs}
-                                comparisonOptions={props.config}
-                                width={width}
-                                height={height}
-                                margin={props.config.eachMargin}
+                                config={props.config}
                             />
                         )
                     case 'animation':
                         return (
                             <TimeAnimationDnet
                                 data={subGraphs}
-                                comparisonOptions={props.config}
-                                width={width}
-                                speed={props.config.speed}
-                                height={height}
-                                margin={props.config.eachMargin}
+                                config={props.config}
+                                // comparisonOptions={props.config.comparison}
+                                // width={width}
+                                // height={height}
+                                // speed={props.config.speed}
+                                // margin={props.config.eachMargin}
                             />
                         )
                     case 'color':

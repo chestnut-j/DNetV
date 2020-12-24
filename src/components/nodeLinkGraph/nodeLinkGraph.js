@@ -5,7 +5,7 @@ import LinkItemContainer from '../linkItemContainer/linkItemContainer.js'
 // import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
 export default function NodeLinkGraph(props) {
-    const { comparisonOptions, data, width, height, margin } = props
+    const { comparisonOptions, data, width, height, margin,linkStyle, nodeStyle} = props
     return (
         <div
             className="nlg-container"
@@ -17,8 +17,8 @@ export default function NodeLinkGraph(props) {
         >
             <svg
                 className="nlg-container-svg"
-                width="100%"
-                height="100%"
+                width={`${width}px`}
+                height={`${height}px`}
                 viewBox={`0 0 ${width} ${height}`}
                 preserveAspectRatio="xMinYMin"
             >
@@ -26,8 +26,8 @@ export default function NodeLinkGraph(props) {
                     {data.links.map((v) => {
                         return (
                             <LinkItemContainer
-                                {...props}
-                                // comparisonOptions = {comparisonOptions}
+                                comparisonOptions = {comparisonOptions}
+                                linkStyle={linkStyle}
                                 {...v}
                                 key={`link-${v.timeId}`}
                             />
@@ -38,9 +38,9 @@ export default function NodeLinkGraph(props) {
                     {data.nodes.map((v) => {
                         return (
                             <NodeItemContainer
-                                // comparisonOptions = {comparisonOptions}
+                                comparisonOptions = {comparisonOptions}
+                                nodeStyle={nodeStyle}
                                 {...v}
-                                {...props}
                                 key={`node-${v.timeId}`}
                             />
                         )

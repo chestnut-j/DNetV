@@ -152,11 +152,11 @@ export function adjustLayout2Svg(nodes, links, width, height) {
 }
 export const verticalLayout = (sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const { eachWidth, eachHeight } = configs
-    const l = nodes.length
+    const height = configs.basic.height
+    const len = nodes.length
     let nodesObj = {}
     nodes.forEach((node, index) => {
-        node.y = (eachHeight / l) * index
+        node.y = (height / len) * index
         node.x = 0
         nodesObj[node.id] = { ...node }
     })
@@ -170,21 +170,23 @@ export const verticalLayout = (sumGraphs, configs) => {
 }
 export const offLineLayout = (sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const { eachWidth, eachHeight } = configs
+    const { width, height } = configs.basic
     d3.forceSimulation(nodes)
         .force(
             'link',
             d3.forceLink(links).id((d) => d.id)
         )
         .force('charge', d3.forceManyBody())
-        .force('center', d3.forceCenter(eachWidth / 2, eachHeight / 2))
+        .force('center', d3.forceCenter(width / 2, height / 2))
         .stop()
         .tick(10)
         .stop()
-    adjustLayout2Svg(nodes, links, eachWidth, eachHeight)
+    adjustLayout2Svg(nodes, links, width, height)
     // console.log("nodes---links----width---height", nodes, links, width, height)
     return sumGraphs
 }
+
+
 export const assignConfigs = (configs) => {
     const a = defaultConfigs
     let sumConfigs = { ...defaultConfigs.basic }
@@ -257,16 +259,18 @@ export const setStyle = (timeGraphs, sumGraphs, configs) => {
 }
 export const getGraphLayout = (timeGraphs, sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const { timeArr, eachWidth, eachMargin } = configs
+    const { timeArr, width, margin } = configs.basic
     const layoutNodes = Object.fromEntries(nodes.map((d) => [d.id, d]))
     const layoutLinks = Object.fromEntries(links.map((d) => [d.id, d]))
     let timeGraphsValues = Object.values(timeGraphs)
-    const l = timeGraphsValues.length
+    // const l = timeGraphsValues.length
+    const positionFlag = configs.time.chooseTypes.indexOf('position') > -1 ? true : false
     timeGraphsValues.forEach((graph) => {
         Object.values(graph.nodes).forEach((node) => {
             Object.assign(node, layoutNodes[node.id])
-            if (configs.positionFlag) {
-                node.x += node.timeIndex * (eachWidth + eachMargin)
+            // 当开启位置偏移配置
+            if (positionFlag) {
+                node.x += node.timeIndex * (width + margin)
             }
         })
     })

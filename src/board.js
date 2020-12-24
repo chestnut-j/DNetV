@@ -15,16 +15,37 @@ export default class Board extends React.Component {
             board: 'example',
             jsonfile: {},
             filename: '',
-            relationType: 'appear',
-            preColor: '',
-            encodingOptions: {
-                encodingType: ['link'],
+            basic: {
+                width: 1010,
+                height: 200,
+                eachWidth: 200,
+                eachHeight: 200,
+                margin: 10,
+                nodeStyle: {
+                    shape: 'circle',
+                    fillColor: '#DAD5D5',
+                    strokeColor: '#000000',
+                    strokeWidth: 1,
+                    radius: 6,
+                    strokeType: 'solid',
+                    textColor: 'white'
+                },
+                linkStyle: {
+                    shape: 'line',
+                    strokeColor: '#908F8F',
+                    strokeType: 'solid',
+                    strokeWidth: 2
+                }
+            },
+            time: {
+                chooseTypes: ['link'],
                 visible: {
                     isVisible: true
                 },
                 position: {
-                    totalWidth: 1000,
-                    eachWidth: 500
+                    eachMargin: 5,
+                    eachWidth: 200,
+                    eachHeight: 200
                 },
                 color: {
                     number: 10
@@ -38,15 +59,17 @@ export default class Board extends React.Component {
                 },
                 glyph: ''
             },
-            config: {
-                width: 500,
-                height: 500,
-                eachMargin: 20,
-                eachWidth: 200,
-                eachHeight: 200
+            layout: {
+                chooseTypes:'vertical', 
+                vertical: {
+                    yDistance: 40,
+                    linkStyle: {
+                        shape: 'curve'
+                    }
+                }
             },
-            relationOptions: {
-                taskType: 'Time',
+            comparison: {
+                isOn: true,
                 chooseItem: 'stable-Node',
                 appearNode: {
                     shape: 'circle',
@@ -111,8 +134,8 @@ export default class Board extends React.Component {
     handleSubmitFromRelation = (value) => {
         if (!value) return
         this.setState({
-            relationOptions: {
-                ...this.state.relationOptions,
+            comparison: {
+                ...this.state.comparison,
                 ...value
             }
         })
@@ -142,9 +165,11 @@ export default class Board extends React.Component {
         }
     }
     render() {
-        const grammarOptions = {
-            relationOptions: this.state.relationOptions,
-            encodingOptions: this.state.encodingOptions
+        const combineConfigs = {
+            global: this.state.global,
+            time: this.state.time,
+            comparison: this.state.comparison,
+            layout: this.state.layout
         }
         return (
             <div className="board">
@@ -175,7 +200,7 @@ export default class Board extends React.Component {
                         <div className="col">
                             <Data onSubmit={this.handleSubmitFromData} />
                             <Relation
-                                options={this.state.relationOptions}
+                                options={this.state.comparison}
                                 onSubmit={this.handleSubmitFromRelation}
                             />
                         </div>
@@ -183,14 +208,14 @@ export default class Board extends React.Component {
                             <Encoding
                                 preColor={this.state.preColor}
                                 options={this.state.encodingOptions}
-                                relationOptions={this.state.relationOptions}
+                                comparison={this.state.comparison}
                                 onSubmitToRelation={this.handleSubmitFromRelation}
                                 onSubmit={this.handleSubmitFromEncoding}
                             />
                         </div>
                         <div className="col">
                             <Grammar
-                                options={grammarOptions}
+                                options={combineConfigs}
                                 onSubmit={this.handleSubmitFromGrammar}
                             />
                         </div>
@@ -204,10 +229,10 @@ export default class Board extends React.Component {
                                 <Template style={{ float: 'left' }} />
                             </div>
                             <Preview
-                                jsonfile={this.state.jsonfile}
+                                data={this.state.jsonfile.graphs}
                                 encodingOptions={this.state.encodingOptions}
-                                relationOptions={this.state.relationOptions}
-                                config={this.state.config}
+                                comparison={this.state.comparison}
+                                config={combineConfigs}
                             />
                         </div>
                     </div>

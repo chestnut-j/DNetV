@@ -7,6 +7,10 @@ import './timeAnimationDnet.css'
 export default function TimeAnimationDnet(props) {
     const [frameIndex, setFrameIndex] = useState(0)
     const [playOrPause, setPlayOrPause] = useState(false)
+    const { data, config } = props
+    const { height, width, margin, nodeStyle, linkStyle } = config.basic
+    const speed = config.time.animation.speed
+    const comparisonOptions = config.comparison
     let timeout
     useEffect(() => {
         if (timeout) {
@@ -18,7 +22,7 @@ export default function TimeAnimationDnet(props) {
         setTimeout(() => {
             // 将playOrPause改成true会自动播放动画，所以不用去单独执行controlAnimation函数
             setPlayOrPause(true)
-        }, props.speed)
+        }, speed)
     }, [props.data])
 
     useEffect(() => {
@@ -31,7 +35,7 @@ export default function TimeAnimationDnet(props) {
         }
     }, [playOrPause])
 
-    if (props.data.length === 0) return null
+    if (data.length === 0) return null
 
     function handlePlayOrPause() {
         setPlayOrPause(!playOrPause)
@@ -44,22 +48,29 @@ export default function TimeAnimationDnet(props) {
         }
         timeout = setTimeout(() => {
             if (playOrPause) {
-                const len = props.data.length
+                const len = data.length
                 const nextFrame = (frameIndex + 1) % len
                 setFrameIndex(nextFrame)
             }
-        }, props.speed)
+        }, speed)
     }
     // console.log("-----comparisonOptions---", props.comparisonOptions)
-    return props.data[frameIndex] ? (
-        <div className="TimeAnimationDnet graph">
+    return data[frameIndex] ? (
+        <div 
+            style={{
+                width: '100%',
+                height: '730px',
+                overflowX: 'auto'
+            }}
+            className="TimeAnimationDnet graph">
             <NodeLinkGraph
-                {...props}
                 data={props.data[frameIndex]}
-                height={props.height}
-                width={props.width}
-                margin={props.margin}
-                // comparisonOptions={props.comparisonOptions}
+                height={height}
+                width={width*data.length + margin*(data.length - 1)}
+                margin={margin}
+                linkStyle={linkStyle}
+                nodeStyle={nodeStyle}
+                comparisonOptions={comparisonOptions}
             />
             <div className="tad-control-container">
                 {playOrPause ? (
