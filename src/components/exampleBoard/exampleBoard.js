@@ -58,7 +58,10 @@ export default function ExampleBoard() {
                 // delete configItem.relationOptions.chooseItem
                 // delete configItem.encodingOptions.taskType
                 return (
-                    <div div className="example-row">
+                    <div
+                        className="example-row"
+                        key={`example-row-${index}`}  
+                      >
                         <Grammar
                             options={grammarConfig}
                             // onSubmit={this.handleSubmitFromGrammar}
