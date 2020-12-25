@@ -3,15 +3,20 @@ import ArcLinkItem from '../arcLinkItem/arcLinkItem.js'
 import { getArcPathData, getDividedArcPathData } from '../../util/dnetChart.js'
 
 export default function ArcLinkContainer(props) {
-    const { status} = props.linkInfo
-    const { firstData, secondData} = getDividedArcPathData(props.startY, props.endY)
+    const { status, linkStyle, comparisonOptions, source, target} = props
+    const { firstData, secondData} = getDividedArcPathData(source, target)
+    const firstComparisonOptions = comparisonOptions.isOn ?
+        {...comparisonOptions[status[0] ? status[0] : 'stableLink']}:
+        linkStyle
+    const secondComparisonOptions = comparisonOptions.isOn ? 
+        {...comparisonOptions[status[1]]}:
+        linkStyle
+    
     if (status.length < 2) {
-
         return (
             <ArcLinkItem
                 data = {firstData+secondData}
-                {...props.comparisonOptions[status[0] ? status[0] : 'stableLink']}
-                linkInfo = {props.linkInfo}
+                {...firstComparisonOptions}
             />
         )
     } else {
@@ -19,13 +24,11 @@ export default function ArcLinkContainer(props) {
             <>
                 <ArcLinkItem
                     data = {firstData}
-                    {...props.comparisonOptions[status[0]]}
-                    linkInfo = {props.linkInfo}
+                    {...firstComparisonOptions}
                 />
                 <ArcLinkItem
                     data = {secondData}
-                    {...props.comparisonOptions[status[1]]}
-                    linkInfo = {props.linkInfo}
+                    {...secondComparisonOptions}
                 />
             </>
         )

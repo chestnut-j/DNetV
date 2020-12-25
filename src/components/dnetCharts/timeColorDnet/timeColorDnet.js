@@ -8,6 +8,7 @@ export default function TimeColorDnet(props) {
     const legendData = new Array(props.len).fill(0)
     const singleLegendWidth = 15
     let colorScale = getPiePathColor(props.len,'#FD8F8F', '#90B5FB')
+    const {width, height, nodeStyle, linkStyle} = props.config.basic
     return (
         <div
             style={{
@@ -60,9 +61,9 @@ export default function TimeColorDnet(props) {
             </div>
             <svg
                 className="nlg-container-svg"
-                width={`${props.width}px`}
-                height={`${props.height}px`}
-                viewBox={`0 0 ${props.width} ${props.height}`}
+                width={`${width}px`}
+                height={`${height}px`}
+                viewBox={`0 0 ${width} ${height}`}
                 preserveAspectRatio="xMinYMin"
             >
                 {props.data.links.map((dataItem, index) => {
@@ -73,7 +74,7 @@ export default function TimeColorDnet(props) {
                             existTimeIndex={dataItem.existTimeIndex}
                             colorScale={colorScale}
                             key={`time-color-link-${index}`}
-                            {...props.comparisonOptions['stableLink']}
+                            {...linkStyle}
                         />
                     )
                 })}
@@ -85,7 +86,7 @@ export default function TimeColorDnet(props) {
                             existTimeIndex={dataItem.existTimeIndex}
                             colorScale={colorScale}
                             key={`time-color-node-${index}`}
-                            {...props.comparisonOptions['stableNode']}
+                            {...nodeStyle}
                         />
                     )
                 })}

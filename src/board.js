@@ -16,10 +16,10 @@ export default class Board extends React.Component {
             jsonfile: {},
             filename: '',
             basic: {
-                width: 1010,
-                height: 200,
-                eachWidth: 200,
-                eachHeight: 200,
+                width: 300,
+                height: 300,
+                eachWidth: 300,
+                eachHeight: 300,
                 margin: 10,
                 nodeStyle: {
                     shape: 'circle',
@@ -230,9 +230,15 @@ export default class Board extends React.Component {
                             </div>
                             <Preview
                                 data={this.state.jsonfile.graphs}
-                                encodingOptions={this.state.encodingOptions}
-                                comparison={this.state.comparison}
-                                config={combineConfigs}
+                                config={{
+                                    basic: this.state.basic,
+                                    layout: this.state.layout,
+                                    comparison: this.state.comparison,
+                                    time: this.state.time
+                                }}
+                                // encodingOptions={this.state.encodingOptions}
+                                // comparison={this.state.comparison}
+                                // config={combineConfigs}
                             />
                         </div>
                     </div>

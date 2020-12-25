@@ -4,11 +4,16 @@ import ArcLinkContainer from '../../arcLinkContainer/arcLinkContainer.js'
 import { getLinkPathData } from '../../../util/dnetChart.js'
 
 export default function TimeLinkDnet(props) {
-    const { data, nodeNum, height, width, margin, comparisonOptions, xDistance, yDistance} = props
+
+    const { data, nodeNum, config, markLine} = props
+    const { height, width, margin,nodeStyle, linkStyle} = config.basic
+    const {strokeColor, strokeWidth, strokeDasharray} = config.time.markingLine
     const len = data.length
     if (len === 0) return null
-    const linkPathData = getLinkPathData(data, xDistance, yDistance, margin, nodeNum)
-    // console.log("--linkPathData--", linkPathData)
+    const linkPathData = getLinkPathData(markLine, nodeNum)
+    console.log("******--linkPathData--*****", linkPathData)
+    console.log("******-----TimeLinkDnet---data--*****", data)
+    // return null
     return (
         <div
             style={{
@@ -20,9 +25,9 @@ export default function TimeLinkDnet(props) {
         >
             <svg
                 className="tld-container-svg"
-                width={`${xDistance * len + margin * 2}px`}
-                height={`${yDistance * nodeNum + margin * 2}px`}
-                viewBox={`0 0 ${xDistance * len + margin * 2} ${yDistance * nodeNum + margin * 2}`}
+                width={`${width}px`}
+                height={`${height}px`}
+                viewBox={`0 0 ${width} ${height}`}
                 preserveAspectRatio="xMinYMin"
             >
                 <g>
@@ -36,8 +41,9 @@ export default function TimeLinkDnet(props) {
                               <path
                                 d={v}
                                 fill={'none'}
-                                stroke={links.color}
-                                strokeWidth={'1px'}
+                                stroke={strokeColor}
+                                strokeWidth={`${strokeWidth}px`}
+                                strokeDasharray={strokeDasharray}
                                 key = {`curve-link-${index}`}
                             />
                             )
@@ -50,26 +56,17 @@ export default function TimeLinkDnet(props) {
                 
                 </g>
                 {data.map((dataItem, index) => {
-                    const id2Index = {}
-                    dataItem.nodes.forEach((v, index) => {
-                        id2Index[v.id] = index
-                    })
                     return (
                         <g
                             key={`subGraph-${index}`}
-                            transform={`translate(${index * xDistance + margin}, ${margin})`}
                         >
                             <g>
                                 {dataItem.links.map(v => {
-                                    const linkIds = v.id.split('-')
-                                    const startY = id2Index[linkIds[1]] * yDistance
-                                    const endY = id2Index[linkIds[0]] * yDistance
                                     return (
                                         <ArcLinkContainer 
-                                            comparisonOptions = {comparisonOptions}
-                                            linkInfo = {v}
-                                            startY = {startY}
-                                            endY = {endY}
+                                            comparisonOptions = {config.comparison}
+                                            linkStyle={linkStyle}
+                                            {...v}
                                             key={`link-${v.timeId}`}
                                         />
                                     )
@@ -79,8 +76,9 @@ export default function TimeLinkDnet(props) {
                                 {dataItem.nodes.map((v, index) => {
                                     return (
                                         <NodeItemContainer
-                                            comparisonOptions = {comparisonOptions}
-                                            {...{...v, x:0, y:index*yDistance}}
+                                            comparisonOptions = {config.comparison}
+                                            nodeStyle={nodeStyle}
+                                            {...v}
                                             key={`node-${v.timeId}`}
                                         />
                                     )

@@ -210,12 +210,12 @@ export default class Encoding extends React.Component {
                             </div>
                             <div className="item-right-container">
                                 <div className="item-right-option">
-                                    <div>TotalWidth:</div>
+                                    <div>EachMargin:</div>
                                     <Input
-                                        value={options.position.totalWidth}
+                                        value={options.position.eachMargin}
                                         type="number"
                                         onChange={(e) =>
-                                            this.handleTimeOptionsInput(e, 'position', 'totalWidth')
+                                            this.handleTimeOptionsInput(e, 'position', 'eachMargin')
                                         }
                                         style={{ width: '65px' }}
                                     />

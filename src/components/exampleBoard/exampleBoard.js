@@ -48,7 +48,6 @@ export default function ExampleBoard() {
                             config={config}
                             width={940}
                             height={600}
-                            index={index}
                         />
                     </div>
                 )

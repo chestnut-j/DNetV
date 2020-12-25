@@ -12,20 +12,21 @@ import { getRenderType } from '../../util/dnetChart'
 
 export default function Preview(props) {
     // 要计算
-    const [width, setWidth] = useState(props.config.width)
-    const [height, setHeight] = useState(props.config.height)
+    const [width, setWidth] = useState(props.config.basic.width)
+    const [height, setHeight] = useState(props.config.basic.height)
     const [subGraphs, setSubGraphs] = useState([])
     const [sumGraphs, setSumGraphs] = useState({ nodes: [], links: [] })
-    const [renderType, setRenderType] = useState(props.config.renderType)
+    const [markLine, setMarkLine] = useState({})
+    const [renderType, setRenderType] = useState('')
 
     // 数据更新时重新计算
     useEffect(() => {
-        setWidth(props.config.width)
-    }, [props.config.width])
+        setWidth(props.config.basic.width)
+    }, [props.config.basic.width])
 
     useEffect(() => {
-        setWidth(props.config.height)
-    }, [props.config.height])
+        setWidth(props.config.basic.height)
+    }, [props.config.basic.height])
 
     useEffect(() => {
         if (props.data) {
@@ -33,7 +34,7 @@ export default function Preview(props) {
             dnetvInstance.initData(props.data, props.config)
             console.log("---dnetvInstance---",dnetvInstance)
             setSubGraphs(converObject2Array(dnetvInstance.timeGraphs))
-            
+            setMarkLine(dnetvInstance.markingLine)
             setSumGraphs(dnetvInstance.sumGraphs)
         }
     }, [props.config, props.data])
@@ -44,12 +45,12 @@ export default function Preview(props) {
         } else {
             setRenderType('')
         }
-    }, [props.config.time])
+    }, [props.data, props.config.time.chooseTypes])
     // console.log("data.sumGraphs",sumGraphs)
     // console.log("subgraphs", subGraphs)
     console.log('----renderType---------', renderType)
     console.log("--subGraphs--", subGraphs)
-    const tempRenderType = 'animation'
+    const tempRenderType = 'position'
     // return (
     //     <div
     //         style={{
@@ -89,11 +90,6 @@ export default function Preview(props) {
                             <TimeAnimationDnet
                                 data={subGraphs}
                                 config={props.config}
-                                // comparisonOptions={props.config.comparison}
-                                // width={width}
-                                // height={height}
-                                // speed={props.config.speed}
-                                // margin={props.config.eachMargin}
                             />
                         )
                     case 'color':
@@ -101,23 +97,22 @@ export default function Preview(props) {
                             <TimeColorDnet
                                 len={subGraphs.length}
                                 data={sumGraphs}
-                                comparisonOptions={props.config}
-                                width={width}
-                                height={height}
-                                margin={props.config.eachMargin}
+                                config={props.config}
                             />
                         )
                     case 'link':
                         return (
                             <TimeLinkDnet
                                 data={subGraphs}
-                                nodeNum={sumGraphs.nodes.length}
-                                comparisonOptions={props.config}
-                                width={width}
-                                height={height}
-                                margin={props.config.eachMargin}
-                                xDistance={props.config.xDistance}
-                                yDistance={props.config.yDistance}
+                                config={props.config}
+                                markLine={markLine}
+                                // nodeNum={sumGraphs.nodes.length}
+                                // comparisonOptions={props.config}
+                                // width={width}
+                                // height={height}
+                                // margin={props.config.eachMargin}
+                                // xDistance={props.config.xDistance}
+                                // yDistance={props.config.yDistance}
                             />
                         )
                     case 'Time-chart':
