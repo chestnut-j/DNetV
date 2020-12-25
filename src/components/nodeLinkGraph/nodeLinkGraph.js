@@ -1,6 +1,6 @@
 import React from 'react'
 import NodeItemContainer from '../nodeItemContainer/nodeItemContainer.js'
-import LinkItemContainer from '../linkItemContainer/linkItemContainer.js'
+import LinkContainer from '../linkContainer/linkContainer.js'
 
 // import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
@@ -25,7 +25,7 @@ export default function NodeLinkGraph(props) {
                 <g>
                     {data.links.map((v) => {
                         return (
-                            <LinkItemContainer
+                            <LinkContainer
                                 comparisonOptions = {comparisonOptions}
                                 linkStyle={linkStyle}
                                 {...v}

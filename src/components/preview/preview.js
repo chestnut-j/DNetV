@@ -46,11 +46,9 @@ export default function Preview(props) {
             setRenderType('')
         }
     }, [props.data, props.config.time.chooseTypes])
-    // console.log("data.sumGraphs",sumGraphs)
-    // console.log("subgraphs", subGraphs)
     console.log('----renderType---------', renderType)
     console.log("--subGraphs--", subGraphs)
-    const tempRenderType = 'position'
+    const tempRenderType = 'link'
     // return (
     //     <div
     //         style={{
@@ -106,13 +104,6 @@ export default function Preview(props) {
                                 data={subGraphs}
                                 config={props.config}
                                 markLine={markLine}
-                                // nodeNum={sumGraphs.nodes.length}
-                                // comparisonOptions={props.config}
-                                // width={width}
-                                // height={height}
-                                // margin={props.config.eachMargin}
-                                // xDistance={props.config.xDistance}
-                                // yDistance={props.config.yDistance}
                             />
                         )
                     case 'Time-chart':

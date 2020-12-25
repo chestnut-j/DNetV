@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import { configs } from 'eslint-plugin-prettier'
 import { SwatchesPicker } from 'react-color'
 
-const TIME_CONFIG = ['position', 'animation', 'color', 'link']
+const TIME_CONFIG = ['position', 'animation', 'color', 'markLine']
 
 const LAYOUT_CONFIG = ['offLine', 'vertical']
 
@@ -10,10 +10,7 @@ export const defaultConfigs = {
     layout: {
         chooseTypes: 'offLine',
         vertical: {
-            yDistance: 40,
-            linkStyle: {
-                shape: 'curve'
-            }
+            yDistance: 40
         }
     },
     time: {
@@ -79,8 +76,8 @@ export const defaultConfigs = {
         }
     },
     basic: {
-        width: 200,
-        height: 200,
+        width: 300,
+        height: 300,
         margin: 10,
         nodeStyle: {
             shape: 'circle',
@@ -92,7 +89,7 @@ export const defaultConfigs = {
             textColor: 'white'
         },
         linkStyle: {
-            shape: 'line',
+            shape: 'curve',
             strokeColor: '#908F8F',
             strokeType: 'solid',
             strokeWidth: 2
@@ -293,10 +290,7 @@ export function getDividedArcPathData(source, target) {
     const y2 = newTarget.y
     const flag = x1 < x2 ? 1 : -1
     const flag2 = x1 < x2 ? 1 : 0
-    console.log("------x1,x2----", x1,x2,flag)
     const r = (Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)) * Math.sqrt(2)) / 2
-    // let mx = (x1 + x2) / 2 
-    // let my = (y1 + y2) / 2 
     let mx = (x1 + x2) / 2 + flag * (1 - Math.sqrt(2) / 2) * r * (y2 - y1)/ (Math.sqrt(2) * r)
     let my = (y1 + y2) / 2 + flag * (1 - Math.sqrt(2) / 2) * r * (x1 - x2) / (Math.sqrt(2) * r)
     const firstData = `M ${x1},${y1}A${r},${r} 0,0,${flag2} ${mx},${my}`

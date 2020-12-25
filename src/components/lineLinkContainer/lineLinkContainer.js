@@ -2,7 +2,7 @@ import React from 'react'
 import LinkItem from '../linkItem/linkItem.js'
 import { getDividedOptions } from '../../util/dnetChart.js'
 
-export default function LinkItemContainer(props) {
+export default function LineLinkContainer(props) {
     const { comparisonOptions, status, linkStyle } = props
     const options = {
         ...props,

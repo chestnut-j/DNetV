@@ -31,7 +31,8 @@ class DNetV {
         this.linkSet = linkSet
         this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyTime: 'next' }]) //函数里面直接改了timeGraphs
         this.dealLayout(configs.layout.chooseTypes ? configs.layout.chooseTypes : undefined)
-        this.markingLine = configs.time.markingLine
+        // 
+        this.markingLine = configs.time.chooseTypes.indexOf('markLine')>-1
             ? u.getMarkingLine(this.sumGraphs, this.timeGraphs, this.configs)
             : {}
         // u.setStyle(this.timeGraphs, this.sumGraphs, this.configs)

@@ -2,7 +2,7 @@
 
 export const configSet = [
     {
-        time: ['position'],
+        time: ['position','markLine'],
         comparison: true,
     },
     {
@@ -21,7 +21,8 @@ export const configSet = [
         comparison: true,
     },
     {
-        time: ['link', 'position'],
+        time: ['markLine', 'position'],
         comparison: true,
+        layout: 'vertical'
     }
 ]

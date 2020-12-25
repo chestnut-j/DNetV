@@ -1,6 +1,6 @@
 import React from 'react'
 import NodeItemContainer from '../../nodeItemContainer/nodeItemContainer.js'
-import LinkItemContainer from '../../linkItemContainer/linkItemContainer.js'
+import LinkContainer from '../../linkContainer/linkContainer.js'
 
 export default function TimePositionDnet(props) {
     const {data, config} = props
@@ -33,7 +33,7 @@ export default function TimePositionDnet(props) {
                             <g>
                                 {dataItem.links.map((v) => {
                                     return (
-                                        <LinkItemContainer
+                                        <LinkContainer
                                             comparisonOptions={comparisonOptions}
                                             linkStyle={linkStyle}
                                             {...v}
