@@ -48,18 +48,6 @@ export default function Preview(props) {
     }, [props.data, props.config.time.chooseTypes])
     console.log('----renderType---------', renderType)
     console.log("--subGraphs--", subGraphs)
-    const tempRenderType = 'link'
-    // return (
-    //     <div
-    //         style={{
-    //             width: `${props.width ? props.width : 1010}px`,
-    //             height: `${props.height ? props.height : 760}px`
-    //         }}
-    //         className="preview-box"
-    //     >
-
-    //     </div>
-    // )
     return (
         <div
             style={{
@@ -75,7 +63,7 @@ export default function Preview(props) {
                 </svg>
             </div>
             {(() => {
-                switch (tempRenderType) {
+                switch (renderType) {
                     case 'position':
                         return (
                             <TimePositionDnet
@@ -98,7 +86,7 @@ export default function Preview(props) {
                                 config={props.config}
                             />
                         )
-                    case 'link':
+                    case 'other':
                         return (
                             <TimeLinkDnet
                                 data={subGraphs}

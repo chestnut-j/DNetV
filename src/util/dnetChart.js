@@ -106,7 +106,15 @@ export const timeEncodingOrder = {
 
 export function getRenderType(arr) {
     arr.sort((a, b) => timeEncodingOrder[b] - timeEncodingOrder[a])
-    return arr.join('-')
+    if(arr.length==0){
+        return ''
+    }else if(arr.indexOf('animation')>-1){
+        return 'animation'
+    }else if(arr.indexOf('color')>-1){
+        return 'color'
+    }else{
+        return 'other'
+    }
 }
 
 // 根据输入的参数，和默认的配置，合成最终的配置

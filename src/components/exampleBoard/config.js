@@ -2,15 +2,23 @@
 
 export const configSet = [
     {
+        time: ['position'],
+    },
+    {
+        time: ['position'],
+        comparison: true,
+    },
+    {
         time: ['position','markLine'],
         comparison: true,
     },
     {
-        time: ['position'],
+        time: ['markLine', 'position'],
+        comparison: true,
+        layout: 'vertical'
     },
     {
-        time: ['position'],
-        comparison: true,
+        time: ['color']
     },
     {
         time: ['animation'],
@@ -20,9 +28,5 @@ export const configSet = [
         time: ['animation', 'position'],
         comparison: true,
     },
-    {
-        time: ['markLine', 'position'],
-        comparison: true,
-        layout: 'vertical'
-    }
+    
 ]
