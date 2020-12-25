@@ -11,6 +11,17 @@ export const configSet = [
     {
         time: ['position','markLine'],
         comparison: true,
+        coverConfig:{
+            basic:{
+                linkStyle:{
+                    shape:'line'
+                }
+            }
+        }
+    },
+    {
+        time: ['position','markLine'],
+        comparison: true,
     },
     {
         time: ['markLine', 'position'],

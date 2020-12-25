@@ -76,7 +76,7 @@ export const defaultConfigs = {
         }
     },
     basic: {
-        width: 300,
+        width: 200,
         height: 300,
         margin: 10,
         nodeStyle: {
