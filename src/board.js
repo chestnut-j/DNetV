@@ -1,25 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react'
 import Data from './components/data/data.js'
-import Encoding from './components/encoding/encoding.js'
+import TimePanel from './components/timePanel/timePanel.js'
 import Grammar from './components/grammar.js'
 import Preview from './components/preview/preview.js'
-import Relation from './components/relation/relation.js'
-import Render from './components/render.js'
-import Template from './components/template.js'
+import ComparisonPanel from './components/comparisonPanel/comparisonPanel.js'
+import BasicPanel from './components/basicPanel/basicPanel.js'
+import LayoutPanel from './components/layoutPanel/layoutPanel.js'
 import ExampleBoard from './components/exampleBoard/exampleBoard.js'
 
 export default class Board extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            board: 'example',
+            board: 'system',
             jsonfile: {},
             filename: '',
             basic: {
                 width: 300,
                 height: 300,
-                eachWidth: 300,
-                eachHeight: 300,
                 margin: 10,
                 nodeStyle: {
                     shape: 'circle',
@@ -38,7 +36,7 @@ export default class Board extends React.Component {
                 }
             },
             time: {
-                chooseTypes: ['link'],
+                chooseTypes: ['position', 'markLine'],
                 visible: {
                     isVisible: true
                 },
@@ -57,10 +55,14 @@ export default class Board extends React.Component {
                     xDistance: 100,
                     yDistance: 40
                 },
-                glyph: ''
+                markingLine: {
+                    strokeColor: '#FD8F8F',
+                    strokeWidth: 1,
+                    strokeDasharray: '5,5'
+                }
             },
             layout: {
-                chooseTypes:'vertical', 
+                chooseType: 'vertical',
                 vertical: {
                     yDistance: 40,
                     linkStyle: {
@@ -70,7 +72,7 @@ export default class Board extends React.Component {
             },
             comparison: {
                 isOn: true,
-                chooseItem: 'stable-Node',
+                chooseType: 'stable-Node',
                 appearNode: {
                     shape: 'circle',
                     fillColor: '#FD8F8F',
@@ -131,7 +133,7 @@ export default class Board extends React.Component {
             filename: file.filename
         })
     }
-    handleSubmitFromRelation = (value) => {
+    handleSubmitFromComparison = (value) => {
         if (!value) return
         this.setState({
             comparison: {
@@ -140,24 +142,32 @@ export default class Board extends React.Component {
             }
         })
     }
-    handleSubmitFromEncoding = (value) => {
+    handleSubmitFromTime = (value) => {
         if (!value) return
         this.setState({
-            encodingOptions: {
-                ...this.state.encodingOptions,
+            time: {
+                ...this.state.time,
                 ...value
             }
         })
     }
-    handleChangeRenderConfig = (propType, value) => {
-        let renderConfig = this.state.config
-        renderConfig[propType] = value
+    handleSubmitFromBasic = (value) => {
         this.setState({
-            config: renderConfig
+            basic: {
+                ...this.state.basic,
+                ...value
+            }
+        })
+    }
+    handleSubmitFromLayout = (value) => {
+        this.setState({
+            layout: {
+                ...this.state.layout,
+                ...value
+            }
         })
     }
     handleBoardSwitch = (value) => {
-        console.log('value', value, this.state.board)
         if (this.state.board !== value) {
             this.setState({
                 board: value
@@ -166,10 +176,10 @@ export default class Board extends React.Component {
     }
     render() {
         const combineConfigs = {
-            global: this.state.global,
+            basic: this.state.basic,
             time: this.state.time,
-            comparison: this.state.comparison,
-            layout: this.state.layout
+            layout: this.state.layout,
+            comparison: this.state.comparison
         }
         return (
             <div className="board">
@@ -199,35 +209,33 @@ export default class Board extends React.Component {
                     <div className="row">
                         <div className="col">
                             <Data onSubmit={this.handleSubmitFromData} />
-                            <Relation
-                                options={this.state.comparison}
-                                onSubmit={this.handleSubmitFromRelation}
+                            <BasicPanel
+                                options={this.state.basic}
+                                onSubmit={this.handleSubmitFromBasic}
                             />
                         </div>
                         <div className="col">
-                            <Encoding
-                                preColor={this.state.preColor}
-                                options={this.state.encodingOptions}
-                                comparison={this.state.comparison}
-                                onSubmitToRelation={this.handleSubmitFromRelation}
-                                onSubmit={this.handleSubmitFromEncoding}
+                            <TimePanel
+                                options={this.state.time}
+                                onSubmit={this.handleSubmitFromTime}
                             />
                         </div>
+                        <div className="col">
+                            <LayoutPanel
+                                options={this.state.layout}
+                                onSubmit={this.handleSubmitFromLayout}
+                            />
+                            <ComparisonPanel
+                                options={this.state.comparison}
+                                onSubmit={this.handleSubmitFromComparison}
+                            />
+                        </div>
+
                         <div className="col">
                             <Grammar
                                 options={combineConfigs}
                                 onSubmit={this.handleSubmitFromGrammar}
                             />
-                        </div>
-
-                        <div className="col">
-                            <div className="row">
-                                <Render
-                                    onChangeConfig={this.handleChangeRenderConfig}
-                                    style={{ float: 'left' }}
-                                />
-                                <Template style={{ float: 'left' }} />
-                            </div>
                             <Preview
                                 data={this.state.jsonfile.graphs}
                                 config={{
@@ -236,9 +244,6 @@ export default class Board extends React.Component {
                                     comparison: this.state.comparison,
                                     time: this.state.time
                                 }}
-                                // encodingOptions={this.state.encodingOptions}
-                                // comparison={this.state.comparison}
-                                // config={combineConfigs}
                             />
                         </div>
                     </div>

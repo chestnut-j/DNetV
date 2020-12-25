@@ -21,8 +21,6 @@ export const defaultConfigs = {
             strokeColor: '#FD8F8F',
             strokeWidth: 1,
             strokeDasharray: '5,5'
-            // xDistance: 100
-            // yDistance: 40
         },
         position: {
             positionFlag: 1,
@@ -32,6 +30,7 @@ export const defaultConfigs = {
         }
     },
     comparison: {
+        chooseTypes: 'stable-Node',
         appearNode: {
             shape: 'circle',
             fillColor: '#FD8F8F',

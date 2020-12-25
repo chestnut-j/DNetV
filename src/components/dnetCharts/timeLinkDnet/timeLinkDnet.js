@@ -11,8 +11,6 @@ export default function TimeLinkDnet(props) {
     if (len === 0) return null
     // markline有数据就画，没有数据就不画。
     const linkPathData = getLinkPathData(markLine, nodeNum)
-    console.log("******--linkPathData--*****", linkPathData)
-    // console.log("******-----TimeLinkDnet---data--*****", data)
     // return null
     return (
         <div

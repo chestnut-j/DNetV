@@ -1,15 +1,15 @@
 import React from 'react'
 import { Button, Select, Input } from 'antd'
 import { ChromePicker } from 'react-color'
-import './encoding.css'
+import './timePanel.css'
 
 const { Option } = Select
-const colorIndexToName = ['strokeColor', 'fillColor', 'textColor']
-export default class Encoding extends React.Component {
+
+export default class TimePanel extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            encodingType: this.props.options.encodingType,
+            chooseTypes: this.props.options.chooseTypes,
             visible: this.props.options.visible,
             position: this.props.options.position,
             color: this.props.options.color,
@@ -28,30 +28,6 @@ export default class Encoding extends React.Component {
             }
         })
     }
-    handleInvisibleClick = () => {
-        this.setState(
-            (state) => ({
-                visible: 'dashed',
-                isVisible: false
-            }),
-            () => {
-                this.handleSubmitOptions()
-            }
-        )
-    }
-    handleColorClick = () => {
-        this.setState({
-            colorPickerDisplay: !this.state.colorPickerDisplay
-        })
-    }
-    handleColorChange = (colorCode) => {
-        this.setState(
-            (state) => ({ color: colorCode.hex }),
-            () => {
-                this.handleSubmitOptions()
-            }
-        )
-    }
     handleSubmitOptions() {
         if (this.props.onSubmit) {
             const { visible, position, color, animation, link, glyph } = this.state
@@ -59,7 +35,7 @@ export default class Encoding extends React.Component {
         }
     }
     handleButtonOnClick(type, event) {
-        const tempArr = [...this.props.options.encodingType]
+        const tempArr = [...this.props.options.chooseTypes]
         const tempIndex = tempArr.indexOf(type)
         if (tempIndex === -1) {
             tempArr.push(type)
@@ -67,32 +43,9 @@ export default class Encoding extends React.Component {
             tempArr.splice(tempIndex, 1)
         }
         this.props.onSubmit({
-            encodingType: tempArr
+            chooseTypes: tempArr
         })
     }
-    changeElementStyle = (option) => {
-        const changeKey = this.props.relationOptions.chooseItem.split('-').join('')
-        const changeOptions = this.props.relationOptions[changeKey]
-        this.props.onSubmitToRelation({ [changeKey]: { ...changeOptions, ...option } })
-    }
-    handleShapeChange = (value) => {
-        this.changeElementStyle({ shape: value })
-    }
-    handleStrokeTypeChange = (value) => {
-        this.changeElementStyle({ strokeType: value })
-    }
-    handleStrokeWidthChange = (e) => {
-        const { value } = e.target
-        this.changeElementStyle({ strokeWidth: Number(value) })
-    }
-    handleRadiusChange = (e) => {
-        const { value } = e.target
-        this.changeElementStyle({ radius: Number(value) })
-    }
-    handleElementColorChange = (colorCode, index) => {
-        this.changeElementStyle({ [colorIndexToName[index]]: colorCode.hex })
-    }
-
     handleElementColorClick = (e, index) => {
         const tempArr = this.state.elementColorPickerDisplay
         tempArr[index] = !tempArr[index]
@@ -108,15 +61,11 @@ export default class Encoding extends React.Component {
     }
 
     render() {
-        let changeKey = this.props.relationOptions.chooseItem.split('-')
-        const isNode = changeKey[1] === 'Node' ? true : false
-        changeKey = changeKey.join('')
-        const changeOptions = this.props.relationOptions[changeKey]
         const options = this.props.options
         return (
-            <div className="encoding-box">
+            <div className="time-box">
                 <div className="sub-title">
-                    &nbsp;Encoding
+                    &nbsp;Time
                     <svg className="icon" aria-hidden="true">
                         <use xlinkHref="#icon-save"></use>
                     </svg>
@@ -126,11 +75,11 @@ export default class Encoding extends React.Component {
                 </div>
                 <div className="encoding-table-container">
                     {/* visble */}
-                    <div className="encoding-item">
+                    {/* <div className="encoding-item">
                         <div className="encoding-item-title">
                             <Button
                                 type={
-                                    this.props.options.encodingType.indexOf('visible') > -1
+                                    this.props.options.chooseTypes.indexOf('visible') > -1
                                         ? 'primary'
                                         : 'default'
                                 }
@@ -184,14 +133,14 @@ export default class Encoding extends React.Component {
                                 </Button>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* position */}
                     <div className="encoding-item">
                         <div className="encoding-item-title">
                             <Button
                                 type={
-                                    this.props.options.encodingType.indexOf('position') > -1
+                                    this.props.options.chooseTypes.indexOf('position') > -1
                                         ? 'primary'
                                         : 'default'
                                 }
@@ -240,7 +189,7 @@ export default class Encoding extends React.Component {
                         <div className="encoding-item-title">
                             <Button
                                 type={
-                                    this.props.options.encodingType.indexOf('animation') > -1
+                                    this.props.options.chooseTypes.indexOf('animation') > -1
                                         ? 'primary'
                                         : 'default'
                                 }
@@ -281,7 +230,7 @@ export default class Encoding extends React.Component {
                         <div className="encoding-item-title">
                             <Button
                                 type={
-                                    this.props.options.encodingType.indexOf('color') > -1
+                                    this.props.options.chooseTypes.indexOf('color') > -1
                                         ? 'primary'
                                         : 'default'
                                 }
@@ -317,21 +266,21 @@ export default class Encoding extends React.Component {
                         </div>
                     </div>
 
-                    {/* link */}
+                    {/* MarkLine */}
                     <div className="encoding-item">
                         <div className="encoding-item-title">
                             <Button
                                 type={
-                                    this.props.options.encodingType.indexOf('link') > -1
+                                    this.props.options.chooseTypes.indexOf('markLine') > -1
                                         ? 'primary'
                                         : 'default'
                                 }
                                 onClick={(e) => {
-                                    this.handleButtonOnClick('link', e)
+                                    this.handleButtonOnClick('markLine', e)
                                 }}
                                 block
                             >
-                                Link
+                                MarkLine
                             </Button>
                         </div>
                         <div className="encoding-item-content">
@@ -365,137 +314,6 @@ export default class Encoding extends React.Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    {/* 针对具体元素的编码配置 */}
-                    <div className="change-option-panle">
-                        {/* 选择形状：圆形、三角形、方形 */}
-                        {changeOptions.shape ? (
-                            <div className="change-option-item">
-                                <div>Shape:</div>
-                                <Select
-                                    value={changeOptions.shape}
-                                    onChange={this.handleShapeChange}
-                                    style={{ width: 120 }}
-                                >
-                                    <Option key="circle">
-                                        <div>circle</div>
-                                    </Option>
-                                    <Option key="rect">
-                                        <div>rect</div>
-                                    </Option>
-                                </Select>
-                            </div>
-                        ) : null}
-                        {/* 选择线型 */}
-                        <div className="change-option-item">
-                            <div>StrokeType:</div>
-                            <Select
-                                value={changeOptions.strokeType}
-                                style={{ width: 120 }}
-                                onChange={this.handleStrokeTypeChange}
-                            >
-                                <Option value="solid">solid</Option>
-                                <Option value="dashed">dashed</Option>
-                            </Select>
-                        </div>
-                        {/* 输入线宽 */}
-                        <div className="change-option-item">
-                            <div>StrokeWidth:</div>
-                            <Input
-                                value={changeOptions.strokeWidth}
-                                type="number"
-                                onChange={this.handleStrokeWidthChange}
-                                style={{ width: '120px' }}
-                            />
-                        </div>
-                        {/* 输入半径长度 */}
-                        {changeOptions.radius ? (
-                            <div className="change-option-item">
-                                <div>Radius:</div>
-                                <Input
-                                    value={changeOptions.radius}
-                                    type="number"
-                                    onChange={this.handleRadiusChange}
-                                    style={{ width: '120px' }}
-                                />
-                            </div>
-                        ) : null}
-                        {/* 节点的外边颜色或 线型颜色 */}
-                        {
-                            <div>
-                                <div className="change-option-item">
-                                    <div>strokeColor</div>
-                                    <div
-                                        onClick={(e) => this.handleElementColorClick(e, 0)}
-                                        style={{
-                                            backgroundColor: changeOptions.strokeColor,
-                                            width: '120px',
-                                            height: '32px'
-                                        }}
-                                    ></div>
-                                </div>
-                                {this.state.elementColorPickerDisplay[0] ? (
-                                    <ChromePicker
-                                        className="item-color-picker"
-                                        color={changeOptions.strokeColor}
-                                        onChange={(value) =>
-                                            this.handleElementColorChange(value, 0)
-                                        }
-                                    />
-                                ) : null}
-                            </div>
-                        }
-                        {/* 节点内部的填充颜色 */}
-                        {changeOptions.fillColor ? (
-                            <div>
-                                <div className="change-option-item">
-                                    <div>fillColor</div>
-                                    <div
-                                        onClick={(e) => this.handleElementColorClick(e, 1)}
-                                        style={{
-                                            backgroundColor: changeOptions.fillColor,
-                                            width: '120px',
-                                            height: '32px'
-                                        }}
-                                    ></div>
-                                </div>
-                                {this.state.elementColorPickerDisplay[1] ? (
-                                    <ChromePicker
-                                        className="item-color-picker"
-                                        color={changeOptions.fillColor}
-                                        onChange={(value) =>
-                                            this.handleElementColorChange(value, 1)
-                                        }
-                                    />
-                                ) : null}
-                            </div>
-                        ) : null}
-                        {/* 节点内部的填充颜色 */}
-                        {changeOptions.textColor ? (
-                            <div>
-                                <div className="change-option-item">
-                                    <div>textColor</div>
-                                    <div
-                                        onClick={(e) => this.handleElementColorClick(e, 2)}
-                                        style={{
-                                            backgroundColor: changeOptions.textColor,
-                                            width: '120px',
-                                            height: '32px'
-                                        }}
-                                    ></div>
-                                </div>
-                                {this.state.elementColorPickerDisplay[2] ? (
-                                    <ChromePicker
-                                        className="item-color-picker"
-                                        color={changeOptions.textColor}
-                                        onChange={(value) =>
-                                            this.handleElementColorChange(value, 2)
-                                        }
-                                    />
-                                ) : null}
-                            </div>
-                        ) : null}
                     </div>
                 </div>
             </div>

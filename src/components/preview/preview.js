@@ -46,13 +46,13 @@ export default function Preview(props) {
             setRenderType('')
         }
     }, [props.data, props.config.time.chooseTypes])
-    console.log('----renderType---------', renderType)
-    console.log("--subGraphs--", subGraphs)
+    // console.log('----renderType---------', renderType)
+    // console.log("--subGraphs--", subGraphs)
     return (
         <div
             style={{
                 width: `${props.width ? props.width : 1010}px`,
-                height: `${props.height ? props.height : 760}px`
+                height: `${props.height ? props.height : 560}px`
             }}
             className="preview-box"
         >
