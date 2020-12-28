@@ -8,7 +8,7 @@ import { defaultConfigs } from '../preview/util/defaultConfig'
 import { configs } from 'eslint-plugin-prettier'
 import { Result } from 'antd'
 import dnetv from '../preview/dnetv.js'
-import { composeConfig } from '../../util/dnetChart'
+import { composeConfig, assignConfigs } from '../../util/dnetChart'
 const dataset = [
     {
         dataName: 'testData',
@@ -23,32 +23,24 @@ export default function ExampleBoard() {
     return (
         <div className="example-board">
             {configSet.map((configItem, index) => {
-
-                const config = composeConfig(configItem)
+                const config = assignConfigs(configItem)
                 // let data = dnetv()
                 // data.initData(jsonData.graphs, configItem)
                 // data.configs.renderType = 'position'
+                console.log(config)
                 // console.log('---encodingOptions---', configItem.encodingOptions)
                 // console.log('---relationOptions---', configItem.relationOptions)
                 // delete configItem.relationOptions.chooseItem
                 // delete configItem.encodingOptions.taskType
                 return (
-                    <div
-                        className="example-row"
-                        key={`example-row-${index}`}  
-                      >
+                    <div className="example-row" key={`example-row-${index}`}>
                         <Grammar
                             options={configItem}
                             // onSubmit={this.handleSubmitFromGrammar}
                             width={440}
                             height={600}
                         />
-                        <Preview
-                            data={jsonData.graphs}
-                            config={config}
-                            width={1440}
-                            height={600}
-                        />
+                        <Preview data={jsonData.graphs} config={config} width={1440} height={600} />
                     </div>
                 )
             })}

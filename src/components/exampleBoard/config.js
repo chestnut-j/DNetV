@@ -1,43 +1,120 @@
-
-
 export const configSet = [
     {
-        time: ['position'],
+        time: ['timeLine', 'color', 'insert']
     },
     {
-        time: ['position'],
-        comparison: true,
+        layout: 'vertical',
+        time: ['timeLine', 'markLine']
+    },
+
+    {
+        time: ['timeLine', 'insert']
     },
     {
-        time: ['position','markLine'],
-        comparison: true,
-        coverConfig:{
-            basic:{
-                linkStyle:{
-                    shape:'line'
+        time: [
+            'timeLine',
+            {
+                insert: {
+                    position: 'bottom', //目前就实现这一个。。。
+                    linkStyle: {
+                        shape: 'curve'
+                    }
                 }
+            }
+        ]
+    },
+    {},
+    {
+        time: 'timeLine'
+    },
+    {
+        comparison: 'color'
+    },
+
+    {
+        time: 'timeLine',
+        comparison: 'color'
+    },
+    {
+        time: {
+            timeLine: {
+                element: 'node'
+            }
+        },
+        comparison: 'color'
+    },
+    {
+        time: {
+            position: {
+                element: 'link'
+            }
+        },
+        comparison: 'color'
+    },
+
+    {
+        time: 'animation'
+    },
+    {
+        time: 'animation',
+        comparison: 'color'
+    },
+    {
+        time: ['animation', 'timeLine'],
+        comparison: 'color'
+    },
+    {
+        time: [
+            'animation',
+            {
+                timeLine: {
+                    element: 'node'
+                }
+            }
+        ],
+        comparison: 'color'
+    },
+    {
+        time: [
+            'animation',
+            {
+                timeLine: {
+                    element: 'link'
+                }
+            }
+        ],
+        comparison: 'color'
+    },
+    {
+        layout: 'vertical',
+        time: {
+            timeLine: {
+                element: 'link'
             }
         }
     },
     {
-        time: ['position','markLine'],
-        comparison: true,
+        layout: 'vertical',
+        time: {
+            timeLine: {
+                element: 'node'
+            }
+        }
     },
     {
-        time: ['markLine', 'position'],
-        comparison: true,
-        layout: 'vertical'
+        time: ['timeLine', 'insert']
     },
     {
-        time: ['color']
-    },
-    {
-        time: ['animation'],
-        comparison: true,
-    },
-    {
-        time: ['animation', 'position'],
-        comparison: true,
-    },
-    
+        time: [
+            'timeLine',
+            {
+                insert: {
+                    position: 'bottom', //目前就实现这一个。。。
+                    linkStyle: {
+                        shape: 'curve'
+                    }
+                }
+            }
+        ]
+    }
 ]

@@ -3,29 +3,26 @@ import LinkItem from '../linkItem/linkItem.js'
 import { getDividedOptions } from '../../util/dnetChart.js'
 
 export default function LineLinkContainer(props) {
-    const { comparisonOptions, status, linkStyle } = props
-    const options = {
-        ...props,
-        comparisonOptions: ''
-    }
-    if (comparisonOptions.isOn) {
-        if (status.length < 2) {
-            
-            return (
-                <LinkItem {...comparisonOptions[status[0] ? status[0] : 'stableLink']} {...options} />
-            )
-        } else {
-            const { firstOption, secondOption } = getDividedOptions(props, status)
-            return (
-                <>
-                    <LinkItem {...firstOption} />
-                    <LinkItem {...secondOption} />
-                </>
-            )
-        }
-    } else {
+    const status = Object.keys(props.style)
+    if (status.length < 2) {
+        // const options = {
+        //     ...props
+        //     // comparisonOptions: ''
+        // }
         return (
-            <LinkItem {...linkStyle} {...options} />
+            <LinkItem
+                // {...props.comparisonOptions[props.status[0] ? props.status[0] : 'stableLink']}
+                {...props.style[status[0]]}
+                {...props}
+            />
+        )
+    } else {
+        const { firstOption, secondOption } = getDividedOptions(props, status)
+        return (
+            <>
+                <LinkItem {...firstOption} />
+                <LinkItem {...secondOption} />
+            </>
         )
     }
 }

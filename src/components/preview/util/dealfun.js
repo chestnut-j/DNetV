@@ -3,6 +3,8 @@ import { sum } from 'd3'
 import { defaultConfigs } from './defaultConfig'
 import * as assign from 'assign-deep'
 import { configs } from 'eslint-plugin-prettier'
+import { configConsumerProps } from 'antd/lib/config-provider'
+import * as _ from 'lodash'
 // import { link } from '../NetV'
 export const _intersection = (setA, setB) => {
     let intersection = new Set(setA)
@@ -45,14 +47,30 @@ export const getTimeId = (graphs, times) => {
         graph.nodes.forEach((node) => {
             const id = node.id
             const timeId = `${time}-${id}`
-            timeGraphs[time].nodes[id] = { id, timeId, time, status: [], timeIndex, style: {} }
+            const type = node.type ? node.type : 'ele'
+            timeGraphs[time].nodes[id] = {
+                type,
+                id,
+                timeId,
+                time,
+                status: [],
+                timeIndex,
+                style: {}
+            }
             timeGraphSet[time].nodes.add(id)
             nodeSet.add(id)
             if (!sumGraphs.nodes[id]) {
                 let existTimeIndex = new Array(l).fill(0)
                 let existTimes = new Array(l).fill('')
                 let existStatus = new Array(l).fill(0).map(() => [])
-                sumGraphs.nodes[id] = { id, existTimeIndex, existTimes, existStatus, style: {} }
+                sumGraphs.nodes[id] = {
+                    id,
+                    type,
+                    existTimeIndex,
+                    existTimes,
+                    existStatus,
+                    style: {}
+                }
             }
             sumGraphs.nodes[id].existTimeIndex[times[time]] = 1
             sumGraphs.nodes[id].existTimes[times[time]] = time
@@ -65,10 +83,12 @@ export const getTimeId = (graphs, times) => {
             }
             const id = `${source}-${target}`
             const timeId = `${time}-${id}`
+            const type = link.type ? link.type : 'ele'
             const sourceTimeId = timeGraphs[time].nodes[source].timeId
             const targetTimeId = timeGraphs[time].nodes[target].timeId
             timeGraphs[time].links[id] = {
                 id,
+                type,
                 timeId,
                 source,
                 target,
@@ -87,6 +107,7 @@ export const getTimeId = (graphs, times) => {
                 let existStatus = new Array(l).fill(0).map(() => [])
                 sumGraphs.links[id] = {
                     id,
+                    type,
                     source,
                     target,
                     existTimeIndex,
@@ -150,13 +171,14 @@ export function adjustLayout2Svg(nodes, links, width, height) {
         link.target.y = nodeId2Coord[link.target.id].y
     })
 }
+
 export const verticalLayout = (sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const height = configs.basic.height
-    const len = nodes.length
+    const { eachWidth, eachHeight } = configs
+    const l = nodes.length
     let nodesObj = {}
     nodes.forEach((node, index) => {
-        node.y = (height / len) * index
+        node.y = (eachHeight / l) * index
         node.x = 0
         nodesObj[node.id] = { ...node }
     })
@@ -164,121 +186,245 @@ export const verticalLayout = (sumGraphs, configs) => {
         link.source = nodesObj[link.source]
         link.target = nodesObj[link.target]
     })
+    adjustLayout2Svg(nodes, links, eachWidth, eachHeight)
+
     return sumGraphs
 
     // adjustLayout2Svg(nodes, links, width, height)
 }
+export const timeASnode = (graphs) => {
+    graphs.forEach((graph) => {
+        // const timeNode = { id: 'time', type: 'time' }
+        graph.nodes.forEach((node) => {
+            const source = 'time'
+            const target = node.id
+            graph.links.push({ source, target, type: 'time' })
+        })
+        graph.nodes.push({ id: 'time', type: 'time' })
+    })
+}
 export const offLineLayout = (sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const { width, height } = configs.basic
+    const { eachWidth, eachHeight } = configs
     d3.forceSimulation(nodes)
         .force(
             'link',
             d3.forceLink(links).id((d) => d.id)
         )
         .force('charge', d3.forceManyBody())
-        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('center', d3.forceCenter(eachWidth / 2, eachHeight / 2))
         .stop()
         .tick(10)
         .stop()
-    adjustLayout2Svg(nodes, links, width, height)
+    adjustLayout2Svg(nodes, links, eachWidth, eachHeight)
     // console.log("nodes---links----width---height", nodes, links, width, height)
     return sumGraphs
 }
-
-
-export const assignConfigs = (configs) => {
-    const a = defaultConfigs
-    let sumConfigs = { ...defaultConfigs.basic }
-    Object.keys(configs).forEach((key) => {
-        let encoding = {}
-        if (typeof configs[key] === 'string') {
-            encoding[configs[key]] = {}
-        } else if (Object.prototype.toString.call(configs[key]) === '[object Array]') {
-            configs[key].forEach((k) => {
-                if (typeof k === 'string') {
-                    encoding[k] = {}
-                } else {
-                    Object.keys(k).forEach((d) => {
-                        encoding[d] = k[d]
-                    })
-                }
-            })
-        }
-        Object.keys(encoding).forEach((e) => {
-            if (defaultConfigs[key]) {
-                assign(sumConfigs, defaultConfigs[key][e], encoding[e])
-            }
-        })
-        sumConfigs.renderType = configs.renderType //妥协 rendertype
+export const assignConfigs = (setConfigs) => {
+    let configs = _.cloneDeep(setConfigs)
+    let sumConfigs = {}
+    assign(sumConfigs, defaultConfigs.basic)
+    Object.keys(defaultConfigs).forEach((key) => {
+        sumConfigs[key] = {}
     })
+    Object.keys(configs).forEach((key) => {
+        let encoding = configs[key]
+        if (typeof encoding === 'string') {
+            //timeLine
+            if (key in defaultConfigs) {
+                sumConfigs[key][encoding] = _.cloneDeep(defaultConfigs[key][encoding])
+            } else {
+                sumConfigs[key] = encoding
+            }
+        } else {
+            if (_.isArray(encoding)) {
+                // time: ['timeLine', 'insert', 'markLine'],
+                encoding.forEach((e) => {
+                    if (typeof e === 'string') {
+                        sumConfigs[key][e] = _.cloneDeep(defaultConfigs[key][e])
+                    } else {
+                        const e1 = Object.keys(e)[0]
+                        sumConfigs[key][e1] = _.cloneDeep(defaultConfigs[key][e1])
+                        assign(sumConfigs[key], e)
+                    }
+                })
+            } else {
+                const e = Object.keys(encoding)[0]
+                sumConfigs[key][e] = _.cloneDeep(defaultConfigs[key][e])
+                assign(sumConfigs[key], encoding)
+            }
+        }
+    })
+    if ('layout' in sumConfigs) {
+        sumConfigs.layoutName = Object.keys(sumConfigs.layout)[0]
+    }
+    console.log(defaultConfigs.time.timeLine.element)
     return sumConfigs
 }
-export const getMarkingLine = (sumGraphs, timeGraphs, configs) => {
-    let markingLine = {}
+export const getmarkLine = (sumGraphs, timeGraphs, configs) => {
+    let markLine = {}
     Object.values(sumGraphs.nodes).forEach((node) => {
         const { id, existTimes } = node
-        markingLine[id] = []
+        markLine[id] = []
         existTimes.forEach((time) => {
             if (time !== '') {
                 const { x, y } = timeGraphs[time].nodes[id]
-                const l = markingLine[id].length
+                const l = markLine[id].length
                 if (l) {
-                    markingLine[id][l - 1].target = { x, y }
+                    markLine[id][l - 1].target = { x, y }
                 }
-                markingLine[id].push({ source: { x, y } })
+                markLine[id].push({ source: { x, y } })
             }
         })
-        markingLine[id].pop()
+        markLine[id].pop()
     })
-    return markingLine
+    // markLine = Object.values(markLine)
+    markLine = getLinkPathData(markLine)
+    return markLine
 }
+export function getLinkPathData(markLine) {
+    // const colorScale = d3.scaleOrdinal().domain(d3.range(nodeNum)).range(d3.schemeCategory10)
+    // console.log('node2PathData', node2PathData)
+    var link = d3
+        .linkHorizontal()
+        .x(function (d) {
+            return d.x
+        })
+        .y(function (d) {
+            return d.y
+        })
+    const linkPathData = Object.keys(markLine).map((markId, index) => {
+        const curveData = []
+        markLine[markId].forEach((markLineItem) => {
+            curveData.push(link(markLineItem))
+        })
+        return {
+            id: markId,
+            data: curveData
+            // color: colorScale[index]
+        }
+    })
+    return linkPathData
+}
+export const getPiePathColor = (len, startColor, endColor) => {
+    //设置颜色比例尺
+    // let colorScale
+    // if (!startColor || !endColor) {
+    //     colorScale = d3.scaleOrdinal().domain(d3.range(len)).range(d3.schemeCategory10)
+    // } else {
+    // console.log("d3.range(len)", d3.range(len))
+    const colorScale = d3
+        .scaleLinear()
+        .domain([0, len - 1])
+        .range([startColor, endColor])
+    // }
+    return colorScale
+}
+
 export const setStyle = (timeGraphs, sumGraphs, configs) => {
+    let timeColorObj = {}
+    if (configs.time.color) {
+        const times = Object.keys(timeGraphs)
+        const l = times.length
+        const colorScale = getPiePathColor(
+            l,
+            configs.time.color.startColor,
+            configs.time.color.endColor
+        )
+        times.forEach((time, i) => {
+            timeColorObj[time] = colorScale(i)
+        })
+    }
     Object.values(timeGraphs).forEach((graph) => {
         Object.values(graph.nodes).forEach((node) => {
+            if (node.type === 'time') {
+                if (_.hasIn(configs.time.insert, 'nodeStyle')) {
+                    node.style.nodeStyle = _.cloneDeep(configs.time.insert.nodeStyle)
+                } else {
+                    node.style.nodeStyle = _.cloneDeep(configs.nodeStyle)
+                }
+                if (configs.time.color) {
+                    node.style.nodeStyle.fillColor = timeColorObj[node.time]
+                }
+                return
+            }
             node.status.forEach((d) => {
-                if (d in configs) {
-                    node.style[d] = configs[d]
+                if (_.hasIn(configs.comparison.color, d)) {
+                    node.style[d] = _.cloneDeep(configs.comparison.color[d])
                 }
             })
             if (!Object.values(node.style).length) {
-                node.style.nodeStyle = configs.nodeStyle
+                node.style.nodeStyle = _.cloneDeep(configs.nodeStyle)
             }
         })
         Object.values(graph.links).forEach((link) => {
+            if (link.type === 'time') {
+                if (_.hasIn(configs.time.insert, 'linkStyle')) {
+                    link.style.linkStyle = _.cloneDeep(configs.time.insert.linkStyle)
+                } else {
+                    link.style.linkStyle = _.cloneDeep(configs.linkStyle)
+                }
+                return
+            }
             link.status.forEach((d) => {
-                if (d in configs) {
-                    link.style[d] = configs[d]
+                if (_.hasIn(configs.comparison.color, d)) {
+                    link.style[d] = _.cloneDeep(configs.comparison.color[d])
                 }
             })
             if (!Object.values(link.style).length) {
-                link.style.linkStyle = configs.linkStyle
+                link.style.linkStyle = _.cloneDeep(configs.linkStyle)
             }
         })
     })
 }
 export const getGraphLayout = (timeGraphs, sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const { timeArr, width, margin } = configs.basic
+    const { eachWidth, eachMargin, leftMargin, eachHeight } = configs.time.timeLine
+        ? configs.time.timeLine
+        : configs
     const layoutNodes = Object.fromEntries(nodes.map((d) => [d.id, d]))
     const layoutLinks = Object.fromEntries(links.map((d) => [d.id, d]))
+    // let t = _.cloneDeep(timeGraphs)
     let timeGraphsValues = Object.values(timeGraphs)
-    // const l = timeGraphsValues.length
-    const positionFlag = configs.time.chooseTypes.indexOf('position') > -1 ? true : false
+    const l = timeGraphsValues.length
+    let newNodes = {}
     timeGraphsValues.forEach((graph) => {
         Object.values(graph.nodes).forEach((node) => {
-            Object.assign(node, layoutNodes[node.id])
-            // 当开启位置偏移配置
-            if (positionFlag) {
-                node.x += node.timeIndex * (width + margin)
+            assign(node, layoutNodes[node.id])
+            if (configs.time.timeLine && configs.time.timeLine.element != 'link') {
+                //不是针对link
+                const old = node.x
+                node.x += node.timeIndex * (eachWidth + eachMargin)
+                if (node.type === 'time' && _.hasIn(configs.time.insert, 'position')) {
+                    node.x = node.timeIndex * (eachWidth + eachMargin) + eachWidth / 2
+                    node.y = eachHeight + configs.time.insert.bottomMargin
+                }
+                if (configs.time.timeLine.element === 'node') {
+                    node.x += leftMargin
+                }
+            } else {
+                if (configs.time.timeLine && configs.time.timeLine.element == 'link') {
+                    const x = node.x + node.timeIndex * (eachWidth + eachMargin) + leftMargin
+                    const y = node.y
+                    const timeId = node.timeId
+                    const id = node.id
+                    newNodes[node.timeId] = { timeId, x, y, id }
+                }
             }
         })
     })
     timeGraphsValues.forEach((graph) => {
         Object.values(graph.links).forEach((link) => {
-            Object.assign(link, layoutLinks[link.id])
-            link.source = graph.nodes[link.source.id]
-            link.target = graph.nodes[link.target.id]
+            assign(link, layoutLinks[link.id])
+            if (configs.time.timeLine && configs.time.timeLine.element == 'link') {
+                let source = newNodes[link.sourceTimeId]
+                link.source = { ...source }
+                let target = newNodes[link.targetTimeId]
+                link.target = { ...target }
+            } else if (configs.time.timeLine && configs.time.timeLine.element == 'all') {
+                link.source = graph.nodes[link.source.id]
+                link.target = graph.nodes[link.target.id]
+            }
         })
     })
     return timeGraphs
@@ -378,64 +524,4 @@ export const getCompareData = (
     sumGraphs.nodes = Object.values(sumGraphs.nodes)
     sumGraphs.links = Object.values(sumGraphs.links)
     return timeGraphs
-    /*
-    this.graphPos.nodes.forEach((node) => {
-        const { time, originId } = node
-        if (graphCompare[time] === null || graphCompare[time] === undefined) {
-            return
-        }
-        if (
-            graphCompare[time].hasOwnProperty('appear') &&
-            graphCompare[time].appear.nodes.has(originId)
-        ) {
-            node.fill = {
-                r: encode.appear.color[0] / 255,
-                g: encode.appear.color[1] / 255,
-                b: encode.appear.color[2] / 255,
-                a: 1
-            }
-        } else {
-            if (
-                graphCompare[time].hasOwnProperty('disappear') &&
-                graphCompare[time].disappear.nodes.has(originId)
-            ) {
-                node.fill = {
-                    r: encode.disappear.color[0] / 255,
-                    g: encode.disappear.color[1] / 255,
-                    b: encode.disappear.color[2] / 255,
-                    a: 1
-                }
-            }
-        }
-    })
-    this.graphPos.links.forEach((link) => {
-        const { time, originId } = link
-        if (graphCompare[time] === null || graphCompare[time] === undefined) {
-            return
-        }
-        if (
-            graphCompare[time].hasOwnProperty('appear') &&
-            graphCompare[time].appear.links.has(originId)
-        ) {
-            link.strokeColor = {
-                r: encode.appear.color[0] / 255,
-                g: encode.appear.color[1] / 255,
-                b: encode.appear.color[2] / 255,
-                a: 1
-            }
-        } else {
-            if (
-                graphCompare[time].hasOwnProperty('disappear') &&
-                graphCompare[time].disappear.links.has(originId)
-            ) {
-                link.strokeColor = {
-                    r: encode.disappear.color[0] / 255,
-                    g: encode.disappear.color[1] / 255,
-                    b: encode.disappear.color[2] / 255,
-                    a: 1
-                }
-            }
-        }
-    })
-    */
 }

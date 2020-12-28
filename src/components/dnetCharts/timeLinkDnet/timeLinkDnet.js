@@ -6,7 +6,7 @@ import { getLinkPathData } from '../../../util/dnetChart.js'
 export default function TimeLinkDnet(props) {
     const { data, nodeNum, config, markLine } = props
     const { height, width, margin, nodeStyle, linkStyle } = config.basic
-    const { strokeColor, strokeWidth, strokeDasharray } = config.time.markingLine
+    const { strokeColor, strokeWidth, strokeDasharray } = config.time.markLine
     const len = data.length
     if (len === 0) return null
     // markline有数据就画，没有数据就不画。
@@ -24,8 +24,8 @@ export default function TimeLinkDnet(props) {
             <svg
                 className="tld-container-svg"
                 width={`${width * len + margin * len}px`}
-                height={`${height+margin*2}px`}
-                viewBox={`0 0 ${width * len + margin * len} ${height+margin*2}`}
+                height={`${height + margin * 2}px`}
+                viewBox={`0 0 ${width * len + margin * len} ${height + margin * 2}`}
                 preserveAspectRatio="xMinYMin"
             >
                 <g transform={`translate(${margin},${margin})`}>
@@ -54,7 +54,6 @@ export default function TimeLinkDnet(props) {
                             <g key={`subGraph-${index}`}>
                                 <g>
                                     {dataItem.links.map((v) => {
-
                                         return (
                                             <LinkContainer
                                                 comparisonOptions={config.comparison}

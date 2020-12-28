@@ -32,20 +32,20 @@ export default function Preview(props) {
         if (props.data) {
             let dnetvInstance = dnetv()
             dnetvInstance.initData(props.data, props.config)
-            console.log("---dnetvInstance---",dnetvInstance)
+            console.log('---dnetvInstance---', dnetvInstance)
             setSubGraphs(converObject2Array(dnetvInstance.timeGraphs))
-            setMarkLine(dnetvInstance.markingLine)
+            setMarkLine(dnetvInstance.markLine)
             setSumGraphs(dnetvInstance.sumGraphs)
         }
     }, [props.config, props.data])
 
-    useEffect(() => {
-        if (props.data) {
-            setRenderType(getRenderType(props.config.time.chooseTypes))
-        } else {
-            setRenderType('')
-        }
-    }, [props.data, props.config.time.chooseTypes])
+    // useEffect(() => {
+    //     if (props.data) {
+    //         setRenderType(getRenderType(props.config.time.chooseTypes))
+    //     } else {
+    //         setRenderType('')
+    //     }
+    // }, [props.data, props.config.time.chooseTypes])
     // console.log('----renderType---------', renderType)
     // console.log("--subGraphs--", subGraphs)
     return (
@@ -63,21 +63,17 @@ export default function Preview(props) {
                 </svg>
             </div>
             {(() => {
-                switch (renderType) {
-                    case 'position':
+                switch (props.config.renderType) {
+                    case 'timeLine':
                         return (
                             <TimePositionDnet
+                                markLine={markLine}
                                 data={subGraphs}
                                 config={props.config}
                             />
                         )
                     case 'animation':
-                        return (
-                            <TimeAnimationDnet
-                                data={subGraphs}
-                                config={props.config}
-                            />
-                        )
+                        return <TimeAnimationDnet data={subGraphs} config={props.config} />
                     case 'color':
                         return (
                             <TimeColorDnet

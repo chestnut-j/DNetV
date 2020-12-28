@@ -12,7 +12,7 @@ export default class Board extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            board: 'system',
+            board: 'example',
             jsonfile: {},
             filename: '',
             basic: {
@@ -55,7 +55,7 @@ export default class Board extends React.Component {
                     xDistance: 100,
                     yDistance: 40
                 },
-                markingLine: {
+                markLine: {
                     strokeColor: '#FD8F8F',
                     strokeWidth: 1,
                     strokeDasharray: '5,5'

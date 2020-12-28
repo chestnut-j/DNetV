@@ -1,6 +1,7 @@
 // import { link, NetV } from './NetV'
 import { configs } from 'eslint-plugin-prettier'
 import * as u from './util/dealfun'
+import * as _ from 'lodash'
 class DNetV {
     constructor() {
         this.elementsName = []
@@ -8,20 +9,22 @@ class DNetV {
         this.linkSets = new Set()
         this.timeGraphs = {}
         this.timeGraphSet = {}
-        // this.layout()
-        // this.compareEncode()
-        // this.draw()
-        // this.dealTimeEncode(config.timeEncode, data, config)
+        this.markLine = undefined
     }
-    initData(data, configs) {
+    initData(setData, setConfigs) {
         this.elementsName = ['nodes', 'links'] //元素：点、边
-        this.times = Object.fromEntries(data.map((d, index) => [d.time, index])) //时间：key值
-        // Object.assign(config, defaultConfig)
-        // this.configs = u.assignConfigs(configs)
-        this.configs = configs
-        this.oldData = data
+        this.times = Object.fromEntries(setData.map((d, index) => [d.time, index])) //时间：key值
+        // this.configs = u.assignConfigs(setConfigs)
+        this.configs = setConfigs
+        // console.log(this.configs)
+        this.oldData = setData
+        this.data = _.cloneDeep(setData)
+
+        if (_.has(this.configs.time, 'insert')) {
+            u.timeASnode(this.data)
+        }
         let { timeGraphs, nodeSet, linkSet, timeGraphSet, sumGraphs } = u.getTimeId(
-            data,
+            this.data,
             this.times
         )
         this.timeGraphs = timeGraphs
@@ -30,12 +33,11 @@ class DNetV {
         this.nodeSet = nodeSet
         this.linkSet = linkSet
         this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyTime: 'next' }]) //函数里面直接改了timeGraphs
-        this.dealLayout(configs.layout.chooseType ? configs.layout.chooseType : undefined)
-        // 
-        this.markingLine = configs.time.chooseTypes.indexOf('markLine')>-1
-            ? u.getMarkingLine(this.sumGraphs, this.timeGraphs, this.configs)
-            : {}
-        // u.setStyle(this.timeGraphs, this.sumGraphs, this.configs)
+        this.dealLayout(this.configs.layoutName ? this.configs.layoutName : 'offLine')
+        this.markLine = this.configs.time.markLine
+            ? u.getmarkLine(this.sumGraphs, this.timeGraphs, this.configs)
+            : undefined
+        u.setStyle(this.timeGraphs, this.sumGraphs, this.configs)
         this.subGraphs = Object.values(this.timeGraphs).map((v) => ({
             links: Object.values(v.links),
             nodes: Object.values(v.nodes)

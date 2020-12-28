@@ -1,83 +1,168 @@
 import * as d3 from 'd3'
 import { configs } from 'eslint-plugin-prettier'
 import { SwatchesPicker } from 'react-color'
-
+import { defaultConfigs } from './defaultConfig'
+import * as _ from 'lodash'
+import assign from 'assign-deep'
 const TIME_CONFIG = ['position', 'animation', 'color', 'markLine']
 
 const LAYOUT_CONFIG = ['offLine', 'vertical']
 
-export const defaultConfigs = {
+export const defaultConfigs_bak = {
     layout: {
-        chooseTypes: 'offLine',
         vertical: {
-            yDistance: 40
+            yDistance: 40,
+            linkStyle: {
+                overwrite: true,
+                shape: 'curve'
+            }
         }
     },
     time: {
+        insert: {
+            nodeStyle: {
+                shape: 'circle',
+                fillColor: '#ffcc00',
+                strokeColor: '#000000',
+                strokeWidth: 1,
+                radius: 6,
+                strokeType: 'solid',
+                textColor: 'white'
+            },
+            linkStyle: {
+                shape: 'curve',
+                strokeColor: '#ffcc00',
+                strokeType: 'solid',
+                strokeWidth: 2
+            },
+            bottomMargin: 20
+        },
+        color: {
+            element: 'all',
+            startColor: '#FD8F8F',
+            endColor: '#90B5FB'
+        },
         animation: {
             speed: 800
         },
-        markingLine: {
+        markLine: {
+            overwrite: true,
             strokeColor: '#FD8F8F',
             strokeWidth: 1,
             strokeDasharray: '5,5'
+            // xDistance: 100
+            // yDistance: 40
         },
-        position: {
+        timeLine: {
             positionFlag: 1,
+            overwrite: true,
+            timeLineFlag: 1,
             eachMargin: 5,
-            eachWidth: 200,
-            eachHeight: 200
+            eachWidth: 180,
+            eachHeight: 200,
+            element: 'all',
+            leftMargin: 180
         }
     },
     comparison: {
-        chooseTypes: 'stable-Node',
-        appearNode: {
-            shape: 'circle',
-            fillColor: '#FD8F8F',
-            strokeColor: '#000000',
-            strokeWidth: 1,
-            strokeType: 'solid',
-            textColor: 'white',
-            radius: 6
+        color: {
+            appearNode: {
+                shape: 'circle',
+                fillColor: '#FD8F8F',
+                strokeColor: '#000000',
+                strokeWidth: 1,
+                strokeType: 'solid',
+                textColor: 'white',
+                radius: 6
+            },
+            stableNode: {
+                shape: 'circle',
+                fillColor: '#DAD5D5',
+                strokeColor: '#000000',
+                strokeWidth: 1,
+                radius: 6,
+                strokeType: 'solid',
+                textColor: 'white'
+            },
+            disappearNode: {
+                shape: 'circle',
+                fillColor: '#90B5FB',
+                strokeColor: '#000000',
+                strokeWidth: 1,
+                radius: 6,
+                strokeType: 'solid',
+                textColor: 'white'
+            },
+            appearLink: {
+                strokeColor: '#FD8F8F',
+                strokeType: 'solid',
+                strokeWidth: 2
+            },
+            stableLink: {
+                strokeColor: '#908F8F',
+                strokeType: 'solid',
+                strokeWidth: 2
+            },
+            disappearLink: {
+                strokeColor: '#90B5FB',
+                strokeType: 'solid',
+                strokeWidth: 2
+            }
         },
-        stableNode: {
-            shape: 'circle',
-            fillColor: '#DAD5D5',
-            strokeColor: '#000000',
-            strokeWidth: 1,
-            radius: 6,
-            strokeType: 'solid',
-            textColor: 'white'
+        nodeColor: {
+            appearNode: {
+                shape: 'circle',
+                fillColor: '#FD8F8F',
+                strokeColor: '#000000',
+                strokeWidth: 1,
+                strokeType: 'solid',
+                textColor: 'white',
+                radius: 6
+            },
+            stableNode: {
+                shape: 'circle',
+                fillColor: '#DAD5D5',
+                strokeColor: '#000000',
+                strokeWidth: 1,
+                radius: 6,
+                strokeType: 'solid',
+                textColor: 'white'
+            },
+            disappearNode: {
+                shape: 'circle',
+                fillColor: '#90B5FB',
+                strokeColor: '#000000',
+                strokeWidth: 1,
+                radius: 6,
+                strokeType: 'solid',
+                textColor: 'white'
+            }
         },
-        disappearNode: {
-            shape: 'circle',
-            fillColor: '#90B5FB',
-            strokeColor: '#000000',
-            strokeWidth: 1,
-            radius: 6,
-            strokeType: 'solid',
-            textColor: 'white'
-        },
-        appearLink: {
-            strokeColor: '#FD8F8F',
-            strokeType: 'solid',
-            strokeWidth: 2
-        },
-        stableLink: {
-            strokeColor: '#908F8F',
-            strokeType: 'solid',
-            strokeWidth: 2
-        },
-        disappearLink: {
-            strokeColor: '#90B5FB',
-            strokeType: 'solid',
-            strokeWidth: 2
+        linkColor: {
+            appearLink: {
+                strokeColor: '#FD8F8F',
+                strokeType: 'solid',
+                strokeWidth: 2
+            },
+            stableLink: {
+                strokeColor: '#908F8F',
+                strokeType: 'solid',
+                strokeWidth: 2
+            },
+            disappearLink: {
+                strokeColor: '#90B5FB',
+                strokeType: 'solid',
+                strokeWidth: 2
+            }
         }
     },
     basic: {
-        width: 200,
-        height: 300,
-        margin: 10,
+        eachMargin: 5,
+        width: 1010,
+        height: 250,
+        timeLineFlag: 0,
+        eachWidth: 200,
+        eachHeight: 250,
         nodeStyle: {
             shape: 'circle',
             fillColor: '#DAD5D5',
@@ -88,14 +173,62 @@ export const defaultConfigs = {
             textColor: 'white'
         },
         linkStyle: {
-            shape: 'curve',
+            shape: 'line',
             strokeColor: '#908F8F',
             strokeType: 'solid',
             strokeWidth: 2
         }
     }
 }
-
+export const assignConfigs = (setConfigs) => {
+    let configs = _.cloneDeep(setConfigs)
+    let sumConfigs = {}
+    assign(sumConfigs, defaultConfigs.basic)
+    Object.keys(defaultConfigs).forEach((key) => {
+        sumConfigs[key] = {}
+    })
+    Object.keys(configs).forEach((key) => {
+        let encoding = configs[key]
+        if (typeof encoding === 'string') {
+            //timeLine
+            if (key in defaultConfigs) {
+                sumConfigs[key][encoding] = _.cloneDeep(defaultConfigs[key][encoding])
+            } else {
+                sumConfigs[key] = encoding
+            }
+        } else {
+            if (_.isArray(encoding)) {
+                // time: ['timeLine', 'insert', 'markLine'],
+                encoding.forEach((e) => {
+                    if (typeof e === 'string') {
+                        sumConfigs[key][e] = _.cloneDeep(defaultConfigs[key][e])
+                    } else {
+                        const e1 = Object.keys(e)[0]
+                        sumConfigs[key][e1] = _.cloneDeep(defaultConfigs[key][e1])
+                        assign(sumConfigs[key], e)
+                    }
+                })
+            } else {
+                const e = Object.keys(encoding)[0]
+                sumConfigs[key][e] = _.cloneDeep(defaultConfigs[key][e])
+                assign(sumConfigs[key], encoding)
+            }
+        }
+    })
+    if ('layout' in sumConfigs) {
+        sumConfigs.layoutName = Object.keys(sumConfigs.layout)[0]
+    }
+    sumConfigs.renderType = 'timeLine'
+    if (sumConfigs.time && sumConfigs.time.animation) {
+        sumConfigs.renderType = 'animation'
+    } else {
+        // if (sumConfigs.time && sumConfigs.time.color) {
+        //     sumConfigs.renderType = 'color'
+        // }
+    }
+    console.log(defaultConfigs.time.timeLine.element)
+    return sumConfigs
+}
 export const timeEncodingOrder = {
     position: 0,
     animation: 1,
@@ -103,18 +236,18 @@ export const timeEncodingOrder = {
     link: 3
 }
 
-export function getRenderType(arr) {
-    arr.sort((a, b) => timeEncodingOrder[b] - timeEncodingOrder[a])
-    if(arr.length==0){
-        return ''
-    }else if(arr.indexOf('animation')>-1){
-        return 'animation'
-    }else if(arr.indexOf('color')>-1){
-        return 'color'
-    }else{
-        return 'other'
-    }
-}
+// export function getRenderType(arr) {
+//     arr.sort((a, b) => timeEncodingOrder[b] - timeEncodingOrder[a])
+//     if (arr.length == 0) {
+//         return ''
+//     } else if (arr.indexOf('animation') > -1) {
+//         return 'animation'
+//     } else if (arr.indexOf('color') > -1) {
+//         return 'color'
+//     } else {
+//         return 'other'
+//     }
+// }
 
 // 根据输入的参数，和默认的配置，合成最终的配置
 // 检验输入的参数，确保基础config没有问题
@@ -193,17 +326,16 @@ export function coverConfig(originConfig, newConfig) {
         }
     }
 }
-
 export function getDividedOptions(props, status) {
     const firstOption = {
         ...props,
-        ...props.comparisonOptions[status[0]],
-        comparisonOptions: ''
+        ...props.style[status[0]]
+        // comparisonOptions: ''
     }
     const secondOption = {
         ...props,
-        ...props.comparisonOptions[status[1]],
-        comparisonOptions: ''
+        ...props.style[status[1]]
+        // comparisonOptions: ''
     }
     const middleX = (props.source.x + props.target.x) / 2
     const middleY = (props.source.y + props.target.y) / 2
@@ -219,7 +351,6 @@ export function getDividedOptions(props, status) {
     }
     return { firstOption, secondOption }
 }
-
 export function getPiePathData(radius, len) {
     const dataset = new Array(len).fill(1)
 
@@ -298,8 +429,8 @@ export function getDividedArcPathData(source, target) {
     const flag = x1 < x2 ? 1 : -1
     const flag2 = x1 < x2 ? 1 : 0
     const r = (Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)) * Math.sqrt(2)) / 2
-    let mx = (x1 + x2) / 2 + flag * (1 - Math.sqrt(2) / 2) * r * (y2 - y1)/ (Math.sqrt(2) * r)
-    let my = (y1 + y2) / 2 + flag * (1 - Math.sqrt(2) / 2) * r * (x1 - x2) / (Math.sqrt(2) * r)
+    let mx = (x1 + x2) / 2 + (flag * (1 - Math.sqrt(2) / 2) * r * (y2 - y1)) / (Math.sqrt(2) * r)
+    let my = (y1 + y2) / 2 + (flag * (1 - Math.sqrt(2) / 2) * r * (x1 - x2)) / (Math.sqrt(2) * r)
     const firstData = `M ${x1},${y1}A${r},${r} 0,0,${flag2} ${mx},${my}`
     const secondData = `M ${mx},${my}A${r},${r} 0,0,${flag2} ${x2},${y2}`
     return { firstData, secondData }

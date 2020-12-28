@@ -8,7 +8,7 @@ export default function TimeAnimationDnet(props) {
     const [frameIndex, setFrameIndex] = useState(0)
     const [playOrPause, setPlayOrPause] = useState(false)
     const { data, config } = props
-    const { height, width, margin, nodeStyle, linkStyle } = config.basic
+    const { height, width, margin, nodeStyle, linkStyle } = config
     const speed = config.time.animation.speed
     const comparisonOptions = config.comparison
     let timeout
@@ -56,17 +56,18 @@ export default function TimeAnimationDnet(props) {
     }
     // console.log("-----comparisonOptions---", props.comparisonOptions)
     return data[frameIndex] ? (
-        <div 
+        <div
             style={{
                 width: '100%',
                 height: '730px',
                 overflowX: 'auto'
             }}
-            className="TimeAnimationDnet graph">
+            className="TimeAnimationDnet graph"
+        >
             <NodeLinkGraph
                 data={props.data[frameIndex]}
                 height={height}
-                width={width*data.length + margin*(data.length - 1)}
+                width={width * data.length + margin * (data.length - 1)}
                 margin={margin}
                 linkStyle={linkStyle}
                 nodeStyle={nodeStyle}
