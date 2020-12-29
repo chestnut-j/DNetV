@@ -37,10 +37,10 @@ export default function ExampleBoard() {
                         <Grammar
                             options={configItem}
                             // onSubmit={this.handleSubmitFromGrammar}
-                            width={440}
+                            width={340}
                             height={600}
                         />
-                        <Preview data={jsonData.graphs} config={config} width={1440} height={600} />
+                        <Preview data={jsonData.graphs} config={config} width={1540} height={600} />
                     </div>
                 )
             })}

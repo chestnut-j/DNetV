@@ -1,28 +1,4 @@
 export const configSet = [
-    {
-        time: ['timeLine', 'color', 'insert']
-    },
-    {
-        layout: 'vertical',
-        time: ['timeLine', 'markLine']
-    },
-
-    {
-        time: ['timeLine', 'insert']
-    },
-    {
-        time: [
-            'timeLine',
-            {
-                insert: {
-                    position: 'bottom', //目前就实现这一个。。。
-                    linkStyle: {
-                        shape: 'curve'
-                    }
-                }
-            }
-        ]
-    },
     {},
     {
         time: 'timeLine'
@@ -45,7 +21,7 @@ export const configSet = [
     },
     {
         time: {
-            position: {
+            timeLine: {
                 element: 'link'
             }
         },
@@ -102,11 +78,38 @@ export const configSet = [
         }
     },
     {
+        layout: 'vertical',
+        time: {
+            timeLine: {
+                element: 'node'
+            }
+        },
+        comparison: 'color'
+    },
+    {
+        layout: 'vertical',
+        time: ['timeLine', 'markLine']
+    },
+    {
         time: ['timeLine', 'insert']
     },
     {
         time: [
             'timeLine',
+            {
+                insert: {
+                    position: 'bottom', //目前就实现这一个。。。
+                    linkStyle: {
+                        shape: 'curve'
+                    }
+                }
+            }
+        ]
+    },
+    {
+        time: [
+            'timeLine',
+            'color',
             {
                 insert: {
                     position: 'bottom', //目前就实现这一个。。。
