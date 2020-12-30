@@ -226,7 +226,7 @@ export const assignConfigs = (setConfigs) => {
         //     sumConfigs.renderType = 'color'
         // }
     }
-    console.log(defaultConfigs.time.timeLine.element)
+    // console.log(defaultConfigs.time.timeLine.element)
     return sumConfigs
 }
 export const timeEncodingOrder = {

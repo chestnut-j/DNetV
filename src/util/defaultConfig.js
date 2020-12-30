@@ -172,7 +172,7 @@ export const defaultConfigs = {
             textColor: 'white'
         },
         linkStyle: {
-            shape: 'line',
+            shape: 'curve',
             strokeColor: '#908F8F',
             strokeType: 'solid',
             strokeWidth: 2

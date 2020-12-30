@@ -3,11 +3,6 @@ import NodeItem from '../nodeItem/nodeItem.js'
 import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
 export default function NodeItemContainer(props) {
-    // const { comparisonOptions, status, nodeStyle } = props
-    // const options = {
-    //     ...props,
-    //     comparisonOptions: ''
-    // }
     const status = Object.keys(props.style)
     if (status.length < 2) {
         return <NodeItem {...props.style[status[0]]} {...props} />

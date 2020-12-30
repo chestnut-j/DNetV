@@ -27,7 +27,7 @@ export default function ExampleBoard() {
                 // let data = dnetv()
                 // data.initData(jsonData.graphs, configItem)
                 // data.configs.renderType = 'position'
-                console.log(config)
+                console.log("---ExampleBoard----" ,config)
                 // console.log('---encodingOptions---', configItem.encodingOptions)
                 // console.log('---relationOptions---', configItem.relationOptions)
                 // delete configItem.relationOptions.chooseItem

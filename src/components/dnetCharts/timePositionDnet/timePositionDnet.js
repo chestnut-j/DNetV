@@ -33,7 +33,6 @@ export default function TimePositionDnet(props) {
                                           return (
                                               <path
                                                   d={v}
-                                                  //   fill={'black'}
                                                   stroke={props.config.time.markLine.strokeColor}
                                                   strokeWidth={`${props.config.time.markLine.strokeWidth}px`}
                                                   strokeDasharray={
@@ -52,15 +51,12 @@ export default function TimePositionDnet(props) {
                     return (
                         <g
                             key={`subGraph-${index}`}
-                            // transform={`translate(${index * width + index * margin},0)`}
                         >
                             <g>
                                 {dataItem.links.map((v) => {
                                     return (
                                         <LinkContainer
                                             {...props}
-                                            // comparisonOptions={comparisonOptions}
-                                            // linkStyle={linkStyle}
                                             {...v}
                                             key={`link-${v.timeId}`}
                                         />
@@ -72,8 +68,6 @@ export default function TimePositionDnet(props) {
                                     return (
                                         <NodeItemContainer
                                             {...props}
-                                            // comparisonOptions={comparisonOptions}
-                                            // nodeStyle={nodeStyle}
                                             {...v}
                                             key={`node-${v.timeId}`}
                                         />

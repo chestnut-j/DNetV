@@ -5,13 +5,8 @@ import { getDividedOptions } from '../../util/dnetChart.js'
 export default function LineLinkContainer(props) {
     const status = Object.keys(props.style)
     if (status.length < 2) {
-        // const options = {
-        //     ...props
-        //     // comparisonOptions: ''
-        // }
         return (
             <LinkItem
-                // {...props.comparisonOptions[props.status[0] ? props.status[0] : 'stableLink']}
                 {...props.style[status[0]]}
                 {...props}
             />
