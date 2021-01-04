@@ -8,7 +8,7 @@ export default function TimeAnimationDnet(props) {
     const [frameIndex, setFrameIndex] = useState(0)
     const [playOrPause, setPlayOrPause] = useState(false)
     const { data, config } = props
-    const { height, width, margin = 0 } = config
+    const { height, width, margin = 10 } = config
     const speed = config.time.animation.speed
     let timeout
     useEffect(() => {

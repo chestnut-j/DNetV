@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function LinkItem(props) {
-    // console.log("------source---target----f--", props.source, props.target)
     return (
         <line
             id={props.timeId}
@@ -11,6 +10,7 @@ export default function LinkItem(props) {
             y2={props.target.y + (props.yOffset ? props.yOffset : 0)}
             stroke={props.strokeColor}
             strokeWidth={`${props.strokeWidth}px`}
+            opacity={props.opacity}
             strokeDasharray={
                 props.strokeType === 'solid'
                     ? ''

@@ -11,6 +11,7 @@ export default function HalfNodeItem(props) {
                     fill={props.fillColor}
                     stroke={props.strokeColor}
                     strokeWidth={`${props.strokeWidth}px`}
+                    opacity={props.opacity}
                     strokeDasharray={
                         props.strokeType === 'solid'
                             ? ''
@@ -28,6 +29,7 @@ export default function HalfNodeItem(props) {
                     fill={props.fillColor}
                     stroke={props.strokeColor}
                     strokeWidth={`${props.strokeWidth}px`}
+                    opacity={props.opacity}
                     strokeDasharray={
                         props.strokeType === 'solid'
                             ? ''
@@ -46,6 +48,7 @@ export default function HalfNodeItem(props) {
                     fill={props.fillColor}
                     stroke={props.strokeColor}
                     strokeWidth={`${props.strokeWidth}px`}
+                    opacity={props.opacity}
                     strokeDasharray={
                         props.strokeType === 'solid'
                             ? ''
@@ -63,6 +66,7 @@ export default function HalfNodeItem(props) {
                     fill={props.fillColor}
                     stroke={props.strokeColor}
                     strokeWidth={`${props.strokeWidth}px`}
+                    opacity={props.opacity}
                     strokeDasharray={
                         props.strokeType === 'solid'
                             ? ''

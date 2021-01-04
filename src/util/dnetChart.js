@@ -330,12 +330,10 @@ export function getDividedOptions(props, status) {
     const firstOption = {
         ...props,
         ...props.style[status[0]]
-        // comparisonOptions: ''
     }
     const secondOption = {
         ...props,
         ...props.style[status[1]]
-        // comparisonOptions: ''
     }
     const middleX = (props.source.x + props.target.x) / 2
     const middleY = (props.source.y + props.target.y) / 2

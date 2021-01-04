@@ -4,7 +4,7 @@ import LinkContainer from '../../linkContainer/linkContainer.js'
 
 export default function TimePositionDnet(props) {
     const { data, config, markLine } = props
-    const { height, width, margin = 0 } = config
+    const { height, width, margin = 10 } = config
     const len = data.length
     if (len === 0) return null
     return (

@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function NodeItem(props) {
+    console.log("-----nodeItem---opacity", props.opacity)
     if (props.shape === 'circle') {
         return (
             <circle
@@ -11,6 +12,7 @@ export default function NodeItem(props) {
                 stroke={props.strokeColor}
                 strokeWidth={`${props.strokeWidth}px`}
                 r={props.radius}
+                opacity={props.opacity}
                 strokeDasharray={
                     props.strokeType === 'solid' ? '' : `${props.radius / 2},${props.radius / 2} `
                 }
@@ -27,6 +29,7 @@ export default function NodeItem(props) {
                 strokeWidth={`${props.strokeWidth}px`}
                 width={props.radius * 2}
                 height={props.radius * 2}
+                opacity={props.opacity}
                 strokeDasharray={
                     props.strokeType === 'solid' ? '' : `${props.radius / 2},${props.radius / 2} `
                 }

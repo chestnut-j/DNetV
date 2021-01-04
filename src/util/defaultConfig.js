@@ -44,7 +44,7 @@ export const defaultConfigs = {
             endColor: '#90B5FB'
         },
         animation: {
-            speed: 800
+            speed: 1800
         },
         markLine: {
             overwrite: true,

@@ -1,11 +1,12 @@
 import React from 'react'
 import NodeItemContainer from '../nodeItemContainer/nodeItemContainer.js'
 import LinkContainer from '../linkContainer/linkContainer.js'
+import Motion from '../motion/Motion'
 
 // import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
 export default function NodeLinkGraph(props) {
-    const { data, width, height, margin} = props
+    const { data, width, height, margin } = props
     return (
         <div
             className="nlg-container"
@@ -23,24 +24,45 @@ export default function NodeLinkGraph(props) {
                 preserveAspectRatio="xMinYMin"
             >
                 <g>
-                    {data.links.map((v) => {
+                    {data.links.map((v, i) => {
                         return (
-                            <LinkContainer
-                                {...props}
-                                {...v}
-                                key={`link-${v.timeId}`}
-                            />
+                            <Motion
+                                duration={1500}
+                                key={`${i}_${v.timeId}_motion`}
+                                style={{
+                                    opacity: 1
+                                }}
+                            >
+                                {({ opacity }) => (
+                                    <LinkContainer
+                                        {...props}
+                                        {...v}
+                                        opacity={opacity}
+                                        key={`link-${v.timeId}`}
+                                    />
+                                )}
+                            </Motion>
                         )
                     })}
                 </g>
                 <g>
-                    {data.nodes.map((v) => {
+                    {data.nodes.map((v,i) => {
                         return (
-                            <NodeItemContainer
-                                {...props}
-                                {...v}
-                                key={`node-${v.timeId}`}
-                            />
+                            <Motion
+                                duration={1500}
+                                key={`${i}_${v.timeId}_motion`}
+                                style={{
+                                    opacity: 1
+                                }}
+                            >
+                                {({ opacity }) => (
+                                    <NodeItemContainer 
+                                        {...props} 
+                                        {...v} 
+                                        opacity={opacity}
+                                        key={`node-${v.timeId}`} />
+                                )}
+                            </Motion>
                         )
                     })}
                 </g>
