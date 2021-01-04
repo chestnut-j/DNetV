@@ -5,7 +5,7 @@ import LinkContainer from '../linkContainer/linkContainer.js'
 // import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
 export default function NodeLinkGraph(props) {
-    const { comparisonOptions, data, width, height, margin, linkStyle, nodeStyle } = props
+    const { data, width, height, margin} = props
     return (
         <div
             className="nlg-container"
@@ -27,8 +27,6 @@ export default function NodeLinkGraph(props) {
                         return (
                             <LinkContainer
                                 {...props}
-                                // comparisonOptions = {comparisonOptions}
-                                // linkStyle={linkStyle}
                                 {...v}
                                 key={`link-${v.timeId}`}
                             />
@@ -40,8 +38,6 @@ export default function NodeLinkGraph(props) {
                         return (
                             <NodeItemContainer
                                 {...props}
-                                // comparisonOptions={comparisonOptions}
-                                // nodeStyle={nodeStyle}
                                 {...v}
                                 key={`node-${v.timeId}`}
                             />

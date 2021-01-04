@@ -4,8 +4,7 @@ import LinkContainer from '../../linkContainer/linkContainer.js'
 
 export default function TimePositionDnet(props) {
     const { data, config, markLine } = props
-    const { height, width, margin, nodeStyle, linkStyle } = config
-    const comparisonOptions = config.comparison
+    const { height, width, margin = 0 } = config
     const len = data.length
     if (len === 0) return null
     return (
@@ -45,21 +44,15 @@ export default function TimePositionDnet(props) {
                                   </g>
                               )
                           })
-                        : 1}
+                        : null}
                 </g>
                 {data.map((dataItem, index) => {
                     return (
-                        <g
-                            key={`subGraph-${index}`}
-                        >
+                        <g key={`subGraph-${index}`}>
                             <g>
                                 {dataItem.links.map((v) => {
                                     return (
-                                        <LinkContainer
-                                            {...props}
-                                            {...v}
-                                            key={`link-${v.timeId}`}
-                                        />
+                                        <LinkContainer {...props} {...v} key={`link-${v.timeId}`} />
                                     )
                                 })}
                             </g>

@@ -32,7 +32,6 @@ export default function Preview(props) {
         if (props.data) {
             let dnetvInstance = dnetv()
             dnetvInstance.initData(props.data, props.config)
-            console.log('---dnetvInstance---', dnetvInstance)
             setSubGraphs(converObject2Array(dnetvInstance.timeGraphs))
             setMarkLine(dnetvInstance.markLine)
             setSumGraphs(dnetvInstance.sumGraphs)

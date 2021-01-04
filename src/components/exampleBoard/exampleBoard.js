@@ -19,24 +19,15 @@ const dataset = [
 
 export default function ExampleBoard() {
     const [jsonData, setJsonData] = useState(dataset[0].data)
-    const [configs, setConfigs] = useState(configSet)
     return (
         <div className="example-board">
             {configSet.map((configItem, index) => {
                 const config = assignConfigs(configItem)
-                // let data = dnetv()
-                // data.initData(jsonData.graphs, configItem)
-                // data.configs.renderType = 'position'
-                console.log("---ExampleBoard----" ,config)
-                // console.log('---encodingOptions---', configItem.encodingOptions)
-                // console.log('---relationOptions---', configItem.relationOptions)
-                // delete configItem.relationOptions.chooseItem
-                // delete configItem.encodingOptions.taskType
+                // console.log("---ExampleBoard----" ,config)
                 return (
                     <div className="example-row" key={`example-row-${index}`}>
                         <Grammar
                             options={configItem}
-                            // onSubmit={this.handleSubmitFromGrammar}
                             width={340}
                             height={600}
                         />

@@ -1,9 +1,22 @@
 export const configSet = [
     {},
     {
+        time: 'animation'
+    },
+    {
+        time: 'animation',
+        comparison: 'color'
+    },
+    {
+        time: ['animation', 'timeLine'],
+        comparison: 'color'
+    },
+    {
         layout: 'vertical',
         time: ['timeLine', 'markLine']
     },
+    
+    
     {
         time: [
             'timeLine',
@@ -42,18 +55,6 @@ export const configSet = [
                 element: 'link'
             }
         },
-        comparison: 'color'
-    },
-
-    {
-        time: 'animation'
-    },
-    {
-        time: 'animation',
-        comparison: 'color'
-    },
-    {
-        time: ['animation', 'timeLine'],
         comparison: 'color'
     },
     {

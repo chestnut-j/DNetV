@@ -8,9 +8,8 @@ export default function TimeAnimationDnet(props) {
     const [frameIndex, setFrameIndex] = useState(0)
     const [playOrPause, setPlayOrPause] = useState(false)
     const { data, config } = props
-    const { height, width, margin, nodeStyle, linkStyle } = config
+    const { height, width, margin = 0 } = config
     const speed = config.time.animation.speed
-    const comparisonOptions = config.comparison
     let timeout
     useEffect(() => {
         if (timeout) {
@@ -69,9 +68,6 @@ export default function TimeAnimationDnet(props) {
                 height={height}
                 width={width * data.length + margin * (data.length - 1)}
                 margin={margin}
-                linkStyle={linkStyle}
-                nodeStyle={nodeStyle}
-                comparisonOptions={comparisonOptions}
             />
             <div className="tad-control-container">
                 {playOrPause ? (
