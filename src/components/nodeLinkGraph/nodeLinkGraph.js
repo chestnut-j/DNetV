@@ -7,6 +7,7 @@ import Motion from '../motion/Motion'
 
 export default function NodeLinkGraph(props) {
     const { data, width, height, margin } = props
+    console.log("NodeLinkGraph---data", data)
     return (
         <div
             className="nlg-container"
@@ -28,17 +29,31 @@ export default function NodeLinkGraph(props) {
                         return (
                             <Motion
                                 duration={1500}
-                                key={`${i}_${v.timeId}_motion`}
+                                key={`${v.id}_motion`}
                                 style={{
-                                    opacity: 1
+                                    opacity: 1,
+                                    sourceX: v.source.x,
+                                    sourceY: v.source.y,
+                                    targetX: v.target.x,
+                                    targetY: v.target.y
                                 }}
                             >
-                                {({ opacity }) => (
+                                {({ opacity,sourceX, sourceY,targetX,targetY }) => (
                                     <LinkContainer
                                         {...props}
                                         {...v}
+                                        source={{
+                                            ...v.source,
+                                            x: sourceX,
+                                            y: sourceY
+                                        }}
+                                        target={{
+                                            ...v.target,
+                                            x: targetX,
+                                            y: targetY
+                                        }}
                                         opacity={opacity}
-                                        key={`link-${v.timeId}`}
+                                        key={`link-${v.id}`}
                                     />
                                 )}
                             </Motion>
@@ -50,17 +65,21 @@ export default function NodeLinkGraph(props) {
                         return (
                             <Motion
                                 duration={1500}
-                                key={`${i}_${v.timeId}_motion`}
+                                key={`${v.id}_motion`}
                                 style={{
-                                    opacity: 1
+                                    opacity: 1,
+                                    x: v.x,
+                                    y: v.y
                                 }}
                             >
-                                {({ opacity }) => (
+                                {({ opacity,x ,y }) => (
                                     <NodeItemContainer 
                                         {...props} 
                                         {...v} 
+                                        x = {x}
+                                        y = {y}
                                         opacity={opacity}
-                                        key={`node-${v.timeId}`} />
+                                        key={`node-${v.id}`} />
                                 )}
                             </Motion>
                         )
