@@ -11,6 +11,7 @@ class DNetV {
         this.timeGraphSet = {}
         this.markLine = undefined
     }
+
     initData(setData, setConfigs) {
         this.elementsName = ['nodes', 'links'] //元素：点、边
         this.times = Object.fromEntries(setData.map((d, index) => [d.time, index])) //时间：key值

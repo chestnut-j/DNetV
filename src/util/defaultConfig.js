@@ -14,7 +14,6 @@ export const defaultConfigs = {
         vertical: {
             yDistance: 40,
             linkStyle: {
-                overwrite: true,
                 shape: 'curve'
             }
         }
@@ -172,7 +171,7 @@ export const defaultConfigs = {
             textColor: 'white'
         },
         linkStyle: {
-            shape: 'curve',
+            shape: 'line',
             strokeColor: '#908F8F',
             strokeType: 'solid',
             strokeWidth: 2

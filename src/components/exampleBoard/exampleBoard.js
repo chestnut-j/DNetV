@@ -27,7 +27,7 @@ export default function ExampleBoard() {
                 // let data = dnetv()
                 // data.initData(jsonData.graphs, configItem)
                 // data.configs.renderType = 'position'
-                console.log("---ExampleBoard----" ,config)
+                console.log('---ExampleBoard----', config)
                 // console.log('---encodingOptions---', configItem.encodingOptions)
                 // console.log('---relationOptions---', configItem.relationOptions)
                 // delete configItem.relationOptions.chooseItem
@@ -38,9 +38,9 @@ export default function ExampleBoard() {
                             options={configItem}
                             // onSubmit={this.handleSubmitFromGrammar}
                             width={340}
-                            height={600}
+                            height={300}
                         />
-                        <Preview data={jsonData.graphs} config={config} width={1540} height={600} />
+                        <Preview data={jsonData.graphs} config={config} width={1540} height={300} />
                     </div>
                 )
             })}

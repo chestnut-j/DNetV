@@ -5,20 +5,10 @@ export const configSet = [
         time: ['timeLine', 'markLine']
     },
     {
-        time: [
-            'timeLine',
-            {
-                insert: {
-                    position: 'bottom', //目前就实现这一个。。。
-                    linkStyle: {
-                        shape: 'curve'
-                    }
-                }
-            }
-        ]
+        time: 'timeLine'
     },
     {
-        time: 'timeLine'
+        time: ['timeLine', 'markLine']
     },
     {
         comparison: 'color'
@@ -106,7 +96,19 @@ export const configSet = [
     {
         time: ['timeLine', 'insert']
     },
-    
+    {
+        time: [
+            'timeLine',
+            {
+                insert: {
+                    position: 'bottom', //目前就实现这一个。。。
+                    linkStyle: {
+                        shape: 'curve'
+                    }
+                }
+            }
+        ]
+    },
     {
         time: [
             'timeLine',
