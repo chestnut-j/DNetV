@@ -2,7 +2,7 @@ import * as d3 from 'd3'
 import { defaultConfigs } from './defaultConfig'
 import * as _lodash from 'lodash'
 import assign from 'assign-deep'
-const TIME_CONFIG = ['timeLine', 'animation', 'color', 'markLine']
+const TIME_CONFIG = ['timeLine', 'animation', 'color', 'markLine', 'insert']
 
 const LAYOUT_CONFIG = ['offLine', 'vertical', 'onLine', 'circle', 'bipartite']
 

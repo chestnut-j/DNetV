@@ -87,7 +87,7 @@ export const defaultConfigs = {
         }
     },
     comparison: {
-        isOn: false,
+        isOn: true,
         chooseTypes:['shape', 'fillColor', 'strokeColor', 'strokeWidth', 'strokeType', 'color', 'radius'],
         // keyFrame可为上一帧、下一帧、具体某一帧
         keyFrame: 'next',

@@ -3,10 +3,10 @@ export const configSet = [
     {
         time: 'timeLine'
     },
-    // {
-    //     layout: 'vertical',
-    //     time: ['timeLine', 'markLine']
-    // },
+    {
+        layout: 'vertical',
+        time: ['timeLine', 'markLine']
+    },
     {
         time: 'animation',
         comparison: {
@@ -17,6 +17,17 @@ export const configSet = [
     {
         time: ['animation', 'timeLine'],
         comparison: 'color'
+    },
+    {
+        time: {
+            chooseTypes: ['timeLine','insert'],
+            insert: {
+                timeLine: 'bottom', //目前就实现这一个。。。
+                linkStyle: {
+                    shape: 'line'
+                }
+            }
+        }
     },
     /*
     

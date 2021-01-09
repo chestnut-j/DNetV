@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function NodeItem(props) {
-    // console.log("-----nodeItem---opacity", props.opacity)
     if (props.shape === 'circle') {
         return (
             <circle

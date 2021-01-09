@@ -3,8 +3,8 @@ import NodeItem from '../nodeItem/nodeItem.js'
 import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
 export default function NodeItemContainer(props) {
-    const status = props.status
-    if(status.length === 0){
+    const {status, type} = props
+    if(type==='time'||status.length === 0){
         return <NodeItem {...props.style.nodeStyle} {...props} />
     }else if (status.length === 1) {
         return <NodeItem {...props.style[status[0]]} {...props} />

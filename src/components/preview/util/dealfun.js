@@ -174,7 +174,7 @@ export function adjustLayout2Svg(nodes, links, width, height) {
 
 export const verticalLayout = (sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const { eachWidth, eachHeight } = configs
+    const { eachWidth, eachHeight } = configs.basic
     const l = nodes.length
     let nodesObj = {}
     nodes.forEach((node, index) => {
@@ -363,7 +363,7 @@ export const setStyle = (timeGraphs, sumGraphs, configs) => {
         Object.values(graph.nodes).forEach((node) => {
             if (node.type === 'time') {
                 if (_.hasIn(configs.time.insert, 'nodeStyle')) {
-                    node.style.nodeStyle = _.cloneDeep(configs.time.insert.nodeStyle)
+                    node.style.nodeStyle = _.cloneDeep({...basicNodeStyle, ...configs.time.insert.nodeStyle})
                 } else {
                     node.style.nodeStyle = _.cloneDeep(basicNodeStyle)
                 }
@@ -383,9 +383,12 @@ export const setStyle = (timeGraphs, sumGraphs, configs) => {
         Object.values(graph.links).forEach((link) => {
             if (link.type === 'time') {
                 if (_.hasIn(configs.time.insert, 'linkStyle')) {
-                    link.style.linkStyle = _.cloneDeep(configs.time.insert.linkStyle)
+                    link.style.linkStyle = _.cloneDeep({...basicLinkStyle, ...configs.time.insert.linkStyle})
                 } else {
                     link.style.linkStyle = _.cloneDeep(basicLinkStyle)
+                }
+                if (configs.time.chooseTypes.indexOf('color') > -1) {
+                    link.style.linkStyle.strokeColor = timeColorObj[link.time]
                 }
                 return
             }

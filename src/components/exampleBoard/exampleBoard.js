@@ -19,7 +19,6 @@ export default function ExampleBoard() {
         <div className="example-board">
             {configSet.map((configItem, index) => {
                 const config = assignConfigs(configItem)
-                // console.log(configItem,"---config---",config)
                 // return null
                 return (
                     <div className="example-row" key={`example-row-${index}`}>
