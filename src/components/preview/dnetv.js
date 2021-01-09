@@ -1,7 +1,7 @@
 // import { link, NetV } from './NetV'
 import { configs } from 'eslint-plugin-prettier'
 import * as u from './util/dealfun'
-import * as _ from 'lodash'
+import * as _lodash from 'lodash'
 class DNetV {
     constructor() {
         this.elementsName = []
@@ -13,69 +13,91 @@ class DNetV {
     }
     initData(setData, setConfigs) {
         this.elementsName = ['nodes', 'links'] //元素：点、边
+        // 建立从times到index的对象映射
         this.times = Object.fromEntries(setData.map((d, index) => [d.time, index])) //时间：key值
-        // this.configs = u.assignConfigs(setConfigs)
         this.configs = setConfigs
-        // console.log(this.configs)
         this.oldData = setData
-        this.data = _.cloneDeep(setData)
+        this.data = _lodash.cloneDeep(setData)
 
-        if (_.has(this.configs.time, 'insert')) {
+        // 判断如果configs的time中如果选择了insert，就执行timeASnode，给graph添加代表时间的节点
+        if(this.configs.time.chooseTypes.indexOf('insert') > -1){
             u.timeASnode(this.data)
         }
+
+        // 建立最初数据结构
         let { timeGraphs, nodeSet, linkSet, timeGraphSet, sumGraphs } = u.getTimeId(
             this.data,
             this.times
         )
+
         this.timeGraphs = timeGraphs
         this.timeGraphSet = timeGraphSet
         this.sumGraphs = sumGraphs
         this.nodeSet = nodeSet
         this.linkSet = linkSet
-        this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyTime: 'next' }]) //函数里面直接改了timeGraphs
-        this.dealLayout(this.configs.layoutName ? this.configs.layoutName : 'offLine')
-        this.markLine = this.configs.time.markLine
+
+        // 依据配置，给数据赋予3种状态的信息。这个应该根据config去判断要不要赋予
+        if(this.configs.comparison.isOn){
+            //函数里面直接改了timeGraphs、sumGraphs
+            this.dealCompareData([{ times: 'all', nodes: 'all', links: 'all', keyFrame: this.configs.comparison.keyFrame }]) 
+        }
+
+        this.sumGraphs.nodes = Object.values(this.sumGraphs.nodes)
+        this.sumGraphs.links = Object.values(this.sumGraphs.links)
+
+        // 依据layout的配置去赋予位置信息
+        this.dealLayout(this.configs.layout.chooseType ? this.configs.layout.chooseType : 'offLine')
+        // console.log("------this.sumGraphs.----",this.sumGraphs)
+        // 根据time中的是否选择了markLine而决定是否要去计算markLine的数据
+        this.markLine = this.configs.time.chooseTypes.indexOf('markLine') > -1
             ? u.getmarkLine(this.sumGraphs, this.timeGraphs, this.configs)
             : undefined
+        
+        // 根据配置信息中：样式，以及time，以及comparison信息，去设定样式
         u.setStyle(this.timeGraphs, this.sumGraphs, this.configs)
+
         this.subGraphs = Object.values(this.timeGraphs).map((v) => ({
             links: Object.values(v.links),
             nodes: Object.values(v.nodes)
         }))
-        // this.sumGraphs = u.dealSumGraphs(this.timeGraphs, this.nodeSet, this.linkSet)
+        
     }
     dealLayout(layout = 'offLine') {
+        // 先根据sumGraphs获得布局信息
         if (layout === 'offLine') {
-            this.sumGraphs = u.offLineLayout(this.sumGraphs, this.configs)
+            this.sumGraphs = u.offLineLayout(this.sumGraphs, this.configs) 
         }
         if (layout === 'vertical') {
             this.sumGraphs = u.verticalLayout(this.sumGraphs, this.configs)
         }
-        u.getGraphLayout(this.timeGraphs, this.sumGraphs, this.configs) //函数里面直接改了timeGraphs
+        // 将位置信息放入每个子图中，并根据time调整位置
+        u.getGraphLayout(this.timeGraphs, this.sumGraphs, this.configs)
     }
     dealCompareData(configs) {
         configs.forEach((d) => {
-            const { times, nodes, links, keyTime } = d
+            const { times, nodes, links, keyFrame } = d
             const timeSet = times === 'all' ? new Set(Object.keys(this.times)) : new Set(times)
             const nodeSet = nodes === 'all' ? this.nodeSet : new Set(nodes)
             const linkSet = links === 'all' ? this.linkSet : new Set(links)
             let timeGraphSet = {}
+            // this.timeGraphSet中有的放到timeGraphSet中
             Object.keys(this.timeGraphSet).forEach((time) => {
                 if (timeSet.has(time)) {
                     timeGraphSet[time] = this.timeGraphSet[time]
                 }
             })
+            // 给timeGraphs和sumGraphs赋予3种状态的信息
             u.getCompareData(
                 timeGraphSet,
                 nodeSet,
                 linkSet,
-                keyTime,
+                keyFrame,
                 this.timeGraphs,
                 this.sumGraphs,
                 this.times
             ) //函数里面直接改了timeGraphs
         })
-    }
+    } 
 
     // dealTimeEncode(groups, data, config) {}
     end(simulation) {

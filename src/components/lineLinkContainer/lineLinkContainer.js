@@ -3,15 +3,22 @@ import LinkItem from '../linkItem/linkItem.js'
 import { getDividedOptions } from '../../util/dnetChart.js'
 
 export default function LineLinkContainer(props) {
-    const status = Object.keys(props.style)
-    if (status.length < 2) {
+    const status = props.status
+    if(status.length === 0){
+        return (
+            <LinkItem
+                {...props.style.linkStyle}
+                {...props}
+            />
+        )
+    }else if (status.length === 1) {
         return (
             <LinkItem
                 {...props.style[status[0]]}
                 {...props}
             />
         )
-    } else {
+    } else if(status.length === 2){
         const { firstOption, secondOption } = getDividedOptions(props, status)
         return (
             <>

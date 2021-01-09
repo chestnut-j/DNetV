@@ -12,21 +12,10 @@ import { getRenderType } from '../../util/dnetChart'
 
 export default function Preview(props) {
     // 要计算
-    const [width, setWidth] = useState(props.config.basic.width)
-    const [height, setHeight] = useState(props.config.basic.height)
     const [subGraphs, setSubGraphs] = useState([])
     const [sumGraphs, setSumGraphs] = useState({ nodes: [], links: [] })
     const [markLine, setMarkLine] = useState({})
     const [renderType, setRenderType] = useState('')
-
-    // 数据更新时重新计算
-    useEffect(() => {
-        setWidth(props.config.basic.width)
-    }, [props.config.basic.width])
-
-    useEffect(() => {
-        setWidth(props.config.basic.height)
-    }, [props.config.basic.height])
 
     useEffect(() => {
         if (props.data) {
@@ -38,15 +27,18 @@ export default function Preview(props) {
         }
     }, [props.config, props.data])
 
-    // useEffect(() => {
-    //     if (props.data) {
-    //         setRenderType(getRenderType(props.config.time.chooseTypes))
-    //     } else {
-    //         setRenderType('')
-    //     }
-    // }, [props.data, props.config.time.chooseTypes])
-    // console.log('----renderType---------', renderType)
+    useEffect(() => {
+        if (props.data) {
+            setRenderType(getRenderType(props.config.time.chooseTypes))
+        } else {
+            setRenderType('')
+        }
+    }, [props.data, props.config.time.chooseTypes])
+
+    // console.log("--props.config--", props.config)
     // console.log("--subGraphs--", subGraphs)
+    // console.log("--sumGraphs--", sumGraphs)
+    // console.log("--markLine--", markLine)
     return (
         <div
             style={{
@@ -62,7 +54,7 @@ export default function Preview(props) {
                 </svg>
             </div>
             {(() => {
-                switch (props.config.renderType) {
+                switch (renderType) {
                     case 'timeLine':
                         return (
                             <TimePositionDnet
@@ -89,12 +81,6 @@ export default function Preview(props) {
                                 markLine={markLine}
                             />
                         )
-                    case 'Time-chart':
-                        return <TimeChartDnet />
-                    case 'Comparison-position':
-                        return <ComparisonPositionDnet />
-                    case 'Comparison-animation':
-                        return <ComparisonAnimationDnet />
                     default:
                         return null
                 }

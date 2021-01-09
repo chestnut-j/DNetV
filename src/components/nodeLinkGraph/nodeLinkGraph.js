@@ -7,7 +7,7 @@ import Motion from '../motion/Motion'
 
 export default function NodeLinkGraph(props) {
     const { data, width, height, margin } = props
-    console.log("NodeLinkGraph---data", data)
+    // console.log("NodeLinkGraph---data", data)
     return (
         <div
             className="nlg-container"

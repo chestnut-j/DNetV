@@ -3,10 +3,12 @@ import NodeItem from '../nodeItem/nodeItem.js'
 import HalfNodeItem from '../halfNodeItem/halfNodeItem.js'
 
 export default function NodeItemContainer(props) {
-    const status = Object.keys(props.style)
-    if (status.length < 2) {
+    const status = props.status
+    if(status.length === 0){
+        return <NodeItem {...props.style.nodeStyle} {...props} />
+    }else if (status.length === 1) {
         return <NodeItem {...props.style[status[0]]} {...props} />
-    } else {
+    } else if(status.length === 2) {
         return (
             <>
                 <HalfNodeItem direction={'left'} {...props.style[status[0]]} {...props} />

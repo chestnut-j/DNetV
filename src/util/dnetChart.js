@@ -1,12 +1,12 @@
 import * as d3 from 'd3'
-import { configs } from 'eslint-plugin-prettier'
-import { SwatchesPicker } from 'react-color'
 import { defaultConfigs } from './defaultConfig'
-import * as _ from 'lodash'
+import * as _lodash from 'lodash'
 import assign from 'assign-deep'
-const TIME_CONFIG = ['position', 'animation', 'color', 'markLine']
+const TIME_CONFIG = ['timeLine', 'animation', 'color', 'markLine']
 
-const LAYOUT_CONFIG = ['offLine', 'vertical']
+const LAYOUT_CONFIG = ['offLine', 'vertical', 'onLine', 'circle', 'bipartite']
+
+const COMPARISON_CONFIG = ['shape', 'fillColor','strokeColor', 'strokeWidth', 'strokeType', 'color', 'radius']
 
 export const defaultConfigs_bak = {
     layout: {
@@ -180,8 +180,130 @@ export const defaultConfigs_bak = {
         }
     }
 }
+
+function isTimeConfig(item) {
+    return TIME_CONFIG.indexOf(item) > -1
+}
+
+function isComparisonConfig(item) {
+    return COMPARISON_CONFIG.indexOf(item) > -1
+}
+
+function isLayoutConfig(item) {
+    return LAYOUT_CONFIG.indexOf(item) > -1
+ }
+
+export function assignConfigs(setConfigs){
+    let configs = _lodash.cloneDeep(setConfigs)
+    let sumConfigs = _lodash.cloneDeep(defaultConfigs)
+
+    // 处理time的覆盖
+    if ('time' in configs) {
+        if (typeof configs.time === 'string' && isTimeConfig(configs.time)) {
+            sumConfigs.time.chooseTypes = [configs.time]
+        } else if (_lodash.isArray(configs.time)) {
+            sumConfigs.time.chooseTypes = configs.time.filter(isTimeConfig)
+        } else if(typeof configs.time === 'object') {
+            // 是一个对象
+            let chooseTypes = new Set()
+            Object.keys(configs.time)
+                .filter(isTimeConfig)
+                .forEach((item) => {
+                    chooseTypes.add(item)
+                })
+            if (configs.time.chooseTypes) {
+                // 如果其中存在chooseTypes进行处理
+                if ( typeof configs.time.chooseTypes === 'string' && isTimeConfig(configs.time.chooseTypes)) {
+                    chooseTypes.add(configs.time.chooseTypes)
+                } else if (_lodash.isArray(configs.time.chooseTypes)) {
+                    configs.time.chooseTypes.filter(isTimeConfig).forEach((item)=>{
+                        chooseTypes.add(item)
+                    })
+                }
+            }
+            configs.time.chooseTypes = [...chooseTypes]
+            // 逐层进行覆盖
+            assign(sumConfigs.time, configs.time)
+        }
+    }
+    delete configs.time
+
+    // 处理layout的覆盖
+    if('layout' in configs){
+        if(typeof configs.layout === 'string' && isLayoutConfig(configs.layout)){
+            sumConfigs.layout.chooseType = configs.layout
+        }else if(_lodash.isArray(configs.layout)){
+            configs.layout = configs.layout.filter(isLayoutConfig)
+            sumConfigs.layout.chooseType = configs.layout.length > 0 ?
+                configs.layout[0] :
+                LAYOUT_CONFIG[0]
+        }else{
+            // 是一个对象
+            let layoutKeys = Object.keys(configs.layout)
+                .filter(isLayoutConfig)
+                
+            if (configs.layout.chooseType && _lodash.isArray(configs.layout.chooseType)) {
+                const tempArr = configs.layout.chooseType.filter(isLayoutConfig)
+                if(tempArr.length>0){
+                    configs.layout.chooseType = tempArr[0]
+                }
+            }
+            if(!configs.layout.chooseType||!isLayoutConfig(configs.layout.chooseType)){
+                if(layoutKeys.length>0){
+                    configs.layout.chooseType = layoutKeys[0]
+                }else{
+                    configs.layout.chooseType = LAYOUT_CONFIG[0]
+                }
+            }
+            assign(sumConfigs.layout, configs.layout)
+        }
+        delete configs.layout
+    }
+
+    // 处理comparison的覆盖
+    if('comparison' in configs){
+        if(typeof configs.comparison ==='boolean' && configs.comparison){
+            // 全部开启
+            sumConfigs.comparison.chooseTypes = COMPARISON_CONFIG
+        }else if(typeof configs.comparison === 'string' && isComparisonConfig(configs.comparison)){
+            sumConfigs.comparison.chooseTypes = [configs.comparison]
+        }else if(_lodash.isArray(configs.comparison)){
+            sumConfigs.comparison.chooseTypes = configs.comparison.filter(isComparisonConfig)
+        }else{
+            // 是对象
+            if (configs.comparison.chooseTypes) {
+                if(typeof configs.comparison.chooseTypes === 'string' && isComparisonConfig(configs.comparison.chooseTypes)){
+                    configs.comparison.chooseTypes = [configs.comparison.chooseTypes]
+                }else if(_lodash.isArray(configs.comparison.chooseTypes)){
+                    const tempArr = configs.comparison.chooseTypes.filter(isComparisonConfig)
+                    configs.comparison.chooseTypes = tempArr.length > 0 ?
+                        tempArr :
+                        COMPARISON_CONFIG
+                }else{
+                    configs.comparison.chooseTypes = COMPARISON_CONFIG
+                }
+            }else{
+                configs.comparison.chooseTypes = COMPARISON_CONFIG
+            }
+            assign(sumConfigs.comparison, configs.comparison)
+        }
+    }
+    delete configs.comparison
+
+    // 处理basic的配置
+    if('basic' in configs){
+        assign(sumConfigs.basic, configs.basic)
+    }
+    delete configs.basic
+
+    // 将configs的其余配置覆盖到basic中
+    assign(sumConfigs.basic, configs)
+    return sumConfigs
+}
+
+/*
 export const assignConfigs = (setConfigs) => {
-    let configs = _.cloneDeep(setConfigs)
+    let configs = _lodash.cloneDeep(setConfigs)
     let sumConfigs = {}
     assign(sumConfigs, defaultConfigs.basic)
     Object.keys(defaultConfigs).forEach((key) => {
@@ -192,27 +314,25 @@ export const assignConfigs = (setConfigs) => {
         if (typeof encoding === 'string') {
             //timeLine
             if (key in defaultConfigs) {
-                sumConfigs[key][encoding] = _.cloneDeep(defaultConfigs[key][encoding])
+                sumConfigs[key][encoding] = _lodash.cloneDeep(defaultConfigs[key][encoding])
             } else {
                 sumConfigs[key] = encoding
             }
+        } else if (_.isArray(encoding)) {
+            // time: ['timeLine', 'insert', 'markLine'] 类似于选择作用
+            encoding.forEach((e) => {
+                if (typeof e === 'string') {
+                    sumConfigs[key][e] = _lodash.cloneDeep(defaultConfigs[key][e])
+                } else {
+                    const e1 = Object.keys(e)[0]
+                    sumConfigs[key][e1] = _lodash.cloneDeep(defaultConfigs[key][e1])
+                    assign(sumConfigs[key], e)
+                }
+            })
         } else {
-            if (_.isArray(encoding)) {
-                // time: ['timeLine', 'insert', 'markLine'],
-                encoding.forEach((e) => {
-                    if (typeof e === 'string') {
-                        sumConfigs[key][e] = _.cloneDeep(defaultConfigs[key][e])
-                    } else {
-                        const e1 = Object.keys(e)[0]
-                        sumConfigs[key][e1] = _.cloneDeep(defaultConfigs[key][e1])
-                        assign(sumConfigs[key], e)
-                    }
-                })
-            } else {
-                const e = Object.keys(encoding)[0]
-                sumConfigs[key][e] = _.cloneDeep(defaultConfigs[key][e])
-                assign(sumConfigs[key], encoding)
-            }
+            const e = Object.keys(encoding)[0]
+            sumConfigs[key][e] = _lodash.cloneDeep(defaultConfigs[key][e])
+            assign(sumConfigs[key], encoding)
         }
     })
     if ('layout' in sumConfigs) {
@@ -229,25 +349,24 @@ export const assignConfigs = (setConfigs) => {
     // console.log(defaultConfigs.time.timeLine.element)
     return sumConfigs
 }
-export const timeEncodingOrder = {
-    position: 0,
-    animation: 1,
-    color: 2,
-    link: 3
-}
+*/
 
-// export function getRenderType(arr) {
-//     arr.sort((a, b) => timeEncodingOrder[b] - timeEncodingOrder[a])
-//     if (arr.length == 0) {
-//         return ''
-//     } else if (arr.indexOf('animation') > -1) {
-//         return 'animation'
-//     } else if (arr.indexOf('color') > -1) {
-//         return 'color'
-//     } else {
-//         return 'other'
-//     }
+// export const timeEncodingOrder = {
+//     position: 0,
+//     animation: 1,
+//     color: 2,
+//     link: 3
 // }
+
+export function getRenderType(arr) {
+    if (arr.indexOf('animation') > -1) {
+        return 'animation'
+    } else if (arr.indexOf('color') > -1) {
+        return 'color'
+    } else {
+        return 'timeLine'
+    }
+}
 
 // 根据输入的参数，和默认的配置，合成最终的配置
 // 检验输入的参数，确保基础config没有问题
@@ -427,10 +546,14 @@ export function getDividedArcPathData(source, target) {
     const flag = x1 < x2 ? 1 : -1
     const flag2 = x1 < x2 ? 1 : 0
     const r = (Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2)) * Math.sqrt(2)) / 2
+    if(r==0){
+        return { firstData:null, secondData:null }
+    }
     let mx = (x1 + x2) / 2 + (flag * (1 - Math.sqrt(2) / 2) * r * (y2 - y1)) / (Math.sqrt(2) * r)
     let my = (y1 + y2) / 2 + (flag * (1 - Math.sqrt(2) / 2) * r * (x1 - x2)) / (Math.sqrt(2) * r)
     const firstData = `M ${x1},${y1}A${r},${r} 0,0,${flag2} ${mx},${my}`
     const secondData = `M ${mx},${my}A${r},${r} 0,0,${flag2} ${x2},${y2}`
+    // console.log("firstData","secondData",firstData,secondData)
     return { firstData, secondData }
 }
 

@@ -1,6 +1,9 @@
 import React from 'react'
 
 export default function ArcLinkItem(props) {
+    if(!props.data){
+        return null
+    }
     return (
         <path
             d={props.data}

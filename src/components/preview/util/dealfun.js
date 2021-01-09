@@ -189,12 +189,10 @@ export const verticalLayout = (sumGraphs, configs) => {
     adjustLayout2Svg(nodes, links, eachWidth, eachHeight)
 
     return sumGraphs
-
-    // adjustLayout2Svg(nodes, links, width, height)
 }
 export const timeASnode = (graphs) => {
+    // 建立时间节点，在每一个图中，与每个节点都建立连接
     graphs.forEach((graph) => {
-        // const timeNode = { id: 'time', type: 'time' }
         graph.nodes.forEach((node) => {
             const source = 'time'
             const target = node.id
@@ -205,7 +203,7 @@ export const timeASnode = (graphs) => {
 }
 export const offLineLayout = (sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
-    const { eachWidth, eachHeight } = configs
+    const { eachWidth, eachHeight } = configs.basic
     d3.forceSimulation(nodes)
         .force(
             'link',
@@ -217,7 +215,6 @@ export const offLineLayout = (sumGraphs, configs) => {
         .tick(10)
         .stop()
     adjustLayout2Svg(nodes, links, eachWidth, eachHeight)
-    // console.log("nodes---links----width---height", nodes, links, width, height)
     return sumGraphs
 }
 export const assignConfigs = (setConfigs) => {
@@ -278,7 +275,6 @@ export const getmarkLine = (sumGraphs, timeGraphs, configs) => {
         })
         markLine[id].pop()
     })
-    // markLine = Object.values(markLine)
     markLine = getLinkPathData(markLine)
     return markLine
 }
@@ -321,9 +317,30 @@ export const getPiePathColor = (len, startColor, endColor) => {
     return colorScale
 }
 
+function getChooseComparisonStyle(configs) {
+    const comparisonNode = _.cloneDeep(configs.comparison.node)
+    const basicNodeStyle = _.cloneDeep(configs.basic.nodeStyle)
+    const comparisonLink = _.cloneDeep(configs.comparison.link)
+    const basicLinkStyle = _.cloneDeep(configs.basic.linkStyle)
+    configs.comparison.chooseTypes.forEach((v) => {
+        delete basicNodeStyle[v]
+        delete basicLinkStyle[v]
+    })
+    comparisonNode.stableNode = { ...comparisonNode.stableNode, ...basicNodeStyle }
+    comparisonNode.appearNode = { ...comparisonNode.appearNode, ...basicNodeStyle }
+    comparisonNode.disappearNode = { ...comparisonNode.disappearNode, ...basicNodeStyle }
+    comparisonLink.appearLink = { ...comparisonLink.appearLink, ...basicLinkStyle }
+    comparisonLink.stableNode = { ...comparisonLink.stableNode, ...basicLinkStyle }
+    comparisonLink.disappearNode = { ...comparisonLink.disappearNode, ...basicLinkStyle }
+    return {
+        comparisonNode,
+        comparisonLink,
+    }
+}
+
 export const setStyle = (timeGraphs, sumGraphs, configs) => {
     let timeColorObj = {}
-    if (configs.time.color) {
+    if (configs.time.chooseTypes.indexOf('color') > -1) {
         const times = Object.keys(timeGraphs)
         const l = times.length
         const colorScale = getPiePathColor(
@@ -335,26 +352,32 @@ export const setStyle = (timeGraphs, sumGraphs, configs) => {
             timeColorObj[time] = colorScale(i)
         })
     }
+    const {
+        comparisonNode,
+        comparisonLink,
+    } = getChooseComparisonStyle(configs)
+    const basicNodeStyle = configs.basic.nodeStyle
+    const basicLinkStyle = configs.basic.linkStyle
+
     Object.values(timeGraphs).forEach((graph) => {
         Object.values(graph.nodes).forEach((node) => {
             if (node.type === 'time') {
                 if (_.hasIn(configs.time.insert, 'nodeStyle')) {
                     node.style.nodeStyle = _.cloneDeep(configs.time.insert.nodeStyle)
                 } else {
-                    node.style.nodeStyle = _.cloneDeep(configs.nodeStyle)
+                    node.style.nodeStyle = _.cloneDeep(basicNodeStyle)
                 }
-                if (configs.time.color) {
+                if (configs.time.chooseTypes.indexOf('color') > -1) {
                     node.style.nodeStyle.fillColor = timeColorObj[node.time]
                 }
                 return
             }
+            node.style.nodeStyle = basicNodeStyle
             node.status.forEach((d) => {
-                if (_.hasIn(configs.comparison.color, d)) {
-                    node.style[d] = _.cloneDeep(configs.comparison.color[d])
-                }
+                node.style[d] = _.cloneDeep(comparisonNode[d])
             })
             if (!Object.values(node.style).length) {
-                node.style.nodeStyle = _.cloneDeep(configs.nodeStyle)
+                node.style.nodeStyle = _.cloneDeep(basicNodeStyle)
             }
         })
         Object.values(graph.links).forEach((link) => {
@@ -362,68 +385,63 @@ export const setStyle = (timeGraphs, sumGraphs, configs) => {
                 if (_.hasIn(configs.time.insert, 'linkStyle')) {
                     link.style.linkStyle = _.cloneDeep(configs.time.insert.linkStyle)
                 } else {
-                    link.style.linkStyle = _.cloneDeep(configs.linkStyle)
+                    link.style.linkStyle = _.cloneDeep(basicLinkStyle)
                 }
                 return
             }
+            link.style.linkStyle = basicLinkStyle
             link.status.forEach((d) => {
-                if (_.hasIn(configs.comparison.color, d)) {
-                    link.style[d] = _.cloneDeep(configs.comparison.color[d])
-                }
+                // 该style是用于comparison这种方式
+                link.style[d] = _.cloneDeep(comparisonLink[d])
             })
             if (!Object.values(link.style).length) {
-                link.style.linkStyle = _.cloneDeep(configs.linkStyle)
+                link.style.linkStyle = _.cloneDeep(basicLinkStyle)
             }
         })
     })
 }
+
 export const getGraphLayout = (timeGraphs, sumGraphs, configs) => {
     let { nodes, links } = sumGraphs
     const { eachWidth, eachMargin, leftMargin, eachHeight } = configs.time.timeLine
-        ? configs.time.timeLine
-        : configs
     const layoutNodes = Object.fromEntries(nodes.map((d) => [d.id, d]))
     const layoutLinks = Object.fromEntries(links.map((d) => [d.id, d]))
-    // let t = _.cloneDeep(timeGraphs)
     let timeGraphsValues = Object.values(timeGraphs)
-    const l = timeGraphsValues.length
+    // const l = timeGraphsValues.length
     let newNodes = {}
+    const tempElement = configs.time.timeLine.element
     timeGraphsValues.forEach((graph) => {
         Object.values(graph.nodes).forEach((node) => {
+            // 将位置信息复制到各个子图上
             assign(node, layoutNodes[node.id])
-            if (configs.time.timeLine && configs.time.timeLine.element != 'link') {
-                //不是针对link
-                const old = node.x
-                node.x += node.timeIndex * (eachWidth + eachMargin)
-                if (node.type === 'time' && _.hasIn(configs.time.insert, 'position')) {
-                    node.x = node.timeIndex * (eachWidth + eachMargin) + eachWidth / 2
-                    node.y = eachHeight + configs.time.insert.bottomMargin
-                }
-                if (configs.time.timeLine.element === 'node') {
-                    node.x += leftMargin
-                }
-            } else {
-                if (configs.time.timeLine && configs.time.timeLine.element == 'link') {
-                    const x = node.x + node.timeIndex * (eachWidth + eachMargin) + leftMargin
-                    const y = node.y
-                    const timeId = node.timeId
-                    const id = node.id
-                    newNodes[node.timeId] = { timeId, x, y, id }
+            let { x, y, timeId, id } = node
+            if (node.type === 'time' && configs.layout.chooseType === 'offLine') {
+                // 对代表time的节点的位置特殊处理
+                x = eachWidth / 2
+                y = eachHeight + configs.time.insert.bottomMargin
+                node.x = x
+                node.y = y
+            }
+            if (configs.time.chooseTypes.indexOf('timeLine') > -1) {
+                x = node.x + node.timeIndex * (eachWidth + eachMargin) + leftMargin
+                if (tempElement === 'node' || tempElement === 'all') {
+                    node.x = x
                 }
             }
+            // 记录节点新的位置信息
+            newNodes[node.timeId] = { timeId, x, y, id }
         })
     })
     timeGraphsValues.forEach((graph) => {
         Object.values(graph.links).forEach((link) => {
             assign(link, layoutLinks[link.id])
-            if (configs.time.timeLine && configs.time.timeLine.element == 'link') {
-                let source = newNodes[link.sourceTimeId]
-                link.source = { ...source }
-                let target = newNodes[link.targetTimeId]
-                link.target = { ...target }
-            } else if (configs.time.timeLine && configs.time.timeLine.element == 'all') {
-                link.source = graph.nodes[link.source.id]
-                link.target = graph.nodes[link.target.id]
+            link.source = graph.nodes[link.source.id]
+            link.target = graph.nodes[link.target.id]
+            if (configs.time.chooseTypes.indexOf('timeLine') > -1) {
+                if (tempElement === 'link' || tempElement === 'all') {
+                    link.source = { ...newNodes[link.sourceTimeId] }
+                    link.target = { ...newNodes[link.targetTimeId] }
+                }
             }
         })
     })
@@ -447,15 +465,17 @@ export const getCompareData = (
     timeGraphSet,
     nodeSet,
     linkSet,
-    keyTime,
+    keyFrame,
     timeGraphs,
     sumGraphs,
     times
 ) => {
     const timeArr = Object.keys(timeGraphSet)
     let result = Object.fromEntries(timeArr.map((time) => [time, {}]))
-    if (keyTime === 'last') {
+    if (keyFrame === 'last') {
+        // 上一帧
         timeArr.forEach((time, index) => {
+            // forEach中使用return终端本次循环，并不是所有的。相当于for中的continue
             if (index === 0) return
             const graphSet = timeGraphSet[time]
             const lastTime = timeArr[index - 1]
@@ -470,31 +490,34 @@ export const getCompareData = (
             result[lastTime].disappear = disappear
             result[lastTime].stable = stable
         })
+    } else if (keyFrame === 'next') {
+        // 下一帧
+        timeArr.forEach((time, index) => {
+            if (index === timeArr.length - 1) return
+            const graphSet = timeGraphSet[time]
+            const nextTime = timeArr[index + 1]
+            const nextGraphSet = timeGraphSet[nextTime]
+            const { appear, disappear, stable } = _dealCompare(
+                nextGraphSet,
+                graphSet,
+                nodeSet,
+                linkSet
+            )
+            result[nextTime].appear = appear
+            result[time].disappear = disappear
+            result[time].stable = stable
+        })
     } else {
-        if (keyTime === 'next') {
-            timeArr.forEach((time, index) => {
-                if (index === timeArr.length - 1) return
-                const graphSet = timeGraphSet[time]
-                const nextTime = timeArr[index + 1]
-                const nextGraphSet = timeGraphSet[nextTime]
-                const { appear, disappear, stable } = _dealCompare(
-                    nextGraphSet,
-                    graphSet,
-                    nodeSet,
-                    linkSet
-                )
-                result[nextTime].appear = appear
-                result[time].disappear = disappear
-                result[time].stable = stable
-            })
-        } else {
-            timeArr.forEach((time) => {
-                const graphSet = timeGraphSet[time]
-                result[time] = _dealCompare(graphSet, timeGraphSet[keyTime], nodeSet, linkSet)
-            })
-        }
+        // 具体到某一帧
+        timeArr.forEach((time) => {
+            const graphSet = timeGraphSet[time]
+            result[time] = _dealCompare(graphSet, timeGraphSet[keyFrame], nodeSet, linkSet)
+        })
     }
+
+    // 最外层的循环是以time为维度，循环
     timeArr.forEach((time) => {
+        // 是3种状态：appear\disappear\stable为维度进行循环
         Object.keys(result[time]).forEach((status) => {
             const { nodes, links } = result[time][status]
             nodes.forEach((id) => {
@@ -521,7 +544,5 @@ export const getCompareData = (
             }
         })
     })
-    sumGraphs.nodes = Object.values(sumGraphs.nodes)
-    sumGraphs.links = Object.values(sumGraphs.links)
     return timeGraphs
 }

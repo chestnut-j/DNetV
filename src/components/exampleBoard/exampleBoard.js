@@ -4,11 +4,7 @@ import Preview from '../../components/preview/preview.js'
 import * as testData from '../../data/import/test1.json'
 import { configSet } from './config.js'
 import './exampleBoard.css'
-import { defaultConfigs } from '../preview/util/defaultConfig'
-import { configs } from 'eslint-plugin-prettier'
-import { Result } from 'antd'
-import dnetv from '../preview/dnetv.js'
-import { composeConfig, assignConfigs } from '../../util/dnetChart'
+import { assignConfigs } from '../../util/dnetChart'
 const dataset = [
     {
         dataName: 'testData',
@@ -23,7 +19,8 @@ export default function ExampleBoard() {
         <div className="example-board">
             {configSet.map((configItem, index) => {
                 const config = assignConfigs(configItem)
-                // console.log("---ExampleBoard----" ,config)
+                // console.log(configItem,"---config---",config)
+                // return null
                 return (
                     <div className="example-row" key={`example-row-${index}`}>
                         <Grammar

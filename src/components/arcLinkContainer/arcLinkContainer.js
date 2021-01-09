@@ -3,10 +3,18 @@ import ArcLinkItem from '../arcLinkItem/arcLinkItem.js'
 import { getDividedArcPathData } from '../../util/dnetChart.js'
 
 export default function ArcLinkContainer(props) {
-    const status = Object.keys(props.style)
-    const { source, target, opacity = 1} = props
+    const { source, target, opacity = 1, status} = props
     const { firstData, secondData} = getDividedArcPathData(source, target)
-    if (status.length < 2) {
+    if(status.length === 0){
+        // comparison状态没有开启
+        return (
+            <ArcLinkItem
+                data = {firstData+secondData}
+                {...props.style.linkStyle}
+                opacity={opacity}
+            />
+        )
+    }else if (status.length === 1) {
         return (
             <ArcLinkItem
                 data = {firstData+secondData}
@@ -14,7 +22,7 @@ export default function ArcLinkContainer(props) {
                 opacity={opacity}
             />
         )
-    } else {
+    } else if((status.length === 2)){
         return (
             <>
                 <ArcLinkItem

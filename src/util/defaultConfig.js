@@ -1,25 +1,50 @@
 export const defaultConfigs = {
-    // width: 500,
-    // height: 500,
-    // filter: {
-    //     node,
-    //     appearNode,
-    //     stableNode,
-    //     disappearNode,
-    //     appearLink,
-    //     stableLink,
-    //     disappearLink
-    // },
+    basic: {
+        width: 250,
+        height: 250,
+        eachWidth: 250,
+        eachHeight: 250,
+        margin: 20,
+        nodeStyle: {
+            shape: 'circle',
+            fillColor: '#DAD5D5',
+            strokeColor: '#000000',
+            strokeWidth: 1,
+            radius: 6,
+            strokeType: 'solid',
+            textColor: 'white'
+        },
+        linkStyle: {
+            shape: 'curve',
+            strokeColor: '#908F8F',
+            strokeType: 'solid',
+            strokeWidth: 2
+        }
+    },
     layout: {
+        chooseType: 'offLine',
         vertical: {
             yDistance: 40,
             linkStyle: {
                 overwrite: true,
                 shape: 'curve'
             }
-        }
+        },
+        offLine:{
+
+        },
+        onLine: {
+
+        },
+        bipartite: {
+
+        },
+        circle: {
+
+        }  
     },
     time: {
+        chooseTypes:[],
         insert: {
             nodeStyle: {
                 shape: 'circle',
@@ -47,25 +72,27 @@ export const defaultConfigs = {
             speed: 1800
         },
         markLine: {
-            overwrite: true,
+            strokeType: 'solid',
             strokeColor: '#FD8F8F',
             strokeWidth: 1,
             strokeDasharray: '5,5'
-            // xDistance: 100
-            // yDistance: 40
         },
         timeLine: {
-            overwrite: true,
-            timeLineFlag: 1,
             eachMargin: 5,
             eachWidth: 180,
             eachHeight: 200,
+            // 有可能只对节点进行该操作
             element: 'all',
             leftMargin: 180
         }
     },
     comparison: {
-        color: {
+        isOn: false,
+        chooseTypes:['shape', 'fillColor', 'strokeColor', 'strokeWidth', 'strokeType', 'color', 'radius'],
+        // keyFrame可为上一帧、下一帧、具体某一帧
+        keyFrame: 'next',
+        elements: 'all',
+        node: {
             appearNode: {
                 shape: 'circle',
                 fillColor: '#FD8F8F',
@@ -73,7 +100,7 @@ export const defaultConfigs = {
                 strokeWidth: 1,
                 strokeType: 'solid',
                 textColor: 'white',
-                radius: 6
+                radius: 8
             },
             stableNode: {
                 shape: 'circle',
@@ -89,93 +116,30 @@ export const defaultConfigs = {
                 fillColor: '#90B5FB',
                 strokeColor: '#000000',
                 strokeWidth: 1,
-                radius: 6,
+                radius: 8,
                 strokeType: 'solid',
                 textColor: 'white'
-            },
+            }
+        },
+        link: {
             appearLink: {
+                shape: 'curve',
                 strokeColor: '#FD8F8F',
                 strokeType: 'solid',
-                strokeWidth: 2
+                strokeWidth: 3
             },
             stableLink: {
+                shape: 'line',
                 strokeColor: '#908F8F',
                 strokeType: 'solid',
                 strokeWidth: 2
             },
             disappearLink: {
+                shape: 'curve',
                 strokeColor: '#90B5FB',
                 strokeType: 'solid',
-                strokeWidth: 2
+                strokeWidth: 3
             }
-        },
-        nodeColor: {
-            appearNode: {
-                shape: 'circle',
-                fillColor: '#FD8F8F',
-                strokeColor: '#000000',
-                strokeWidth: 1,
-                strokeType: 'solid',
-                textColor: 'white',
-                radius: 6
-            },
-            stableNode: {
-                shape: 'circle',
-                fillColor: '#DAD5D5',
-                strokeColor: '#000000',
-                strokeWidth: 1,
-                radius: 6,
-                strokeType: 'solid',
-                textColor: 'white'
-            },
-            disappearNode: {
-                shape: 'circle',
-                fillColor: '#90B5FB',
-                strokeColor: '#000000',
-                strokeWidth: 1,
-                radius: 6,
-                strokeType: 'solid',
-                textColor: 'white'
-            }
-        },
-        linkColor: {
-            appearLink: {
-                strokeColor: '#FD8F8F',
-                strokeType: 'solid',
-                strokeWidth: 2
-            },
-            stableLink: {
-                strokeColor: '#908F8F',
-                strokeType: 'solid',
-                strokeWidth: 2
-            },
-            disappearLink: {
-                strokeColor: '#90B5FB',
-                strokeType: 'solid',
-                strokeWidth: 2
-            }
-        }
-    },
-    basic: {
-        width: 1010,
-        height: 250,
-        timeLineFlag: 0,
-        eachWidth: 200,
-        eachHeight: 250,
-        nodeStyle: {
-            shape: 'circle',
-            fillColor: '#DAD5D5',
-            strokeColor: '#000000',
-            strokeWidth: 1,
-            radius: 6,
-            strokeType: 'solid',
-            textColor: 'white'
-        },
-        linkStyle: {
-            shape: 'curve',
-            strokeColor: '#908F8F',
-            strokeType: 'solid',
-            strokeWidth: 2
         }
     }
 }
