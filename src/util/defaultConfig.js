@@ -26,7 +26,6 @@ export const defaultConfigs = {
         vertical: {
             yDistance: 40,
             linkStyle: {
-                overwrite: true,
                 shape: 'curve'
             }
         },

@@ -11,6 +11,7 @@ class DNetV {
         this.timeGraphSet = {}
         this.markLine = undefined
     }
+
     initData(setData, setConfigs) {
         this.elementsName = ['nodes', 'links'] //元素：点、边
         // 建立从times到index的对象映射
